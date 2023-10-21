@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Budget } from "../types";
+import { Budget } from "@/app/types";
 
 interface ContextType {
   budgets: Budget[];

@@ -8,10 +8,13 @@ import FormSelect from "./FormSelect";
 import { Budget } from "../types";
 import { budgetCollection } from "../services/rethinkid";
 import BudgetsContext from "../contexts/budgetsContext";
+import { useRouter } from "next/navigation";
 
 type UnsavedBudget = Omit<Budget, "id">;
 
-const CreateBudgetForm = () => {
+const NewBudgetForm = () => {
+  const router = useRouter();
+
   const nameInputId = "name";
   const currencyInputId = "currency";
   const payDayInputId = "pay-day";
@@ -38,7 +41,7 @@ const CreateBudgetForm = () => {
     payDay: parseInt(payDayDefault),
   };
 
-  const { budgets, setBudgets } = useContext(BudgetsContext);
+  const { setBudgets } = useContext(BudgetsContext);
 
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);
@@ -53,8 +56,6 @@ const CreateBudgetForm = () => {
       return;
     }
 
-    console.log(unsavedBudget);
-
     const id = await budgetCollection.insertOne(unsavedBudget);
 
     const newBudget: Budget = { id, ...unsavedBudget };
@@ -62,50 +63,49 @@ const CreateBudgetForm = () => {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
 
     setUnsavedBudget(unsavedBudgetDefault);
+
+    router.push(`/budgets/${id}`);
   }
 
   return (
-    <>
-      <h2>Create a budget</h2>
-      <form onSubmit={handleSubmitCreateBudget}>
-        <FormControl>
-          <FormLabel htmlFor={nameInputId}>Name</FormLabel>
-          <FormInput
-            id={nameInputId}
-            value={unsavedBudget.name}
-            onChange={(value) =>
-              setUnsavedBudget({ ...unsavedBudget, name: value })
-            }
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor={currencyInputId}>Currency</FormLabel>
-          <FormSelect
-            id={currencyInputId}
-            options={currencyOptions}
-            value={unsavedBudget.currency}
-            onChange={(value) =>
-              setUnsavedBudget({ ...unsavedBudget, currency: value })
-            }
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor={payDayInputId}>Pay Day</FormLabel>
-          <FormSelect
-            id={payDayInputId}
-            options={payDayOptions}
-            value={unsavedBudget.payDay.toString()}
-            onChange={(value) =>
-              setUnsavedBudget({ ...unsavedBudget, payDay: parseInt(value) })
-            }
-          />
-        </FormControl>
-        <button type="submit" className="btn btn-primary">
-          Create budget
-        </button>
-      </form>
-    </>
+    <form onSubmit={handleSubmitCreateBudget}>
+      <FormControl>
+        <FormLabel htmlFor={nameInputId}>Name</FormLabel>
+        <FormInput
+          id={nameInputId}
+          value={unsavedBudget.name}
+          onChange={(value) =>
+            setUnsavedBudget({ ...unsavedBudget, name: value })
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor={currencyInputId}>Currency</FormLabel>
+        <FormSelect
+          id={currencyInputId}
+          options={currencyOptions}
+          value={unsavedBudget.currency}
+          onChange={(value) =>
+            setUnsavedBudget({ ...unsavedBudget, currency: value })
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor={payDayInputId}>Pay Day</FormLabel>
+        <FormSelect
+          id={payDayInputId}
+          options={payDayOptions}
+          value={unsavedBudget.payDay.toString()}
+          onChange={(value) =>
+            setUnsavedBudget({ ...unsavedBudget, payDay: parseInt(value) })
+          }
+        />
+      </FormControl>
+      <button type="submit" className="btn btn-primary mt-4">
+        Create budget
+      </button>
+    </form>
   );
 };
 
-export default CreateBudgetForm;
+export default NewBudgetForm;
