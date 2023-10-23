@@ -1,5 +1,6 @@
 "use client";
 
+import AccountsProvider from "./AccountsProvider";
 import "./globals.css";
 import NavBar from "./NavBar";
 import dynamic from "next/dynamic";
@@ -22,7 +23,9 @@ export default function RootLayout({
         <IsLoggedInProvider>
           <BudgetsProvider>
             <NavBar />
-            <main className="p-4">{children}</main>
+            <AccountsProvider>
+              <main className="p-4">{children}</main>
+            </AccountsProvider>
           </BudgetsProvider>
         </IsLoggedInProvider>
       </body>

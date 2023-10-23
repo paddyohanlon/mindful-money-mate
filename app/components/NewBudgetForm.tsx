@@ -6,9 +6,10 @@ import FormLabel from "./FormLabel";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { Budget } from "../types";
-import { budgetCollection } from "../services/rethinkid";
+import { budgetsCollection } from "../services/rethinkid";
 import BudgetsContext from "../contexts/budgetsContext";
 import { useRouter } from "next/navigation";
+import { EUR, USD } from "@/app/constants";
 
 type UnsavedBudget = Omit<Budget, "id">;
 
@@ -18,9 +19,6 @@ const NewBudgetForm = () => {
   const nameInputId = "name";
   const currencyInputId = "currency";
   const payDayInputId = "pay-day";
-
-  const EUR = "EUR";
-  const USD = "USD";
 
   const currencyOptions = [
     { value: EUR, label: "Euro" },
@@ -46,7 +44,7 @@ const NewBudgetForm = () => {
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);
 
-  async function handleSubmitCreateBudget(event: FormEvent) {
+  async function handleSubmitNewBudget(event: FormEvent) {
     event.preventDefault();
 
     if (
@@ -56,7 +54,7 @@ const NewBudgetForm = () => {
       return;
     }
 
-    const id = await budgetCollection.insertOne(unsavedBudget);
+    const id = await budgetsCollection.insertOne(unsavedBudget);
 
     const newBudget: Budget = { id, ...unsavedBudget };
 
@@ -68,7 +66,7 @@ const NewBudgetForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmitCreateBudget}>
+    <form onSubmit={handleSubmitNewBudget}>
       <FormControl>
         <FormLabel htmlFor={nameInputId}>Name</FormLabel>
         <FormInput

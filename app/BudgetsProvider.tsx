@@ -1,8 +1,9 @@
 "use client";
+
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import BudgetsContext from "./contexts/budgetsContext";
 import { Budget } from "./types";
-import { budgetCollection } from "./services/rethinkid";
+import { budgetsCollection } from "./services/rethinkid";
 import IsLoggedInContext from "./contexts/isLoggedInContext";
 
 interface Props {
@@ -16,8 +17,7 @@ const BudgetsProvider = ({ children }: Props) => {
   useEffect(() => {
     if (!isLoggedIn) return;
 
-    // Fetch data
-    budgetCollection.getAll().then((budgets: Budget[]) => {
+    budgetsCollection.getAll().then((budgets: Budget[]) => {
       setBudgets(budgets);
     });
   }, [isLoggedIn, setBudgets]);

@@ -1,12 +1,13 @@
 "use client";
 
-import { useContext } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import BudgetsContext from "@/app/contexts/budgetsContext";
+
+const BudgetsList = dynamic(() => import("@/app/components/BudgetsList"), {
+  ssr: false,
+});
 
 const BudgetListPage = () => {
-  const { budgets } = useContext(BudgetsContext);
-
   return (
     <div className="max-w-sm mx-auto">
       <div className="prose flex justify-between gap-4">
@@ -15,14 +16,7 @@ const BudgetListPage = () => {
           New
         </Link>
       </div>
-
-      <ul className="menu menu-lg bg-base-200 rounded-box w-full">
-        {budgets.map((budget) => (
-          <li key={budget.id}>
-            <Link href={`/budgets/${budget.id}`}>{budget.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <BudgetsList />
     </div>
   );
 };

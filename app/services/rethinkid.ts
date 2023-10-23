@@ -21,4 +21,5 @@ if (process.env.NODE_ENV === "development") {
 
 export const rid = new RethinkID(options);
 
-export const budgetCollection = rid.collection("budgets");
+export const budgetsCollection = rid.collection("budgets");
+export const accountsCollection = rid.collection("accounts");

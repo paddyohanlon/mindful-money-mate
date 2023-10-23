@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { budgetCollection } from "@/app/services/rethinkid";
+import { budgetsCollection } from "@/app/services/rethinkid";
 import BudgetsContext from "../contexts/budgetsContext";
 
 interface Props {
@@ -14,7 +14,7 @@ const DeleteBudgetButton = ({ children, id }: Props) => {
   const { setBudgets } = useContext(BudgetsContext);
 
   async function deleteBudget(id: string) {
-    budgetCollection.deleteOne(id);
+    budgetsCollection.deleteOne(id);
     setBudgets((prevBudgets) =>
       prevBudgets.filter((budget) => budget.id !== id)
     );
