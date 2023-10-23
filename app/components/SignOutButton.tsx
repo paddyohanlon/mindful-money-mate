@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import IsLoggedInContext from "../contexts/isLoggedInContext";
 import { rid } from "../services/rethinkid";
+import useAppStore from "../store";
 
 const SignOutButton = () => {
+  const { setIsLoggedIn } = useAppStore();
+
   function logOut() {
     rid.logOut();
     setIsLoggedIn(false);
   }
-  const { setIsLoggedIn } = useContext(IsLoggedInContext);
+
   return <button onClick={logOut}>Sign out</button>;
 };
 

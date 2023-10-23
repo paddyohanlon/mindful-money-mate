@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import BudgetsContext from "../contexts/budgetsContext";
+import { useEffect, useState } from "react";
 import { Budget } from "../types";
+import useAppStore from "../store";
+import { BUDGETS_PATH } from "../constants";
 
 const ActiveBudgetLink = () => {
   const params = useParams();
 
-  const { budgets } = useContext(BudgetsContext);
+  const { budgets } = useAppStore();
 
   const [budget, setBudget] = useState<Budget>();
 
@@ -24,7 +25,7 @@ const ActiveBudgetLink = () => {
       {!budget ? (
         <p>Budget not found.</p>
       ) : (
-        <Link href={`/budgets/${budget.id}`}>Budget: {budget.name}</Link>
+        <Link href={`${BUDGETS_PATH}/${budget.id}`}>Budget: {budget.name}</Link>
       )}
     </>
   );

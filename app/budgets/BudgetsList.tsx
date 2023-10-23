@@ -1,15 +1,16 @@
-import { useContext } from "react";
-import BudgetsContext from "@/app/contexts/budgetsContext";
 import Link from "next/link";
+import useAppStore from "../store";
+import { useEffect } from "react";
+import { BUDGETS_PATH } from "../constants";
 
 const BudgetsList = () => {
-  const { budgets } = useContext(BudgetsContext);
+  const { budgets } = useAppStore();
 
   return (
     <ul className="menu menu-lg bg-base-200 rounded-box w-full">
       {budgets.map((budget) => (
         <li key={budget.id}>
-          <Link href={`/budgets/${budget.id}`}>{budget.name}</Link>
+          <Link href={`${BUDGETS_PATH}/${budget.id}`}>{budget.name}</Link>
         </li>
       ))}
     </ul>

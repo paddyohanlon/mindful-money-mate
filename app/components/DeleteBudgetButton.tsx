@@ -1,7 +1,8 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { budgetsCollection } from "@/app/services/rethinkid";
-import BudgetsContext from "../contexts/budgetsContext";
+import useAppStore from "../store";
+import { BUDGETS_PATH } from "../constants";
 
 interface Props {
   children: ReactNode;
@@ -11,18 +12,16 @@ interface Props {
 const DeleteBudgetButton = ({ children, id }: Props) => {
   const router = useRouter();
 
-  const { setBudgets } = useContext(BudgetsContext);
+  const { deleteBudget } = useAppStore();
 
-  async function deleteBudget(id: string) {
+  async function handleClick(id: string) {
     budgetsCollection.deleteOne(id);
-    setBudgets((prevBudgets) =>
-      prevBudgets.filter((budget) => budget.id !== id)
-    );
-    router.push("/budgets");
+    deleteBudget(id);
+    router.push(BUDGETS_PATH);
   }
 
   return (
-    <button className="btn btn-error" onClick={() => deleteBudget(id)}>
+    <button className="btn btn-error" onClick={() => handleClick(id)}>
       {children}
     </button>
   );

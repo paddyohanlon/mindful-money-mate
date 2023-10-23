@@ -1,14 +1,12 @@
 "use client";
 
-import AccountsProvider from "./AccountsProvider";
 import "./globals.css";
-import NavBar from "./NavBar";
 import dynamic from "next/dynamic";
 
-const IsLoggedInProvider = dynamic(() => import("./IsLoggedInProvider"), {
+const LoadData = dynamic(() => import("@/app/components/LoadData"), {
   ssr: false,
 });
-const BudgetsProvider = dynamic(() => import("./BudgetsProvider"), {
+const NavBar = dynamic(() => import("@/app/components/NavBar"), {
   ssr: false,
 });
 
@@ -18,16 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="coffee">
+    <html lang="en" data-theme="forest">
       <body className="text-white">
-        <IsLoggedInProvider>
-          <BudgetsProvider>
-            <NavBar />
-            <AccountsProvider>
-              <main className="p-4">{children}</main>
-            </AccountsProvider>
-          </BudgetsProvider>
-        </IsLoggedInProvider>
+        <LoadData />
+        <NavBar />
+        <main className="p-4">{children}</main>
       </body>
     </html>
   );

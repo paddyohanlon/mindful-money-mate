@@ -1,23 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import React, { useContext } from "react";
-import IsLoggedInContext from "./contexts/isLoggedInContext";
+import React from "react";
 import dynamic from "next/dynamic";
-import ActiveBudgetLink from "./components/ActiveBudgetLink";
+import ActiveBudgetLink from "./ActiveBudgetLink";
+import SignInButton from "./SignInButton";
+import SignOutButton from "./SignOutButton";
+import useAppStore from "../store";
+import { BUDGETS_PATH } from "../constants";
 
-const SignOutButton = dynamic(() => import("./components/SignOutButton"), {
-  ssr: false,
-});
-const SignInButton = dynamic(() => import("./components/SignInButton"), {
-  ssr: false,
-});
+// const SignOutButton = dynamic(() => import("./SignOutButton"), {
+//   ssr: false,
+// });
+// const SignInButton = dynamic(() => import("./SignInButton"), {
+//   ssr: false,
+// });
 
 const NavBar = () => {
-  const { isLoggedIn } = useContext(IsLoggedInContext);
+  const { isLoggedIn } = useAppStore();
 
   return (
-    <div className="navbar bg-neutral text-neutral-content">
+    <div className="navbar bg-neutral text-neutral-content mb-8">
       <div className="flex-1">
         <Link className="btn btn-ghost normal-case text-xl" href="/">
           Logo
@@ -34,7 +37,7 @@ const NavBar = () => {
                 <summary>Account</summary>
                 <ul className="p-2 bg-base-100">
                   <li>
-                    <Link href="/budgets">Budgets</Link>
+                    <Link href={BUDGETS_PATH}>Budgets</Link>
                   </li>
                   <li>
                     <SignOutButton />

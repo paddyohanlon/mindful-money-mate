@@ -1,15 +1,15 @@
 "use client";
 
-import React, { FormEvent, useContext, useState } from "react";
-import FormControl from "./FormControl";
-import FormLabel from "./FormLabel";
-import FormInput from "./FormInput";
-import FormSelect from "./FormSelect";
-import { Budget } from "../types";
-import { budgetsCollection } from "../services/rethinkid";
-import BudgetsContext from "../contexts/budgetsContext";
+import React, { FormEvent, useEffect, useState } from "react";
+import FormControl from "../../components/FormControl";
+import FormLabel from "../../components/FormLabel";
+import FormInput from "../../components/FormInput";
+import FormSelect from "../../components/FormSelect";
+import { Budget } from "../../types";
+import { budgetsCollection } from "../../services/rethinkid";
 import { useRouter } from "next/navigation";
-import { EUR, USD } from "@/app/constants";
+import { BUDGETS_PATH, EUR, USD } from "@/app/constants";
+import useAppStore from "../../store";
 
 type UnsavedBudget = Omit<Budget, "id">;
 
@@ -39,7 +39,7 @@ const NewBudgetForm = () => {
     payDay: parseInt(payDayDefault),
   };
 
-  const { setBudgets } = useContext(BudgetsContext);
+  const { addBudget } = useAppStore();
 
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);
@@ -58,11 +58,11 @@ const NewBudgetForm = () => {
 
     const newBudget: Budget = { id, ...unsavedBudget };
 
-    setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+    addBudget(newBudget);
 
     setUnsavedBudget(unsavedBudgetDefault);
 
-    router.push(`/budgets/${id}`);
+    router.push(`${BUDGETS_PATH}/${id}`);
   }
 
   return (

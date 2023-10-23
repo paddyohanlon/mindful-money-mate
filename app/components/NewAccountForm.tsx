@@ -2,10 +2,10 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Account } from "../types";
 import { accountsCollection } from "../services/rethinkid";
-import AccountsContext from "../contexts/accountsContext";
+import useAppStore from "../store";
 
 interface Props {
   budgetId: string;
@@ -23,7 +23,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
     { value: "cash", label: "Cash" },
   ];
 
-  const { setAccounts } = useContext(AccountsContext);
+  const { addAccount } = useAppStore();
 
   const [unsavedAccount, setUnsavedAccount] = useState<UnsavedAccount>({
     budgetId,
@@ -47,7 +47,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
       ...unsavedAccount,
     };
 
-    setAccounts((prevAccounts) => [...prevAccounts, newAccount]);
+    addAccount(newAccount);
 
     console.log("Submit new account");
   }
