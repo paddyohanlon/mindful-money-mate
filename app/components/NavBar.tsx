@@ -1,26 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
-import dynamic from "next/dynamic";
 import ActiveBudgetLink from "./ActiveBudgetLink";
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
 import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
 
-// const SignOutButton = dynamic(() => import("./SignOutButton"), {
-//   ssr: false,
-// });
-// const SignInButton = dynamic(() => import("./SignInButton"), {
-//   ssr: false,
-// });
-
 const NavBar = () => {
   const { isLoggedIn } = useAppStore();
 
+  const handleDetailsClick = (event: React.MouseEvent<HTMLDetailsElement>) => {
+    const detailsElement = event.currentTarget;
+    const targetElement = event.target as HTMLElement;
+
+    // Check if the clicked element is not the <summary> element
+    if (targetElement.tagName !== "SUMMARY") {
+      detailsElement.removeAttribute("open");
+    }
+  };
+
   return (
-    <div className="navbar bg-neutral text-neutral-content mb-8">
+    <div className="navbar bg-neutral text-neutral-content z-10 relative">
       <div className="flex-1">
         <Link className="btn btn-ghost normal-case text-xl" href="/">
           Logo
@@ -33,8 +34,8 @@ const NavBar = () => {
               <ActiveBudgetLink />
             </li>
             <li>
-              <details>
-                <summary>Account</summary>
+              <details id="account-details" onClick={handleDetailsClick}>
+                <summary>Menu</summary>
                 <ul className="p-2 bg-base-100">
                   <li>
                     <Link href={BUDGETS_PATH}>Budgets</Link>

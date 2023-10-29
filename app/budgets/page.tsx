@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { BUDGETS_PATH } from "../constants";
+import { ContainerSmall } from "../components/ContainerSmall";
 
 const BudgetsList = dynamic(() => import("@/app/budgets/BudgetsList"), {
   ssr: false,
@@ -10,7 +11,7 @@ const BudgetsList = dynamic(() => import("@/app/budgets/BudgetsList"), {
 
 const BudgetListPage = () => {
   return (
-    <div className="max-w-sm mx-auto">
+    <ContainerSmall>
       <div className="prose flex justify-between gap-4">
         <h1>Budgets</h1>
         <Link className="btn btn-neutral" href={`${BUDGETS_PATH}/new`}>
@@ -18,7 +19,7 @@ const BudgetListPage = () => {
         </Link>
       </div>
       <BudgetsList />
-    </div>
+    </ContainerSmall>
   );
 };
 

@@ -1,5 +1,4 @@
-import BackLink from "@/app/components/BackLink";
-import { BUDGETS_PATH } from "@/app/constants";
+import { ContainerSmall } from "@/app/components/ContainerSmall";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -9,11 +8,10 @@ const NewBudgetForm = dynamic(() => import("@/app/budgets/new/NewBudgetForm"), {
 
 const NewBudgetPage = () => {
   return (
-    <div className="prose max-w-sm mx-auto">
-      <BackLink href={BUDGETS_PATH}>Budgets</BackLink>
+    <ContainerSmall>
       <h1>New budget</h1>
       <NewBudgetForm />
-    </div>
+    </ContainerSmall>
   );
 };
 

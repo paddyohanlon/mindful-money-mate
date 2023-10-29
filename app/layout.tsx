@@ -3,9 +3,15 @@
 import "./globals.css";
 import dynamic from "next/dynamic";
 
-const LoadData = dynamic(() => import("@/app/components/LoadData"), {
+const OnLogin = dynamic(() => import("@/app/OnLogin"), {
   ssr: false,
 });
+const RedirectIfNotLoggedIn = dynamic(
+  () => import("@/app/RedirectIfNotLoggedIn"),
+  {
+    ssr: false,
+  }
+);
 const NavBar = dynamic(() => import("@/app/components/NavBar"), {
   ssr: false,
 });
@@ -18,9 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="forest">
       <body className="text-white">
-        <LoadData />
+        <OnLogin />
+        <RedirectIfNotLoggedIn />
         <NavBar />
-        <main className="p-4">{children}</main>
+        <main className="px-6 pb-6">{children}</main>
       </body>
     </html>
   );

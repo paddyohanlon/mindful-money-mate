@@ -3,9 +3,11 @@ import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import { FormEvent, useState } from "react";
-import { Account } from "../types";
-import { accountsCollection } from "../services/rethinkid";
-import useAppStore from "../store";
+import { Account } from "@/app/types";
+import { accountsCollection } from "@/app/services/rethinkid";
+import useAppStore from "@/app/store";
+import { BANK, BUDGETS_PATH, CASH } from "@/app/constants";
+import { useRouter } from "next/navigation";
 
 interface Props {
   budgetId: string;
@@ -14,31 +16,37 @@ interface Props {
 type UnsavedAccount = Omit<Account, "id">;
 
 const NewAccountForm = ({ budgetId }: Props) => {
+  const router = useRouter();
+
   const nameInputId = "name";
   const typeInputId = "type";
   const balanceInputId = "balance";
 
   const typeOptions = [
-    { value: "bank", label: "Bank" },
-    { value: "cash", label: "Cash" },
+    { value: BANK, label: "Bank" },
+    { value: CASH, label: "Cash" },
   ];
 
-  const { addAccount } = useAppStore();
+  const { setAccount } = useAppStore();
 
   const [unsavedAccount, setUnsavedAccount] = useState<UnsavedAccount>({
     budgetId,
     name: "",
-    type: "bank",
+    type: BANK,
     balance: 0,
   });
 
-  async function handleSubmitNewAccount(event: FormEvent) {
+  const [balanceStr, setBalanceStr] = useState("");
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     if (!unsavedAccount.name) {
       console.log("Missing form values. Do not submit");
       return;
     }
+
+    unsavedAccount.balance = parseFloat(balanceStr);
 
     const id = await accountsCollection.insertOne(unsavedAccount);
 
@@ -47,12 +55,12 @@ const NewAccountForm = ({ budgetId }: Props) => {
       ...unsavedAccount,
     };
 
-    addAccount(newAccount);
+    setAccount(newAccount);
 
-    console.log("Submit new account");
+    router.push(`${BUDGETS_PATH}/${budgetId}/accounts`);
   }
   return (
-    <form onSubmit={handleSubmitNewAccount}>
+    <form onSubmit={handleSubmit}>
       <FormControl>
         <FormLabel htmlFor={nameInputId}>Name</FormLabel>
         <FormInput
@@ -78,14 +86,8 @@ const NewAccountForm = ({ budgetId }: Props) => {
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
         <FormInput
           id={balanceInputId}
-          type="number"
-          value={unsavedAccount.balance.toString()}
-          onChange={(value) =>
-            setUnsavedAccount({
-              ...unsavedAccount,
-              balance: parseInt(value),
-            })
-          }
+          value={balanceStr}
+          onChange={(value) => setBalanceStr(value)}
         />
       </FormControl>
       <button className="btn btn-primary" type="submit">

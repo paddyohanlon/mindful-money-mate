@@ -17,14 +17,15 @@ const config: Config = {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: [
-      {
-        forest: {
-          ...require("daisyui/src/theming/themes")["[data-theme=forest]"],
-          "--rounded-btn": "0.5rem",
-        },
-      },
-    ],
+    themes: ["forest"],
+    // themes: [
+    //   {
+    //     forest: {
+    //       ...require("daisyui/src/theming/themes")["[data-theme=forest]"],
+    //       "--rounded-btn": "0.5rem",
+    //     },
+    //   },
+    // ],
   },
 };
 export default config;

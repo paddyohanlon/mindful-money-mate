@@ -3,11 +3,12 @@ import React, { ReactNode } from "react";
 interface Props {
   children: ReactNode;
   htmlFor: string;
+  className?: string;
 }
 
-const FormLabel = ({ children, htmlFor }: Props) => {
+const FormLabel = ({ children, htmlFor, className = "" }: Props) => {
   return (
-    <label className="label" htmlFor={htmlFor}>
+    <label className={`label ${className}`} htmlFor={htmlFor}>
       <span className="label-text">{children}</span>
     </label>
   );

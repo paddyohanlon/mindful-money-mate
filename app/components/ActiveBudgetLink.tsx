@@ -1,33 +1,18 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Budget } from "../types";
 import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
+import { useEffect } from "react";
 
 const ActiveBudgetLink = () => {
   const params = useParams();
 
-  const { budgets } = useAppStore();
-
-  const [budget, setBudget] = useState<Budget>();
-
-  useEffect(() => {
-    const foundBudget = budgets.find((b) => b.id === params.budgetId);
-
-    if (foundBudget) {
-      setBudget(foundBudget);
-    }
-  }, [budgets, params, setBudget]);
+  const { getBudget } = useAppStore();
 
   return (
-    <>
-      {!budget ? (
-        <p>Budget not found.</p>
-      ) : (
-        <Link href={`${BUDGETS_PATH}/${budget.id}`}>Budget: {budget.name}</Link>
-      )}
-    </>
+    <Link href={`${BUDGETS_PATH}/${getBudget(params.budgetId as string).id}`}>
+      {getBudget(params.budgetId as string).name}
+    </Link>
   );
 };
 

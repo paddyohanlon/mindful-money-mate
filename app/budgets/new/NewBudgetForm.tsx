@@ -1,15 +1,15 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
-import FormControl from "../../components/FormControl";
-import FormLabel from "../../components/FormLabel";
-import FormInput from "../../components/FormInput";
-import FormSelect from "../../components/FormSelect";
-import { Budget } from "../../types";
-import { budgetsCollection } from "../../services/rethinkid";
+import React, { FormEvent, useState } from "react";
+import FormControl from "@/app/components/FormControl";
+import FormLabel from "@/app/components/FormLabel";
+import FormInput from "@/app/components/FormInput";
+import FormSelect from "@/app/components/FormSelect";
+import { Budget } from "@/app/types";
+import { budgetsCollection } from "@/app/services/rethinkid";
 import { useRouter } from "next/navigation";
 import { BUDGETS_PATH, EUR, USD } from "@/app/constants";
-import useAppStore from "../../store";
+import useAppStore from "@/app/store";
 
 type UnsavedBudget = Omit<Budget, "id">;
 
@@ -39,12 +39,14 @@ const NewBudgetForm = () => {
     payDay: parseInt(payDayDefault),
   };
 
-  const { addBudget } = useAppStore();
+  const { setBudget } = useAppStore();
 
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);
 
-  async function handleSubmitNewBudget(event: FormEvent) {
+  const [payDayStr, setPayDayStr] = useState("");
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     if (
@@ -54,11 +56,13 @@ const NewBudgetForm = () => {
       return;
     }
 
+    unsavedBudget.payDay = parseFloat(payDayStr);
+
     const id = await budgetsCollection.insertOne(unsavedBudget);
 
     const newBudget: Budget = { id, ...unsavedBudget };
 
-    addBudget(newBudget);
+    setBudget(newBudget);
 
     setUnsavedBudget(unsavedBudgetDefault);
 
@@ -66,7 +70,7 @@ const NewBudgetForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmitNewBudget}>
+    <form onSubmit={handleSubmit}>
       <FormControl>
         <FormLabel htmlFor={nameInputId}>Name</FormLabel>
         <FormInput
@@ -93,14 +97,12 @@ const NewBudgetForm = () => {
         <FormSelect
           id={payDayInputId}
           options={payDayOptions}
-          value={unsavedBudget.payDay.toString()}
-          onChange={(value) =>
-            setUnsavedBudget({ ...unsavedBudget, payDay: parseInt(value) })
-          }
+          value={payDayStr}
+          onChange={(value) => setPayDayStr(value)}
         />
       </FormControl>
       <button type="submit" className="btn btn-primary mt-4">
-        Create budget
+        Save
       </button>
     </form>
   );
