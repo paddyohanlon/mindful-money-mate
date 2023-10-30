@@ -18,7 +18,7 @@ const AccountsPage = ({ params: { budgetId } }: Props) => {
     <>
       <ContainerSmall>
         <div className="flex justify-between items-baseline gap-4">
-          <h2>Accounts</h2>
+          <h1>Accounts</h1>
           <Link
             href={`${BUDGETS_PATH}/${budgetId}/accounts/new`}
             className="btn btn-sm btn-neutral"

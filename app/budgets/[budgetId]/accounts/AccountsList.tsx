@@ -15,17 +15,19 @@ interface Props {
 }
 
 const AccountsList = ({ budgetId }: Props) => {
-  const { getBudget, getAccountsForBudget } = useAppStore();
+  const accountsForBudget = useAppStore((state) =>
+    state.accounts.filter((a) => a.budgetId === budgetId)
+  );
 
   return (
     <>
-      {getAccountsForBudget(budgetId).length === 0 ? (
+      {accountsForBudget.length === 0 ? (
         <div className="prose">
           <p>Add your first account</p>
         </div>
       ) : (
         <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
-          {getAccountsForBudget(budgetId).map((account) => (
+          {accountsForBudget.map((account) => (
             <li key={account.id}>
               <Link
                 className="flex justify-between"

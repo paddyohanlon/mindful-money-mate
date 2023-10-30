@@ -15,8 +15,10 @@ interface Props {
 }
 
 const AccountsList = ({ budgetId }: Props) => {
-  const { getTransactionsForBudget, getAccount, getPayee, getCategory } =
-    useAppStore();
+  const { getAccount, getPayee, getCategory } = useAppStore();
+  const getTransactionsForBudget = useAppStore((state) =>
+    state.transactions.filter((t) => t.budgetId === budgetId)
+  );
 
   function formatDate(timestamp: number): string {
     return new Date(timestamp).toDateString();
@@ -24,7 +26,7 @@ const AccountsList = ({ budgetId }: Props) => {
 
   return (
     <>
-      {getTransactionsForBudget(budgetId).length === 0 ? (
+      {getTransactionsForBudget.length === 0 ? (
         <div className="prose">
           <p>
             Add your first transaction (Make sure you add at least one account,
@@ -46,7 +48,7 @@ const AccountsList = ({ budgetId }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {getTransactionsForBudget(budgetId).map((transaction) => (
+            {getTransactionsForBudget.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{getAccount(transaction.accountId).name}</td>
                 <td>
@@ -78,7 +80,7 @@ const AccountsList = ({ budgetId }: Props) => {
                 </td>
                 <td>
                   <Link
-                    className="btn btn-xs btn-neutral"
+                    className="btn btn-xs btn-accent"
                     href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
                   >
                     View

@@ -27,7 +27,7 @@ export default function RootLayout({
         <OnLogin />
         <RedirectIfNotLoggedIn />
         <NavBar />
-        <main className="px-6 pb-6">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

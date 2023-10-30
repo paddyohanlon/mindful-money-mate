@@ -19,9 +19,7 @@ const SettingsPage = ({ params: { budgetId } }: Props) => {
   return (
     <>
       <ContainerSmall>
-        <div className="flex justify-between items-baseline gap-4">
-          <h2>Budget Settings</h2>
-        </div>
+        <h1>Budget Settings</h1>
         <SettingsDetail budgetId={budgetId} />
         <DeleteBudgetButton id={budgetId}>Delete Budget</DeleteBudgetButton>
       </ContainerSmall>

@@ -26,24 +26,20 @@ interface AppStore {
   setBudget: (budget: Budget) => void;
   deleteBudget: (id: string) => void;
   accounts: Account[];
-  getAccountsForBudget: (budgetId: string) => Account[];
   getAccount: (id: string) => Account;
   setAccount: (account: Account) => void;
   updateAccount: (account: Account) => void;
   deleteAccount: (id: string) => void;
   categories: Category[];
-  getCategoriesForBudget: (budgetId: string) => Category[];
   getCategory: (id: string) => Category;
   setCategory: (category: Category) => void;
   updateCategory: (category: Category) => void;
   deleteCategory: (id: string) => void;
   payees: Payee[];
-  getPayeesForBudget: (budgetId: string) => Payee[];
   getPayee: (id: string) => Payee;
   setPayee: (payee: Payee) => void;
   deletePayee: (id: string) => void;
   transactions: Transaction[];
-  getTransactionsForBudget: (budgetId: string) => Transaction[];
   getTransaction: (id: string) => Transaction;
   setTransaction: (transaction: Transaction) => void;
   deleteTransaction: (id: string) => void;
@@ -65,9 +61,6 @@ const useAppStore = create<AppStore>((set, get) => ({
   deleteBudget: (id: string) =>
     set((store) => ({ budgets: store.budgets.filter((b) => b.id !== id) })),
   accounts: [],
-  getAccountsForBudget: (budgetId: string) => {
-    return get().accounts.filter((a) => a.budgetId === budgetId);
-  },
   getAccount: (id: string) => {
     const account = get().accounts.find((a) => a.id === id);
     return account || createEmptyAccount();
@@ -83,9 +76,6 @@ const useAppStore = create<AppStore>((set, get) => ({
     set((store) => ({ accounts: store.accounts.filter((a) => a.id !== id) }));
   },
   categories: [],
-  getCategoriesForBudget: (budgetId: string) => {
-    return get().categories.filter((c) => c.budgetId === budgetId);
-  },
   getCategory: (id: string) => {
     const category = get().categories.find((c) => c.id === id);
     return category || createEmptyCategory();
@@ -106,9 +96,6 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
   },
   payees: [],
-  getPayeesForBudget: (budgetId: string) => {
-    return get().payees.filter((p) => p.budgetId === budgetId);
-  },
   getPayee: (id: string) => {
     const category = get().payees.find((p) => p.id === id);
     return category || createEmptyPayee();
@@ -122,9 +109,6 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
   },
   transactions: [],
-  getTransactionsForBudget: (budgetId: string) => {
-    return get().transactions.filter((p) => p.budgetId === budgetId);
-  },
   getTransaction: (id: string) => {
     const category = get().transactions.find((p) => p.id === id);
     return category || createEmptyTransaction();

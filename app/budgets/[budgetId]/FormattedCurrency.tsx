@@ -10,10 +10,11 @@ const FormattedCurrency = ({ budgetId, amount }: Props) => {
   const { getBudget } = useAppStore();
   return (
     <>
-      {amount.toLocaleString(LOCALE, {
-        style: "currency",
-        currency: getBudget(budgetId).currency,
-      })}
+      {amount &&
+        amount.toLocaleString(LOCALE, {
+          style: "currency",
+          currency: getBudget(budgetId).currency,
+        })}
     </>
   );
 };

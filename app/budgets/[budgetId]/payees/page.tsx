@@ -18,7 +18,7 @@ const PayeesPage = ({ params: { budgetId } }: Props) => {
     <>
       <ContainerSmall>
         <div className="flex justify-between items-baseline gap-4">
-          <h2>Payees</h2>
+          <h1>Payees</h1>
           <Link
             href={`${BUDGETS_PATH}/${budgetId}/payees/new`}
             className="btn btn-sm btn-neutral"

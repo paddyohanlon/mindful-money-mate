@@ -1,11 +1,10 @@
 "use client";
 
-import { ContainerSmall } from "@/app/components/ContainerSmall";
 import Link from "next/link";
 import { BUDGETS_PATH } from "@/app/constants";
 import dynamic from "next/dynamic";
 
-const CategoriesList = dynamic(() => import("./CategoriesList"), {
+const TheBudget = dynamic(() => import("../TheBudget"), {
   ssr: false,
 });
 
@@ -16,19 +15,17 @@ interface Props {
 const CategoriesPage = ({ params: { budgetId } }: Props) => {
   return (
     <>
-      <ContainerSmall>
-        <div className="flex justify-between items-baseline gap-4">
-          <h2>Categories</h2>
-          <Link
-            href={`${BUDGETS_PATH}/${budgetId}/categories/new`}
-            className="btn btn-sm btn-neutral"
-            title="New category"
-          >
-            New
-          </Link>
-        </div>
-        <CategoriesList budgetId={budgetId} />
-      </ContainerSmall>
+      <div className="flex justify-between items-baseline gap-4">
+        <h1 className="sr-only">Categories</h1>
+        <Link
+          href={`${BUDGETS_PATH}/${budgetId}/categories/new`}
+          className="btn btn-sm btn-neutral"
+          title="New category"
+        >
+          New
+        </Link>
+      </div>
+      <TheBudget budgetId={budgetId} />
     </>
   );
 };

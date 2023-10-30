@@ -8,6 +8,7 @@ import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
 import { BANK, BUDGETS_PATH, CASH } from "@/app/constants";
 import { useRouter } from "next/navigation";
+import Alert from "./Alert";
 
 interface Props {
   budgetId: string;
@@ -37,16 +38,26 @@ const NewAccountForm = ({ budgetId }: Props) => {
   });
 
   const [balanceStr, setBalanceStr] = useState("");
+  const [balanceError, setBalanceError] = useState("");
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    setBalanceError("");
 
     if (!unsavedAccount.name) {
       console.log("Missing form values. Do not submit");
       return;
     }
 
-    unsavedAccount.balance = parseFloat(balanceStr);
+    const balance = parseFloat(balanceStr);
+
+    if (Number.isNaN(balance)) {
+      setBalanceError("Balance must be a number!");
+      return;
+    }
+
+    unsavedAccount.balance;
 
     const id = await accountsCollection.insertOne(unsavedAccount);
 
@@ -84,6 +95,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
+        {balanceError && <Alert>{balanceError}</Alert>}
         <FormInput
           id={balanceInputId}
           value={balanceStr}

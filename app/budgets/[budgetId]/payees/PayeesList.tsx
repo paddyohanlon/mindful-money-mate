@@ -7,17 +7,19 @@ interface Props {
 }
 
 const PayeesList = ({ budgetId }: Props) => {
-  const { getPayeesForBudget } = useAppStore();
+  const getPayeesForBudget = useAppStore((state) =>
+    state.payees.filter((p) => p.budgetId === budgetId)
+  );
 
   return (
     <>
-      {getPayeesForBudget(budgetId).length === 0 ? (
+      {getPayeesForBudget.length === 0 ? (
         <div className="prose">
           <p>Add your first payee</p>
         </div>
       ) : (
         <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
-          {getPayeesForBudget(budgetId).map((payee) => (
+          {getPayeesForBudget.map((payee) => (
             <li key={payee.id}>
               <Link
                 className="flex justify-between"

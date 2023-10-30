@@ -15,7 +15,9 @@ interface Props {
 }
 
 const TheBudget = ({ budgetId }: Props) => {
-  const { getCategoriesForBudget } = useAppStore();
+  const categoriesForBudget = useAppStore((state) =>
+    state.categories.filter((c) => c.budgetId === budgetId)
+  );
 
   return (
     <>
@@ -29,7 +31,7 @@ const TheBudget = ({ budgetId }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {getCategoriesForBudget(budgetId).map((category) => (
+          {categoriesForBudget.map((category) => (
             <tr key={category.id}>
               <td>{category.name}</td>
               <td className="capitalize">{category.group}</td>
@@ -38,7 +40,7 @@ const TheBudget = ({ budgetId }: Props) => {
               </td>
               <td>
                 <Link
-                  className="btn btn-xs btn-neutral"
+                  className="btn btn-xs btn-accent"
                   href={`${BUDGETS_PATH}/${budgetId}/categories/${category.id}`}
                 >
                   View

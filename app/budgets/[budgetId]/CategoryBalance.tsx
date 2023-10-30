@@ -1,4 +1,4 @@
-import FormControl from "@/app/components/FormControl";
+import Alert from "@/app/components/Alert";
 import FormInput from "@/app/components/FormInput";
 import FormLabel from "@/app/components/FormLabel";
 import { EUR, USD } from "@/app/constants";
@@ -15,9 +15,10 @@ interface Props {
 const CategoryBalance = ({ budgetId, category }: Props) => {
   const balanceInputId = "category-balance";
 
-  const [unsavedBalance, setUnsavedBalance] = useState(
-    category.balance.toString()
+  const [unsavedBalanceStr, setUnsavedBalanceStr] = useState(
+    (category.balance && category.balance.toString()) || ""
   );
+  const [balanceError, setBalanceError] = useState("");
 
   const [currencySymbol, setCurrencySymbol] = useState("€");
 
@@ -38,9 +39,18 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
+    setBalanceError("");
+
+    const balance = parseFloat(unsavedBalanceStr);
+
+    if (Number.isNaN(balance)) {
+      setBalanceError("Balance must be a number!");
+      return;
+    }
+
     const updatedCategory = {
       ...category,
-      balance: parseFloat(unsavedBalance),
+      balance,
     };
     categoriesCollection.updateOne(category.id, updatedCategory);
     updateCategory(updatedCategory);
@@ -52,15 +62,18 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
         <FormLabel htmlFor={balanceInputId} className="sr-only">
           {category.name} Category Balance
         </FormLabel>
+        {balanceError && <Alert>{balanceError}</Alert>}
         <div className="relative">
           <div role="presentation" className="absolute top-0.5 left-4 text-lg">
             {currencySymbol}
           </div>
           <FormInput
             id={balanceInputId}
-            className="input-sm pl-8"
-            value={unsavedBalance}
-            onChange={(value) => setUnsavedBalance(value)}
+            className={`input-sm pl-8 ${
+              parseFloat(unsavedBalanceStr) < 0 && "text-red-500"
+            }`}
+            value={unsavedBalanceStr}
+            onChange={(value) => setUnsavedBalanceStr(value)}
           />
         </div>
 

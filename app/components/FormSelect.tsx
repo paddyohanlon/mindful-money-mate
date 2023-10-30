@@ -6,6 +6,7 @@ interface Props {
   value?: string;
   defaultLabel?: string;
   onChange?: (value: string) => void;
+  required?: boolean;
 }
 
 const FormSelect = ({
@@ -14,6 +15,7 @@ const FormSelect = ({
   value,
   defaultLabel = "Choose an option",
   onChange,
+  required = true,
 }: Props) => {
   return (
     <select
@@ -21,6 +23,7 @@ const FormSelect = ({
       className="select select-bordered"
       value={value}
       onChange={(event) => onChange && onChange(event.target.value)}
+      required={required}
     >
       <option value="" disabled>
         {defaultLabel}

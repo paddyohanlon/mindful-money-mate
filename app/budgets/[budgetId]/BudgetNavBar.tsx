@@ -28,9 +28,11 @@ const BudgetNavBar = ({ budgetId }: Props) => {
 
   const pathName = usePathname();
 
-  const accounts = useAppStore((state) => state.getAccountsForBudget(budgetId));
+  const accounts = useAppStore((state) =>
+    state.accounts.filter((a) => a.budgetId === budgetId)
+  );
   const categories = useAppStore((state) =>
-    state.getCategoriesForBudget(budgetId)
+    state.categories.filter((c) => c.budgetId === budgetId)
   );
 
   const [accountsBalance, setAccountsBalance] = useState(0);
@@ -94,26 +96,25 @@ const BudgetNavBar = ({ budgetId }: Props) => {
       </ul>
 
       <div className="stats shadow">
-        <div className="stat">
+        <div className="stat py-1">
           <div className="stat-title">Accounts Balance</div>
-          <div className="stat-value">
+          <div className="stat-value text-xl">
             {<FormattedCurrency budgetId={budgetId} amount={accountsBalance} />}
           </div>
         </div>
-        <div className="stat">
+        <div className="stat py-1">
           <div className="stat-title">Ready to Assign</div>
-          <div className={`stat-value ${readyToAssign < 0 && "text-red-500"}`}>
+          <div
+            className={`stat-value text-xl ${
+              readyToAssign < 0 && "text-red-500"
+            }`}
+          >
             {<FormattedCurrency budgetId={budgetId} amount={readyToAssign} />}
           </div>
         </div>
       </div>
 
       <ul className="menu menu-horizontal">
-        <li>
-          <Link href={accountsPath} className={active(accountsPath)}>
-            Accounts
-          </Link>
-        </li>
         <li>
           <Link href={categoriesPath} className={active(categoriesPath)}>
             Categories
@@ -122,6 +123,11 @@ const BudgetNavBar = ({ budgetId }: Props) => {
         <li>
           <Link href={payeesPath} className={active(payeesPath)}>
             Payees
+          </Link>
+        </li>
+        <li>
+          <Link href={accountsPath} className={active(accountsPath)}>
+            Accounts
           </Link>
         </li>
         <li>

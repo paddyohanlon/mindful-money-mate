@@ -13,6 +13,8 @@ import {
 } from "@/app/services/rethinkid";
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
+import { BUDGETS_PATH } from "@/app/constants";
+import Alert from "@/app/components/Alert";
 
 interface Props {
   budgetId: string;
@@ -41,10 +43,10 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   };
 
   const {
+    accounts,
+    categories,
+    payees,
     setTransaction,
-    getAccountsForBudget,
-    getCategoriesForBudget,
-    getPayeesForBudget,
     getCategory,
     updateCategory,
     getAccount,
@@ -60,52 +62,78 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   const [payeeOptions, setPayeeOptions] = useState<Option[]>([
     { value: "", label: "" },
   ]);
+  const [unsavedTransaction, setUnsavedTransaction] =
+    useState<UnsavedTransaction>(unsavedTransactionDefault);
+  const [amountStr, setAmountStr] = useState("");
+  const [isInflow, setIsInflow] = useState(false);
+  const [amountError, setAmountError] = useState("");
 
   useEffect(() => {
+    const accountsForBudget = accounts.filter((a) => a.budgetId === budgetId);
+    unsavedTransaction.accountId =
+      (accountsForBudget[0] && accountsForBudget[0].id) || "";
     setAccountOptions(
-      getAccountsForBudget(budgetId).map((a) => ({
+      accountsForBudget.map((a) => ({
         value: a.id,
         label: a.name,
       }))
     );
+    const categoriesForBudget = categories.filter(
+      (c) => c.budgetId === budgetId
+    );
+    unsavedTransaction.categoryId =
+      (categoriesForBudget[0] && categoriesForBudget[0].id) || "";
     setCategoryOptions(
-      getCategoriesForBudget(budgetId).map((a) => ({
+      categoriesForBudget.map((a) => ({
         value: a.id,
         label: a.name,
       }))
     );
+    const payeesForBudget = payees.filter((p) => p.budgetId === budgetId);
+    unsavedTransaction.payeeId =
+      (payeesForBudget[0] && payeesForBudget[0].id) || "";
     setPayeeOptions(
-      getPayeesForBudget(budgetId).map((a) => ({
+      payeesForBudget.map((a) => ({
         value: a.id,
         label: a.name,
       }))
     );
   }, [
     budgetId,
+    accounts,
+    categories,
+    payees,
+    unsavedTransaction,
     setAccountOptions,
-    getAccountsForBudget,
-    getCategoriesForBudget,
-    getPayeesForBudget,
   ]);
-
-  const [unsavedTransaction, setUnsavedTransaction] =
-    useState<UnsavedTransaction>(unsavedTransactionDefault);
-
-  const [amountStr, setAmountStr] = useState("");
-
-  const [isInflow, setIsInflow] = useState(false);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!amountStr) {
+    setAmountError("");
+
+    if (
+      !(
+        amountStr &&
+        unsavedTransaction.accountId &&
+        unsavedTransaction.categoryId &&
+        unsavedTransaction.payeeId
+      )
+    ) {
       console.log("Missing form values. Do not submit");
       return;
     }
 
     const multiplier = isInflow ? 1 : -1;
 
-    unsavedTransaction.amount = parseFloat(amountStr) * multiplier;
+    const amount = parseFloat(amountStr);
+
+    if (Number.isNaN(amount)) {
+      setAmountError("Amount must be a number!");
+      return;
+    }
+
+    unsavedTransaction.amount = amount * multiplier;
 
     const id = await transactionsCollection.insertOne(unsavedTransaction);
 
@@ -127,7 +155,7 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     setUnsavedTransaction(unsavedTransactionDefault);
     setAmountStr("");
 
-    // router.push(`${BUDGETS_PATH}/${budgetId}/transactions`);
+    router.push(`${BUDGETS_PATH}/${budgetId}/transactions`);
   }
 
   return (
@@ -146,6 +174,7 @@ const NewBudgetForm = ({ budgetId }: Props) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={amountInputId}>Amount</FormLabel>
+        {amountError && <Alert>{amountError}</Alert>}
         <FormInput
           id={amountInputId}
           value={amountStr}
