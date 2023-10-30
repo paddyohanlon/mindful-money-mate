@@ -168,7 +168,7 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     const account = getAccount(newTransaction.accountId);
     account.balance += newTransaction.amount;
     updateAccount(account);
-    accountsCollection.updateOne(category.id, category);
+    accountsCollection.updateOne(account.id, account);
 
     setUnsavedTransaction(unsavedTransactionDefault);
     setAmountStr("");
