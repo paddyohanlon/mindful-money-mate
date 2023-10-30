@@ -50,14 +50,17 @@ const NewAccountForm = ({ budgetId }: Props) => {
       return;
     }
 
+    console.log("balanceStr", balanceStr);
+
     const balance = parseFloat(balanceStr);
+    console.log("balance", balance);
 
     if (Number.isNaN(balance)) {
       setBalanceError("Balance must be a number!");
       return;
     }
 
-    unsavedAccount.balance;
+    unsavedAccount.balance = balance;
 
     const id = await accountsCollection.insertOne(unsavedAccount);
 

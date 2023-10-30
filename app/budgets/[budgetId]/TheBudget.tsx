@@ -25,7 +25,7 @@ const TheBudget = ({ budgetId }: Props) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Group</th>
+            {/* <th>Group</th> */}
             <th>Balance</th>
             <th>Actions</th>
           </tr>
@@ -34,7 +34,7 @@ const TheBudget = ({ budgetId }: Props) => {
           {categoriesForBudget.map((category) => (
             <tr key={category.id}>
               <td>{category.name}</td>
-              <td className="capitalize">{category.group}</td>
+              {/* <td className="capitalize">{category.group}</td> */}
               <td>
                 <CategoryBalance budgetId={budgetId} category={category} />
               </td>
