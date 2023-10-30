@@ -1,5 +1,9 @@
 import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import TransactionHead from "../TransactionHead";
+import Link from "next/link";
+import { BUDGETS_PATH } from "@/app/constants";
 
 const DeleteTransactionButton = dynamic(
   () => import("./DeleteTransactionButton"),
@@ -7,12 +11,9 @@ const DeleteTransactionButton = dynamic(
     ssr: false,
   }
 );
-const FormattedCurrency = dynamic(
-  () => import("@/app/budgets/[budgetId]/FormattedCurrency"),
-  {
-    ssr: false,
-  }
-);
+const TransactionRow = dynamic(() => import("../TransactionRow"), {
+  ssr: false,
+});
 
 interface Props {
   budgetId: string;
@@ -22,26 +23,35 @@ interface Props {
 const TransactionDetail = ({ budgetId, transactionId }: Props) => {
   const { getBudget, getTransaction } = useAppStore();
 
+  const [transaction, setTransaction] = useState(getTransaction(transactionId));
+
+  useEffect(() => {
+    setTransaction(getTransaction(transactionId));
+  }, [setTransaction, getTransaction, transactionId]);
+
   return (
     <>
-      <h1>Transaction</h1>
-      <p>
-        <FormattedCurrency
-          budgetId={budgetId}
-          amount={getTransaction(transactionId).amount}
-        />
-      </p>
-      <p>timestamp: {getTransaction(transactionId).date}</p>
-      <p>accountId: {getTransaction(transactionId).accountId}</p>
-      <p>categoryId: {getTransaction(transactionId).categoryId}</p>
-      <p>payeeId: {getTransaction(transactionId).payeeId}</p>
-      <p>{getTransaction(transactionId).memo}</p>
-      <DeleteTransactionButton
-        budgetId={budgetId}
-        transactionId={transactionId}
-      >
-        Delete Transaction
-      </DeleteTransactionButton>
+      <div className="prose">
+        <h1>Transaction</h1>
+      </div>
+      <table className="table">
+        <TransactionHead />
+        <tbody>
+          <TransactionRow
+            key={transaction.id}
+            budgetId={budgetId}
+            transaction={transaction}
+            actions={
+              <DeleteTransactionButton
+                budgetId={budgetId}
+                transaction={transaction}
+              >
+                Delete Transaction
+              </DeleteTransactionButton>
+            }
+          />
+        </tbody>
+      </table>
     </>
   );
 };

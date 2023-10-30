@@ -27,6 +27,7 @@ export function createEmptyCategory(): Category {
     name: "",
     group: FLEXIBLE,
     balance: 0,
+    notes: "",
   };
 }
 

@@ -23,6 +23,7 @@ const CategoryDetail = ({ budgetId, categoryId }: Props) => {
     <>
       <h1>{getCategory(categoryId).name}</h1>
       <p>{getCategory(categoryId).group}</p>
+      <p>{getCategory(categoryId).notes}</p>
       <p>
         <FormattedCurrency
           budgetId={budgetId}

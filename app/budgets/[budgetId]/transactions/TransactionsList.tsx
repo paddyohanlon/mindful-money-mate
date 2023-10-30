@@ -2,27 +2,20 @@ import { BUDGETS_PATH } from "@/app/constants";
 import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import TransactionHead from "./TransactionHead";
 
-const FormattedCurrency = dynamic(
-  () => import("@/app/budgets/[budgetId]/FormattedCurrency"),
-  {
-    ssr: false,
-  }
-);
+const TransactionRow = dynamic(() => import("./TransactionRow"), {
+  ssr: false,
+});
 
 interface Props {
   budgetId: string;
 }
 
 const AccountsList = ({ budgetId }: Props) => {
-  const { getAccount, getPayee, getCategory } = useAppStore();
   const getTransactionsForBudget = useAppStore((state) =>
     state.transactions.filter((t) => t.budgetId === budgetId)
   );
-
-  function formatDate(timestamp: number): string {
-    return new Date(timestamp).toDateString();
-  }
 
   return (
     <>
@@ -35,58 +28,22 @@ const AccountsList = ({ budgetId }: Props) => {
         </div>
       ) : (
         <table className="table">
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>Date</th>
-              <th>Payee</th>
-              <th>Category</th>
-              <th>Memo</th>
-              <th>Outflow</th>
-              <th>Inflow</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <TransactionHead />
           <tbody>
             {getTransactionsForBudget.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{getAccount(transaction.accountId).name}</td>
-                <td>
-                  <Link
-                    className="flex gap-4"
-                    href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
-                  >
-                    {formatDate(transaction.date)}
-                  </Link>
-                </td>
-                <td>{getPayee(transaction.payeeId).name}</td>
-                <td>{getCategory(transaction.categoryId).name}</td>
-                <td>{transaction.memo}</td>
-                <td>
-                  {transaction.amount < 0 && (
-                    <FormattedCurrency
-                      budgetId={budgetId}
-                      amount={transaction.amount * -1}
-                    />
-                  )}
-                </td>
-                <td>
-                  {transaction.amount > 0 && (
-                    <FormattedCurrency
-                      budgetId={budgetId}
-                      amount={transaction.amount}
-                    />
-                  )}
-                </td>
-                <td>
+              <TransactionRow
+                key={transaction.id}
+                budgetId={budgetId}
+                transaction={transaction}
+                actions={
                   <Link
                     className="btn btn-xs btn-accent"
                     href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
                   >
                     View
                   </Link>
-                </td>
-              </tr>
+                }
+              />
             ))}
           </tbody>
         </table>

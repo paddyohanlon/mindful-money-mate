@@ -21,8 +21,21 @@ export type Category = {
   // order: number;
   group: string; // See groups in @/app/constants.ts
   balance: number;
+  notes: string;
   // isPartOfDailySpend: boolean;
   // hidden: boolean;
+};
+
+// when updating category balance, create an assignment newBalance - currentBalance
+// display sum for category based on last to next pay days.
+export type CategoryAssignment = {
+  id: string;
+  categoryId: string;
+  /**
+   * Timestamp
+   */
+  date: number;
+  amount: number;
 };
 
 export type Payee = {
@@ -37,7 +50,10 @@ export type Transaction = {
   accountId: string;
   categoryId: string;
   payeeId: string;
-  date: number; // timestamp
+  /**
+   * Timestamp
+   */
+  date: number;
   amount: number;
   memo: string;
 };

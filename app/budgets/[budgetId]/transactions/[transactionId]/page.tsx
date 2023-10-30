@@ -15,9 +15,7 @@ const TransactionDetailPage = ({
   params: { budgetId, transactionId },
 }: Props) => {
   return (
-    <ContainerSmall>
-      <TransactionDetail budgetId={budgetId} transactionId={transactionId} />
-    </ContainerSmall>
+    <TransactionDetail budgetId={budgetId} transactionId={transactionId} />
   );
 };
 

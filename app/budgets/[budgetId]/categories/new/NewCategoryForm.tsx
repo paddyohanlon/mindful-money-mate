@@ -30,6 +30,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
   const nameInputId = "name";
   const groupInputId = "group";
   const balanceInputId = "balance";
+  const notesInputId = "notes";
 
   const groupOptions = [
     { value: FLEXIBLE, label: "Flexible" },
@@ -47,6 +48,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     name: "",
     group: FLEXIBLE,
     balance: 0,
+    notes: "",
   });
 
   const [balanceStr, setBalanceStr] = useState("");
@@ -112,6 +114,16 @@ const NewCategoryForm = ({ budgetId }: Props) => {
           id={balanceInputId}
           value={balanceStr}
           onChange={(value) => setBalanceStr(value)}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor={notesInputId}>Notes</FormLabel>
+        <FormInput
+          id={notesInputId}
+          value={unsavedCategory.notes}
+          onChange={(value) =>
+            setUnsavedCategory({ ...unsavedCategory, notes: value })
+          }
         />
       </FormControl>
       <button className="btn btn-primary" type="submit">
