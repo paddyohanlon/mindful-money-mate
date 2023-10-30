@@ -16,7 +16,7 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
   const balanceInputId = "category-balance";
 
   const [unsavedBalanceStr, setUnsavedBalanceStr] = useState(
-    (category.balance && category.balance.toString()) || ""
+    (category.balance && category.balance.toString()) || "0"
   );
   const [balanceError, setBalanceError] = useState("");
 
