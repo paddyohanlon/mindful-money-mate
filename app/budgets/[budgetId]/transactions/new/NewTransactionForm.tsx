@@ -68,30 +68,48 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   const [isInflow, setIsInflow] = useState(false);
   const [amountError, setAmountError] = useState("");
 
+  interface Selectable {
+    id: string;
+  }
+
   useEffect(() => {
+    function getDefault(id: string, [firstItem]: Selectable[]) {
+      if (id) return id;
+      if (firstItem) return firstItem.id;
+      return "";
+    }
+
     const accountsForBudget = accounts.filter((a) => a.budgetId === budgetId);
-    unsavedTransaction.accountId =
-      (accountsForBudget[0] && accountsForBudget[0].id) || "";
+    unsavedTransaction.accountId = getDefault(
+      unsavedTransaction.accountId,
+      accountsForBudget
+    );
     setAccountOptions(
       accountsForBudget.map((a) => ({
         value: a.id,
         label: a.name,
       }))
     );
+
     const categoriesForBudget = categories.filter(
       (c) => c.budgetId === budgetId
     );
-    unsavedTransaction.categoryId =
-      (categoriesForBudget[0] && categoriesForBudget[0].id) || "";
+    unsavedTransaction.categoryId = getDefault(
+      unsavedTransaction.categoryId,
+      categoriesForBudget
+    );
     setCategoryOptions(
       categoriesForBudget.map((a) => ({
         value: a.id,
         label: a.name,
       }))
     );
+
     const payeesForBudget = payees.filter((p) => p.budgetId === budgetId);
-    unsavedTransaction.payeeId =
-      (payeesForBudget[0] && payeesForBudget[0].id) || "";
+    unsavedTransaction.payeeId = getDefault(
+      unsavedTransaction.payeeId,
+      payeesForBudget
+    );
     setPayeeOptions(
       payeesForBudget.map((a) => ({
         value: a.id,
