@@ -3,7 +3,6 @@ interface Props {
   className?: string;
   value?: string;
   onChange?: (value: string) => void;
-  /** Do not implement type `number`. Awful with floats */
   type?: "text" | "password" | "email";
   required?: boolean;
 }

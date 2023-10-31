@@ -8,8 +8,7 @@ import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
 import { BANK, BUDGETS_PATH, CASH } from "@/app/constants";
 import { useRouter } from "next/navigation";
-import Alert from "../../../../components/Alert";
-import FormCurrencyInput from "@/app/components/FormCurrencyInput";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -38,29 +37,13 @@ const NewAccountForm = ({ budgetId }: Props) => {
     balance: 0,
   });
 
-  // In dev...
-  const [theBalance, setTheBalance] = useState(0);
-
-  const [balanceStr, setBalanceStr] = useState("");
-  const [balanceError, setBalanceError] = useState("");
+  const [balance, setBalance] = useState(0);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    setBalanceError("");
-
     if (!unsavedAccount.name) {
       console.log("Missing form values. Do not submit");
-      return;
-    }
-
-    console.log("balanceStr", balanceStr);
-
-    const balance = parseFloat(balanceStr);
-    console.log("balance", balance);
-
-    if (Number.isNaN(balance)) {
-      setBalanceError("Balance must be a number!");
       return;
     }
 
@@ -78,14 +61,6 @@ const NewAccountForm = ({ budgetId }: Props) => {
     router.push(`${BUDGETS_PATH}/${budgetId}/accounts`);
   }
 
-  function onChange(value: string) {
-    console.log("onChange fired");
-    setBalanceStr(value);
-  }
-  function onChangeAmount(value: number) {
-    console.log("onChangeAmount fired:", typeof value, value);
-    setTheBalance(value);
-  }
   return (
     <form onSubmit={handleSubmit}>
       <FormControl>
@@ -111,14 +86,11 @@ const NewAccountForm = ({ budgetId }: Props) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
-        {balanceError && <Alert>{balanceError}</Alert>}
-        <FormCurrencyInput
+        <FormInputCurrency
           budgetId={budgetId}
           inputId={balanceInputId}
-          onChange={onChangeAmount}
-          amount={theBalance}
+          onChange={(value) => setBalance(value)}
         />
-        <FormInput id={balanceInputId} value={balanceStr} onChange={onChange} />
       </FormControl>
       <button className="btn btn-primary" type="submit">
         Save

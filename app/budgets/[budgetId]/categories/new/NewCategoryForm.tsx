@@ -16,7 +16,7 @@ import {
   THIS_MONTH_ONLY,
 } from "@/app/constants";
 import { useRouter } from "next/navigation";
-import Alert from "@/app/components/Alert";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -51,23 +51,13 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     notes: "",
   });
 
-  const [balanceStr, setBalanceStr] = useState("");
-  const [balanceError, setBalanceError] = useState("");
+  const [balance, setBalance] = useState(0);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    setBalanceError("");
-
     if (!unsavedCategory.name) {
       console.log("Missing form values. Do not submit");
-      return;
-    }
-
-    const balance = parseFloat(balanceStr);
-
-    if (Number.isNaN(balance)) {
-      setBalanceError("Balance must be a number!");
       return;
     }
 
@@ -109,11 +99,10 @@ const NewCategoryForm = ({ budgetId }: Props) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
-        {balanceError && <Alert>{balanceError}</Alert>}
-        <FormInput
-          id={balanceInputId}
-          value={balanceStr}
-          onChange={(value) => setBalanceStr(value)}
+        <FormInputCurrency
+          budgetId={budgetId}
+          inputId={notesInputId}
+          onChange={(value) => setBalance(value)}
         />
       </FormControl>
       <FormControl>

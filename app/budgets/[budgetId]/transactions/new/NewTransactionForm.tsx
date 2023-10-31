@@ -14,7 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";
-import Alert from "@/app/components/Alert";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -64,9 +64,8 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   ]);
   const [unsavedTransaction, setUnsavedTransaction] =
     useState<UnsavedTransaction>(unsavedTransactionDefault);
-  const [amountStr, setAmountStr] = useState("");
+  const [amount, setAmount] = useState(0);
   const [isInflow, setIsInflow] = useState(false);
-  const [amountError, setAmountError] = useState("");
 
   interface Selectable {
     id: string;
@@ -128,11 +127,8 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    setAmountError("");
-
     if (
       !(
-        amountStr &&
         unsavedTransaction.accountId &&
         unsavedTransaction.categoryId &&
         unsavedTransaction.payeeId
@@ -143,13 +139,6 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     }
 
     const multiplier = isInflow ? 1 : -1;
-
-    const amount = parseFloat(amountStr);
-
-    if (Number.isNaN(amount)) {
-      setAmountError("Amount must be a number!");
-      return;
-    }
 
     unsavedTransaction.amount = amount * multiplier;
 
@@ -171,7 +160,6 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     accountsCollection.updateOne(account.id, account);
 
     setUnsavedTransaction(unsavedTransactionDefault);
-    setAmountStr("");
 
     router.push(`${BUDGETS_PATH}/${budgetId}/transactions`);
   }
@@ -192,11 +180,10 @@ const NewBudgetForm = ({ budgetId }: Props) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={amountInputId}>Amount</FormLabel>
-        {amountError && <Alert>{amountError}</Alert>}
-        <FormInput
-          id={amountInputId}
-          value={amountStr}
-          onChange={(value) => setAmountStr(value)}
+        <FormInputCurrency
+          budgetId={budgetId}
+          inputId={amountInputId}
+          onChange={(value) => setAmount(value)}
         />
       </FormControl>
       <FormControl>

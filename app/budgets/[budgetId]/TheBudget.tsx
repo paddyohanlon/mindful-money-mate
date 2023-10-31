@@ -39,7 +39,7 @@ const TheBudget = ({ budgetId }: Props) => {
               <td>
                 <CategoryBalance budgetId={budgetId} category={category} />
               </td>
-              <td>{category.name}</td>
+              <td>{category.notes}</td>
               <td>
                 <Link
                   className="btn btn-xs btn-accent"
