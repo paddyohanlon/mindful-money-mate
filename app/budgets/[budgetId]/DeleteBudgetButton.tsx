@@ -4,8 +4,8 @@ import {
   accountsCollection,
   budgetsCollection,
 } from "@/app/services/rethinkid";
-import useAppStore from "../store";
-import { BUDGETS_PATH } from "../constants";
+import useAppStore from "../../store";
+import { BUDGETS_PATH } from "../../constants";
 
 interface Props {
   children: ReactNode;

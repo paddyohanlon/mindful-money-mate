@@ -7,7 +7,7 @@ const SettingsDetail = dynamic(() => import("./SettingsDetail"), {
   ssr: false,
 });
 const DeleteBudgetButton = dynamic(
-  () => import("@/app/components/DeleteBudgetButton"),
+  () => import("@/app/budgets/[budgetId]/DeleteBudgetButton"),
   { ssr: false }
 );
 

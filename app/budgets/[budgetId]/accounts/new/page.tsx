@@ -3,10 +3,9 @@
 import { ContainerSmall } from "@/app/components/ContainerSmall";
 import dynamic from "next/dist/shared/lib/dynamic";
 
-const NewAccountForm = dynamic(
-  () => import("@/app/components/NewAccountForm"),
-  { ssr: false }
-);
+const NewAccountForm = dynamic(() => import("./NewAccountForm"), {
+  ssr: false,
+});
 
 interface Props {
   params: { budgetId: string };

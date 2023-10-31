@@ -8,7 +8,8 @@ import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
 import { BANK, BUDGETS_PATH, CASH } from "@/app/constants";
 import { useRouter } from "next/navigation";
-import Alert from "./Alert";
+import Alert from "../../../../components/Alert";
+import FormCurrencyInput from "@/app/components/FormCurrencyInput";
 
 interface Props {
   budgetId: string;
@@ -36,6 +37,9 @@ const NewAccountForm = ({ budgetId }: Props) => {
     type: BANK,
     balance: 0,
   });
+
+  // In dev...
+  const [theBalance, setTheBalance] = useState(0);
 
   const [balanceStr, setBalanceStr] = useState("");
   const [balanceError, setBalanceError] = useState("");
@@ -73,6 +77,15 @@ const NewAccountForm = ({ budgetId }: Props) => {
 
     router.push(`${BUDGETS_PATH}/${budgetId}/accounts`);
   }
+
+  function onChange(value: string) {
+    console.log("onChange fired");
+    setBalanceStr(value);
+  }
+  function onChangeAmount(value: number) {
+    console.log("onChangeAmount fired:", typeof value, value);
+    setTheBalance(value);
+  }
   return (
     <form onSubmit={handleSubmit}>
       <FormControl>
@@ -99,11 +112,13 @@ const NewAccountForm = ({ budgetId }: Props) => {
       <FormControl>
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
         {balanceError && <Alert>{balanceError}</Alert>}
-        <FormInput
-          id={balanceInputId}
-          value={balanceStr}
-          onChange={(value) => setBalanceStr(value)}
+        <FormCurrencyInput
+          budgetId={budgetId}
+          inputId={balanceInputId}
+          onChange={onChangeAmount}
+          amount={theBalance}
         />
+        <FormInput id={balanceInputId} value={balanceStr} onChange={onChange} />
       </FormControl>
       <button className="btn btn-primary" type="submit">
         Save
