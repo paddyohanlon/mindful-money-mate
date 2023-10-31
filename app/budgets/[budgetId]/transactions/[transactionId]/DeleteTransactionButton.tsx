@@ -34,13 +34,14 @@ const DeleteTransactionButton = ({
     if (!window.confirm("You sure?")) return;
 
     const category = getCategory(transaction.categoryId);
-    console.log(category);
     category.balance -= transaction.amount;
+    category.balance = Number(category.balance.toFixed(2));
     updateCategory(category);
     categoriesCollection.updateOne(category.id, category);
 
     const account = getAccount(transaction.accountId);
     account.balance -= transaction.amount;
+    account.balance = Number(account.balance.toFixed(2));
     updateAccount(account);
     accountsCollection.updateOne(account.id, account);
 

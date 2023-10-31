@@ -2,6 +2,7 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
 import { Category } from "@/app/types";
 import { categoriesCollection } from "@/app/services/rethinkid";
@@ -16,7 +17,6 @@ import {
   THIS_MONTH_ONLY,
 } from "@/app/constants";
 import { useRouter } from "next/navigation";
-import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -51,8 +51,6 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     notes: "",
   });
 
-  const [balance, setBalance] = useState(0);
-
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
@@ -60,8 +58,6 @@ const NewCategoryForm = ({ budgetId }: Props) => {
       console.log("Missing form values. Do not submit");
       return;
     }
-
-    unsavedCategory.balance = balance;
 
     const id = await categoriesCollection.insertOne(unsavedCategory);
 
@@ -102,7 +98,10 @@ const NewCategoryForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={notesInputId}
-          onChange={(value) => setBalance(value)}
+          initialAmount={unsavedCategory.balance}
+          onChange={(value) =>
+            setUnsavedCategory({ ...unsavedCategory, balance: value })
+          }
         />
       </FormControl>
       <FormControl>

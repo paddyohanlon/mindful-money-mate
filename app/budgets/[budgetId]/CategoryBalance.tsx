@@ -1,4 +1,3 @@
-import FormInput from "@/app/components/FormInput";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import FormLabel from "@/app/components/FormLabel";
 import { categoriesCollection } from "@/app/services/rethinkid";

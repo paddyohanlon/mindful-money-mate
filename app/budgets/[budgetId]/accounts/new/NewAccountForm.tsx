@@ -37,8 +37,6 @@ const NewAccountForm = ({ budgetId }: Props) => {
     balance: 0,
   });
 
-  const [balance, setBalance] = useState(0);
-
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
@@ -46,8 +44,6 @@ const NewAccountForm = ({ budgetId }: Props) => {
       console.log("Missing form values. Do not submit");
       return;
     }
-
-    unsavedAccount.balance = balance;
 
     const id = await accountsCollection.insertOne(unsavedAccount);
 
@@ -89,7 +85,10 @@ const NewAccountForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={balanceInputId}
-          onChange={(value) => setBalance(value)}
+          initialAmount={unsavedAccount.balance}
+          onChange={(value) =>
+            setUnsavedAccount({ ...unsavedAccount, balance: value })
+          }
         />
       </FormControl>
       <button className="btn btn-primary" type="submit">

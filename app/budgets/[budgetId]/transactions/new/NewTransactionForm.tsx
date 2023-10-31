@@ -5,6 +5,7 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { Transaction, Option } from "@/app/types";
 import {
   accountsCollection,
@@ -14,7 +15,6 @@ import {
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";
-import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -64,7 +64,6 @@ const NewBudgetForm = ({ budgetId }: Props) => {
   ]);
   const [unsavedTransaction, setUnsavedTransaction] =
     useState<UnsavedTransaction>(unsavedTransactionDefault);
-  const [amount, setAmount] = useState(0);
   const [isInflow, setIsInflow] = useState(false);
 
   interface Selectable {
@@ -140,7 +139,7 @@ const NewBudgetForm = ({ budgetId }: Props) => {
 
     const multiplier = isInflow ? 1 : -1;
 
-    unsavedTransaction.amount = amount * multiplier;
+    unsavedTransaction.amount = unsavedTransaction.amount * multiplier;
 
     const id = await transactionsCollection.insertOne(unsavedTransaction);
 
@@ -183,7 +182,10 @@ const NewBudgetForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={amountInputId}
-          onChange={(value) => setAmount(value)}
+          initialAmount={unsavedTransactionDefault.amount}
+          onChange={(value) =>
+            setUnsavedTransaction({ ...unsavedTransaction, amount: value })
+          }
         />
       </FormControl>
       <FormControl>
