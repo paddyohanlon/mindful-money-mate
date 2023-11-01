@@ -54,12 +54,11 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="w-32">
         <FormLabel htmlFor={balanceInputId} className="sr-only">
           {category.name} Category Balance
         </FormLabel>
         <FormInputCurrency
-          className="w-32"
           budgetId={budgetId}
           inputId={balanceInputId}
           initialAmount={balance}
