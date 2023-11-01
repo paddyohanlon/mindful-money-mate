@@ -24,19 +24,24 @@ export type Category = {
   notes: string;
   // isPartOfDailySpend: boolean;
   // hidden: boolean;
+  // targetMonthly
+  // targetTotal
 };
 
 // when updating category balance, create an assignment newBalance - currentBalance
 // display sum for category based on last to next pay days.
-export type CategoryAssignment = {
+export type Assignment = {
   id: string;
   categoryId: string;
+  budgetId: string;
   /**
    * Timestamp
    */
   date: number;
   amount: number;
 };
+
+export type UnsavedAssignment = Omit<Assignment, "id">;
 
 export type Payee = {
   id: string;

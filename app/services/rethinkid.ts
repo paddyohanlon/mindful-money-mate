@@ -24,5 +24,6 @@ export const rid = new RethinkID(options);
 export const budgetsCollection = rid.collection("budgets");
 export const accountsCollection = rid.collection("accounts");
 export const categoriesCollection = rid.collection("categories");
+export const assignmentsCollection = rid.collection("assignments");
 export const payeesCollection = rid.collection("payees");
 export const transactionsCollection = rid.collection("transactions");

@@ -1,7 +1,14 @@
 "use client";
 
 import { create } from "zustand";
-import { Account, Budget, Category, Payee, Transaction } from "./types";
+import {
+  Account,
+  Assignment,
+  Budget,
+  Category,
+  Payee,
+  Transaction,
+} from "./types";
 import {
   rid,
   budgetsCollection,
@@ -9,6 +16,7 @@ import {
   categoriesCollection,
   payeesCollection,
   transactionsCollection,
+  assignmentsCollection,
 } from "./services/rethinkid";
 import {
   createEmptyAccount,
@@ -35,6 +43,8 @@ interface AppStore {
   setCategory: (category: Category) => void;
   updateCategory: (category: Category) => void;
   deleteCategory: (id: string) => void;
+  assignments: Assignment[];
+  setAssignment: (assignment: Assignment) => void;
   payees: Payee[];
   getPayee: (id: string) => Payee;
   setPayee: (payee: Payee) => void;
@@ -74,6 +84,10 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   deleteAccount: (id: string) => {
     set((store) => ({ accounts: store.accounts.filter((a) => a.id !== id) }));
+  },
+  assignments: [],
+  setAssignment: (assignment: Assignment) => {
+    set((store) => ({ assignments: [...store.assignments, assignment] }));
   },
   categories: [],
   getCategory: (id: string) => {
@@ -129,13 +143,29 @@ const useAppStore = create<AppStore>((set, get) => ({
     const budgets = await budgetsCollection.getAll();
     const accounts = await accountsCollection.getAll();
     const categories = await categoriesCollection.getAll();
+    const assignments = await assignmentsCollection.getAll(
+      {},
+      {
+        orderBy: {
+          date: "desc",
+        },
+      }
+    );
     const payees = await payeesCollection.getAll();
-    const transactions = await transactionsCollection.getAll();
+    const transactions = await transactionsCollection.getAll(
+      {},
+      {
+        orderBy: {
+          date: "desc",
+        },
+      }
+    );
 
     // console.log("- isLoggedIn", isLoggedIn);
     // console.log("- budgets", budgets);
     // console.log("- accounts", accounts);
     // console.log("- categories", categories);
+    // console.log("- assignments", assignments);
     // console.log("- payees", payees);
     // console.log("- transactions", transactions);
 
@@ -144,6 +174,7 @@ const useAppStore = create<AppStore>((set, get) => ({
       budgets,
       accounts,
       categories,
+      assignments,
       payees,
       transactions,
     }));

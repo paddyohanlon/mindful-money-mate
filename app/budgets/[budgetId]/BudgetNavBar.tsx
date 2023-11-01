@@ -13,6 +13,12 @@ const FormattedCurrency = dynamic(
     ssr: false,
   }
 );
+const MonthStartEnd = dynamic(
+  () => import("@/app/budgets/[budgetId]/MonthStartEnd"),
+  {
+    ssr: false,
+  }
+);
 
 interface Props {
   budgetId: string;
@@ -22,6 +28,7 @@ const BudgetNavBar = ({ budgetId }: Props) => {
   const budgetsPath = `${BUDGETS_PATH}/${budgetId}`;
   const transactionsPath = `${BUDGETS_PATH}/${budgetId}/transactions`;
   const categoriesPath = `${BUDGETS_PATH}/${budgetId}/categories`;
+  const assignmentsPath = `${BUDGETS_PATH}/${budgetId}/assignments`;
   const payeesPath = `${BUDGETS_PATH}/${budgetId}/payees`;
   const accountsPath = `${BUDGETS_PATH}/${budgetId}/accounts`;
   const settingsPath = `${BUDGETS_PATH}/${budgetId}/settings`;
@@ -68,7 +75,7 @@ const BudgetNavBar = ({ budgetId }: Props) => {
   ]);
 
   function active(path: string): string {
-    return `${pathName === path && "active"}`;
+    return `${pathName.includes(path) && "active"}`;
   }
 
   return (
@@ -112,12 +119,23 @@ const BudgetNavBar = ({ budgetId }: Props) => {
             {<FormattedCurrency budgetId={budgetId} amount={readyToAssign} />}
           </div>
         </div>
+        <div className="stat py-1">
+          <div className="stat-title">Month</div>
+          <div className="stat-value text-xl">
+            <MonthStartEnd budgetId={budgetId} />
+          </div>
+        </div>
       </div>
 
       <ul className="menu menu-horizontal">
         <li>
           <Link href={categoriesPath} className={active(categoriesPath)}>
             Categories
+          </Link>
+        </li>
+        <li>
+          <Link href={assignmentsPath} className={active(assignmentsPath)}>
+            Assignments
           </Link>
         </li>
         <li>

@@ -15,7 +15,7 @@ const PageClientContent = () => {
   }, [router, isLoggedIn]);
 
   return (
-    <div className="prose">
+    <div className="prose px-6 py-6">
       {!isLoggedIn ? <p>Sign up or sign in to get started.</p> : <div></div>}
     </div>
   );

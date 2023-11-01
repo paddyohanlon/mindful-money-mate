@@ -21,9 +21,10 @@ const AccountsList = ({ budgetId }: Props) => {
     <>
       {getTransactionsForBudget.length === 0 ? (
         <div className="prose">
+          <p>Add your first transaction.</p>
           <p>
-            Add your first transaction (Make sure you add at least one account,
-            category, and payee before adding you first transaction)
+            Make sure you add at least one account, category, and payee before
+            adding you first transaction.
           </p>
         </div>
       ) : (

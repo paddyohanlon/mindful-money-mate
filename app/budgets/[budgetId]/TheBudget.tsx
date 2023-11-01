@@ -9,6 +9,18 @@ const CategoryBalance = dynamic(
     ssr: false,
   }
 );
+const CategoryAssigned = dynamic(
+  () => import("@/app/budgets/[budgetId]/CategoryAssigned"),
+  {
+    ssr: false,
+  }
+);
+const CategorySpent = dynamic(
+  () => import("@/app/budgets/[budgetId]/CategorySpent"),
+  {
+    ssr: false,
+  }
+);
 
 interface Props {
   budgetId: string;
@@ -27,6 +39,8 @@ const TheBudget = ({ budgetId }: Props) => {
             <th>Name</th>
             <th>Group</th>
             <th>Balance</th>
+            <th>Assigned</th>
+            <th>Spent</th>
             <th>Notes</th>
             <th>Actions</th>
           </tr>
@@ -38,6 +52,15 @@ const TheBudget = ({ budgetId }: Props) => {
               <td className="capitalize">{category.group}</td>
               <td>
                 <CategoryBalance budgetId={budgetId} category={category} />
+              </td>
+              <td>
+                <CategoryAssigned
+                  budgetId={budgetId}
+                  categoryId={category.id}
+                />
+              </td>
+              <td>
+                <CategorySpent budgetId={budgetId} categoryId={category.id} />
               </td>
               <td>{category.notes}</td>
               <td>

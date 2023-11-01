@@ -1,3 +1,4 @@
+import FormattedDate from "@/app/components/FormattedDate";
 import { BUDGETS_PATH } from "@/app/constants";
 import useAppStore from "@/app/store";
 import { Transaction } from "@/app/types";
@@ -21,14 +22,6 @@ interface Props {
 const TransactionRow = ({ budgetId, transaction, actions }: Props) => {
   const { getAccount, getPayee, getCategory } = useAppStore();
 
-  useEffect(() => {
-    console.log("transaction", transaction);
-  }, [transaction]);
-
-  function formatDate(timestamp: number): string {
-    return new Date(timestamp).toDateString();
-  }
-
   return (
     <tr>
       <td>{getAccount(transaction.accountId).name}</td>
@@ -37,7 +30,7 @@ const TransactionRow = ({ budgetId, transaction, actions }: Props) => {
           className="flex gap-4"
           href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
         >
-          {formatDate(transaction.date)}
+          {<FormattedDate timestamp={transaction.date} />}
         </Link>
       </td>
       <td>{getPayee(transaction.payeeId).name}</td>

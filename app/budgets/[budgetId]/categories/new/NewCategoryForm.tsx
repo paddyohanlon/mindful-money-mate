@@ -4,8 +4,11 @@ import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
-import { Category } from "@/app/types";
-import { categoriesCollection } from "@/app/services/rethinkid";
+import { Assignment, Category, UnsavedAssignment } from "@/app/types";
+import {
+  assignmentsCollection,
+  categoriesCollection,
+} from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
 import {
   BUDGETS_PATH,
@@ -41,7 +44,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     { value: CREDIT_CARD_PAYMENTS, label: "Credit Card Payments" },
   ];
 
-  const { setCategory } = useAppStore();
+  const { setCategory, setAssignment } = useAppStore();
 
   const [unsavedCategory, setUnsavedCategory] = useState<UnsavedCategory>({
     budgetId,
@@ -67,6 +70,25 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     };
 
     setCategory(newCategory);
+
+    // Set Assignment
+    const unsavedAssignment: UnsavedAssignment = {
+      budgetId,
+      categoryId: newCategory.id,
+      date: Date.now(),
+      amount: newCategory.balance,
+    };
+
+    const assignmentId = await assignmentsCollection.insertOne(
+      unsavedAssignment
+    );
+
+    const newAssignment: Assignment = {
+      id: assignmentId,
+      ...unsavedAssignment,
+    };
+
+    setAssignment(newAssignment);
 
     router.push(`${BUDGETS_PATH}/${budgetId}/categories`);
   }
@@ -112,6 +134,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
           onChange={(value) =>
             setUnsavedCategory({ ...unsavedCategory, notes: value })
           }
+          required={false}
         />
       </FormControl>
       <button className="btn btn-primary" type="submit">

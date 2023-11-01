@@ -6,13 +6,21 @@ const BudgetsList = () => {
   const { budgets } = useAppStore();
 
   return (
-    <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
-      {budgets.map((budget) => (
-        <li key={budget.id}>
-          <Link href={`${BUDGETS_PATH}/${budget.id}`}>{budget.name}</Link>
-        </li>
-      ))}
-    </ul>
+    <>
+      {!budgets.length ? (
+        <div className="prose">
+          <p>Add your first budget.</p>
+        </div>
+      ) : (
+        <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
+          {budgets.map((budget) => (
+            <li key={budget.id}>
+              <Link href={`${BUDGETS_PATH}/${budget.id}`}>{budget.name}</Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 

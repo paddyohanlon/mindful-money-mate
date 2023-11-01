@@ -20,9 +20,8 @@ const CategoriesPage = ({ params: { budgetId } }: Props) => {
         <Link
           href={`${BUDGETS_PATH}/${budgetId}/categories/new`}
           className="btn btn-sm btn-neutral"
-          title="New category"
         >
-          New
+          New Category
         </Link>
       </div>
       <TheBudget budgetId={budgetId} />

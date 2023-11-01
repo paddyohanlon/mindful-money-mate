@@ -1,8 +1,11 @@
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import FormLabel from "@/app/components/FormLabel";
-import { categoriesCollection } from "@/app/services/rethinkid";
+import {
+  assignmentsCollection,
+  categoriesCollection,
+} from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import { Category } from "@/app/types";
+import { Assignment, Category, UnsavedAssignment } from "@/app/types";
 import { FormEvent, useState } from "react";
 
 interface Props {
@@ -13,11 +16,13 @@ interface Props {
 const CategoryBalance = ({ budgetId, category }: Props) => {
   const balanceInputId = "category-balance";
 
+  const previousBalance = category.balance;
+
   const [balance, setBalance] = useState(category.balance);
 
-  const { updateCategory } = useAppStore();
+  const { updateCategory, setAssignment } = useAppStore();
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     const updatedCategory = {
@@ -26,6 +31,25 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
     };
     categoriesCollection.updateOne(category.id, updatedCategory);
     updateCategory(updatedCategory);
+
+    // Set assignment
+    const unsavedAssignment: UnsavedAssignment = {
+      budgetId,
+      categoryId: category.id,
+      date: Date.now(),
+      amount: Number((updatedCategory.balance - previousBalance).toFixed(2)),
+    };
+
+    const assignmentId = await assignmentsCollection.insertOne(
+      unsavedAssignment
+    );
+
+    const newAssignment: Assignment = {
+      id: assignmentId,
+      ...unsavedAssignment,
+    };
+
+    setAssignment(newAssignment);
   }
 
   return (

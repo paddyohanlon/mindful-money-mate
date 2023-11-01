@@ -15,7 +15,7 @@ const PayeesList = ({ budgetId }: Props) => {
     <>
       {getPayeesForBudget.length === 0 ? (
         <div className="prose">
-          <p>Add your first payee</p>
+          <p>Add your first payee.</p>
         </div>
       ) : (
         <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">

@@ -23,7 +23,7 @@ const AccountsList = ({ budgetId }: Props) => {
     <>
       {accountsForBudget.length === 0 ? (
         <div className="prose">
-          <p>Add your first account</p>
+          <p>Add your first account.</p>
         </div>
       ) : (
         <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
