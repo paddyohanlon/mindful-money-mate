@@ -34,24 +34,26 @@ const TransactionDetail = ({ budgetId, transactionId }: Props) => {
       <div className="prose">
         <h1>Transaction</h1>
       </div>
-      <table className="table">
-        <TransactionHead />
-        <tbody>
-          <TransactionRow
-            key={transaction.id}
-            budgetId={budgetId}
-            transaction={transaction}
-            actions={
-              <DeleteTransactionButton
-                budgetId={budgetId}
-                transaction={transaction}
-              >
-                Delete Transaction
-              </DeleteTransactionButton>
-            }
-          />
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table">
+          <TransactionHead />
+          <tbody>
+            <TransactionRow
+              key={transaction.id}
+              budgetId={budgetId}
+              transaction={transaction}
+              actions={
+                <DeleteTransactionButton
+                  budgetId={budgetId}
+                  transaction={transaction}
+                >
+                  Delete Transaction
+                </DeleteTransactionButton>
+              }
+            />
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

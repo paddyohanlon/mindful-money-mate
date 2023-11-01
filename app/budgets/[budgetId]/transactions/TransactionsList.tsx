@@ -28,26 +28,28 @@ const AccountsList = ({ budgetId }: Props) => {
           </p>
         </div>
       ) : (
-        <table className="table">
-          <TransactionHead />
-          <tbody>
-            {getTransactionsForBudget.map((transaction) => (
-              <TransactionRow
-                key={transaction.id}
-                budgetId={budgetId}
-                transaction={transaction}
-                actions={
-                  <Link
-                    className="btn btn-xs btn-accent"
-                    href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
-                  >
-                    View
-                  </Link>
-                }
-              />
-            ))}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="table">
+            <TransactionHead />
+            <tbody>
+              {getTransactionsForBudget.map((transaction) => (
+                <TransactionRow
+                  key={transaction.id}
+                  budgetId={budgetId}
+                  transaction={transaction}
+                  actions={
+                    <Link
+                      className="btn btn-xs btn-accent"
+                      href={`${BUDGETS_PATH}/${budgetId}/transactions/${transaction.id}`}
+                    >
+                      View
+                    </Link>
+                  }
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );

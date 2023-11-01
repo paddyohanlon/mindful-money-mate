@@ -145,7 +145,10 @@ const useAppStore = create<AppStore>((set, get) => ({
 
     const budgets = await budgetsCollection.getAll();
     const accounts = await accountsCollection.getAll();
-    const categories = await categoriesCollection.getAll();
+    const categories = await categoriesCollection.getAll(
+      {},
+      { orderBy: { name: "asc" } }
+    );
     const assignments = await assignmentsCollection.getAll(
       {},
       {
@@ -167,7 +170,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     // console.log("- isLoggedIn", isLoggedIn);
     // console.log("- budgets", budgets);
     // console.log("- accounts", accounts);
-    // console.log("- categories", categories);
+    console.log("- categories", categories);
     // console.log("- assignments", assignments);
     // console.log("- payees", payees);
     // console.log("- transactions", transactions);

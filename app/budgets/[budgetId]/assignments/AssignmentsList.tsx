@@ -30,31 +30,33 @@ const AssignmentsList = ({ budgetId }: Props) => {
           </p>
         </div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getAssignmentsForBudget.map((assignment) => (
-              <tr key={assignment.id}>
-                <td>
-                  <FormattedDate timestamp={assignment.date} />
-                </td>
-                <td>{getCategory(assignment.categoryId).name}</td>
-                <td>
-                  <FormattedCurrency
-                    budgetId={budgetId}
-                    amount={assignment.amount}
-                  />
-                </td>
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {getAssignmentsForBudget.map((assignment) => (
+                <tr key={assignment.id}>
+                  <td>
+                    <FormattedDate timestamp={assignment.date} />
+                  </td>
+                  <td>{getCategory(assignment.categoryId).name}</td>
+                  <td>
+                    <FormattedCurrency
+                      budgetId={budgetId}
+                      amount={assignment.amount}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );

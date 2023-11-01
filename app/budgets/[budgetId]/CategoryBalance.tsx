@@ -59,6 +59,7 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
           {category.name} Category Balance
         </FormLabel>
         <FormInputCurrency
+          className="w-32"
           budgetId={budgetId}
           inputId={balanceInputId}
           initialAmount={balance}
