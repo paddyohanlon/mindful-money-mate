@@ -14,7 +14,7 @@ const BudgetLayout = ({ children, params: { budgetId } }: Props) => {
   return (
     <>
       <BudgetNavBar budgetId={budgetId} />
-      <div className="px-6 pb-6">{children}</div>
+      <div className="px-4 pb-4">{children}</div>
     </>
   );
 };

@@ -89,7 +89,6 @@ const FormInputCurrency = ({
           onChange={onChangeAmount}
           type="number"
           required={true}
-          min="0.01"
           max="100000"
           step="0.01"
         />

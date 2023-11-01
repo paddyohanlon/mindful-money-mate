@@ -79,7 +79,7 @@ const BudgetNavBar = ({ budgetId }: Props) => {
   }
 
   return (
-    <div className="flex justify-between gap-6">
+    <div className="flex justify-between gap-6 px-2">
       <ul className="menu menu-horizontal">
         <li>
           <Link href={budgetsPath} className={active(budgetsPath)}>
