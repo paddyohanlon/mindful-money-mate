@@ -15,6 +15,9 @@ const RedirectIfNotLoggedIn = dynamic(
 const NavBar = dynamic(() => import("@/app/components/NavBar"), {
   ssr: false,
 });
+const Loader = dynamic(() => import("@/app/components/Loader"), {
+  ssr: false,
+});
 
 export default function RootLayout({
   children,
@@ -27,7 +30,10 @@ export default function RootLayout({
         <OnLogin />
         <RedirectIfNotLoggedIn />
         <NavBar />
-        <main>{children}</main>
+
+        <Loader>
+          <main>{children}</main>
+        </Loader>
       </body>
     </html>
   );

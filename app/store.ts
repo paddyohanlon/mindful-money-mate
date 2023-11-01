@@ -27,6 +27,7 @@ import {
 } from "./factories";
 
 interface AppStore {
+  isLoading: boolean;
   isLoggedIn: boolean;
   setIsLoggedIn: (status: boolean) => void;
   budgets: Budget[];
@@ -54,9 +55,11 @@ interface AppStore {
   setTransaction: (transaction: Transaction) => void;
   deleteTransaction: (id: string) => void;
   load: () => void;
+  startFresh: () => void;
 }
 
 const useAppStore = create<AppStore>((set, get) => ({
+  isLoading: true,
   isLoggedIn: false,
   setIsLoggedIn: (status: boolean) => {
     set(() => ({ isLoggedIn: status }));
@@ -177,7 +180,27 @@ const useAppStore = create<AppStore>((set, get) => ({
       assignments,
       payees,
       transactions,
+      isLoading: false,
     }));
+  },
+  startFresh: async () => {
+    await budgetsCollection.deleteAll();
+    await accountsCollection.deleteAll();
+    await categoriesCollection.deleteAll();
+    await assignmentsCollection.deleteAll();
+    await payeesCollection.deleteAll();
+    await transactionsCollection.deleteAll();
+
+    set(() => ({
+      budgets: [],
+      accounts: [],
+      categories: [],
+      assignments: [],
+      payees: [],
+      transactions: [],
+    }));
+
+    rid.logOut();
   },
 }));
 
