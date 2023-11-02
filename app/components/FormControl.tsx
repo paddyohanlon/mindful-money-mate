@@ -5,7 +5,7 @@ interface Props {
 }
 
 const FormControl = ({ children }: Props) => {
-  return <div className="form-control w-full max-w-xs pb-4">{children}</div>;
+  return <div className="form-control w-full pb-4">{children}</div>;
 };
 
 export default FormControl;

@@ -2,13 +2,18 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
+import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
 import { Account } from "@/app/types";
 import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import { BANK, BUDGETS_PATH, CASH } from "@/app/constants";
+import {
+  ACCOUNT_TYPE_OPTIONS,
+  BANK,
+  BUDGETS_PATH,
+  CASH,
+} from "@/app/constants";
 import { useRouter } from "next/navigation";
-import FormInputCurrency from "@/app/components/FormInputCurrency";
 
 interface Props {
   budgetId: string;
@@ -22,11 +27,6 @@ const NewAccountForm = ({ budgetId }: Props) => {
   const nameInputId = "name";
   const typeInputId = "type";
   const balanceInputId = "balance";
-
-  const typeOptions = [
-    { value: BANK, label: "Bank" },
-    { value: CASH, label: "Cash" },
-  ];
 
   const { setAccount } = useAppStore();
 
@@ -73,7 +73,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
         <FormLabel htmlFor={typeInputId}>Type</FormLabel>
         <FormSelect
           id={typeInputId}
-          options={typeOptions}
+          options={ACCOUNT_TYPE_OPTIONS}
           value={unsavedAccount.type}
           onChange={(value) =>
             setUnsavedAccount({ ...unsavedAccount, type: value })

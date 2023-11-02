@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 const CategoryBalance = dynamic(
-  () => import("@/app/budgets/[budgetId]/CategoryBalance"),
+  () => import("@/app/budgets/[budgetId]/CategoryBalanceForm"),
   {
     ssr: false,
   }

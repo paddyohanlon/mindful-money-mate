@@ -24,7 +24,10 @@ const DeletePayeeButton = ({ children, budgetId, payeeId }: Props) => {
   }
 
   return (
-    <button className="btn btn-sm btn-error" onClick={() => handleClick()}>
+    <button
+      className="btn btn-sm btn-outline btn-error"
+      onClick={() => handleClick()}
+    >
       {children}
     </button>
   );

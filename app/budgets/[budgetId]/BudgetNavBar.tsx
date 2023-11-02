@@ -25,13 +25,13 @@ interface Props {
 }
 
 const BudgetNavBar = ({ budgetId }: Props) => {
-  const budgetsPath = `${BUDGETS_PATH}/${budgetId}`;
-  const transactionsPath = `${BUDGETS_PATH}/${budgetId}/transactions`;
-  const categoriesPath = `${BUDGETS_PATH}/${budgetId}/categories`;
-  const assignmentsPath = `${BUDGETS_PATH}/${budgetId}/assignments`;
-  const payeesPath = `${BUDGETS_PATH}/${budgetId}/payees`;
-  const accountsPath = `${BUDGETS_PATH}/${budgetId}/accounts`;
-  const settingsPath = `${BUDGETS_PATH}/${budgetId}/settings`;
+  const parentPath = `${BUDGETS_PATH}/${budgetId}`;
+  const transactionsPath = `${parentPath}/transactions`;
+  const categoriesPath = `${parentPath}/categories`;
+  const assignmentsPath = `${parentPath}/assignments`;
+  const payeesPath = `${parentPath}/payees`;
+  const accountsPath = `${parentPath}/accounts`;
+  const settingsPath = `${parentPath}/settings`;
 
   const pathName = usePathname();
 
@@ -74,86 +74,88 @@ const BudgetNavBar = ({ budgetId }: Props) => {
     setReadyToAssign,
   ]);
 
-  function active(path: string): string {
-    return `${pathName.includes(path) && "active"}`;
+  function active(linkPath: string) {
+    return pathName === linkPath ||
+      (linkPath !== parentPath && pathName.includes(linkPath))
+      ? "active"
+      : "";
   }
 
   return (
-    <div className="flex justify-between gap-6 px-2">
-      <ul className="menu menu-horizontal">
-        <li>
-          <Link href={budgetsPath} className={active(budgetsPath)}>
-            Budget
-          </Link>
-        </li>
-        <li>
-          <Link href={transactionsPath} className={active(transactionsPath)}>
-            Transactions
-          </Link>
-        </li>
-        <li>
-          <Link
-            className="bg-secondary"
-            href={`${BUDGETS_PATH}/${budgetId}/transactions/new`}
-            title="New payee"
-          >
-            New Transaction
-          </Link>
-        </li>
-      </ul>
-
-      <div className="stats shadow">
-        <div className="stat py-1">
-          <div className="stat-title">Accounts Balance</div>
-          <div className="stat-value text-xl">
+    <div className="xl:flex xl:justify-between items-center xl:gap-6 xl:px-2">
+      <div className="flex max-w-md px-1 py-2">
+        <div className="stat p-1">
+          <div className="stat-title text-xs sm:text-sm">Accounts Balance</div>
+          <div className="stat-value text-xs sm:text-xl">
             {<FormattedCurrency budgetId={budgetId} amount={accountsBalance} />}
           </div>
         </div>
-        <div className="stat py-1">
-          <div className="stat-title">Ready to Assign</div>
+        <div className="stat p-1">
+          <div className="stat-title text-xs sm:text-sm">Ready to Assign</div>
           <div
-            className={`stat-value text-xl ${
+            className={`stat-value text-xs sm:text-xl ${
               readyToAssign < 0 && "text-red-500"
             }`}
           >
             {<FormattedCurrency budgetId={budgetId} amount={readyToAssign} />}
           </div>
         </div>
-        <div className="stat py-1">
-          <div className="stat-title">Month</div>
-          <div className="stat-value text-xl">
+        <div className="stat p-1">
+          <div className="stat-title text-xs sm:text-sm">Month</div>
+          <div className="stat-value text-xs sm:text-xl">
             <MonthStartEnd budgetId={budgetId} />
           </div>
         </div>
       </div>
 
-      <ul className="menu menu-horizontal">
-        <li>
-          <Link href={categoriesPath} className={active(categoriesPath)}>
-            Categories
-          </Link>
-        </li>
-        <li>
-          <Link href={assignmentsPath} className={active(assignmentsPath)}>
-            Assignments
-          </Link>
-        </li>
-        <li>
-          <Link href={payeesPath} className={active(payeesPath)}>
-            Payees
-          </Link>
-        </li>
-        <li>
-          <Link href={accountsPath} className={active(accountsPath)}>
-            Accounts
-          </Link>
-        </li>
-        <li>
-          <Link href={settingsPath} className={active(settingsPath)}>
-            Settings
-          </Link>
-        </li>
-      </ul>
+      <div>
+        <ul className="menu menu-horizontal">
+          <li className="pr-4">
+            <Link
+              className="bg-secondary"
+              href={`${BUDGETS_PATH}/${budgetId}/transactions/new`}
+              title="New payee"
+            >
+              New Transaction
+            </Link>
+          </li>
+          <li>
+            <Link href={parentPath} className={active(parentPath)}>
+              Budget
+            </Link>
+          </li>
+          <li>
+            <Link href={transactionsPath} className={active(transactionsPath)}>
+              Transactions
+            </Link>
+          </li>
+          <li>
+            <Link href={categoriesPath} className={active(categoriesPath)}>
+              Categories
+            </Link>
+          </li>
+          <li>
+            <Link href={assignmentsPath} className={active(assignmentsPath)}>
+              Assignments
+            </Link>
+          </li>
+          <li>
+            <Link href={payeesPath} className={active(payeesPath)}>
+              Payees
+            </Link>
+          </li>
+          <li>
+            <Link href={accountsPath} className={active(accountsPath)}>
+              Accounts
+            </Link>
+          </li>
+          <li>
+            <Link href={settingsPath} className={active(settingsPath)}>
+              Settings
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

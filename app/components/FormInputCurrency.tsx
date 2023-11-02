@@ -82,7 +82,7 @@ const FormInputCurrency = ({
           id={inputId}
           className={`input ${
             isSmall && "input-sm"
-          } input-bordered w-full max-w-xs pl-8 ${className} ${
+          } input-bordered w-full pl-8 ${className} ${
             parseFloat(amountStr) < 0 && "text-red-500"
           }`}
           value={amountStr}

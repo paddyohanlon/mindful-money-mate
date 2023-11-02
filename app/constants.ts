@@ -15,3 +15,8 @@ export const THIS_MONTH_ONLY = "This Month Only";
 export const SAVINGS = "Savings";
 export const SINK_FUNDS = "Sink Funds";
 export const CREDIT_CARD_PAYMENTS = "Credit Card Payments";
+
+export const ACCOUNT_TYPE_OPTIONS = [
+  { value: BANK, label: "Bank" },
+  { value: CASH, label: "Cash" },
+];

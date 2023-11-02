@@ -18,7 +18,7 @@ const FormInput = ({
   return (
     <input
       id={id}
-      className={`input input-bordered w-full max-w-xs ${className}`}
+      className={`input input-bordered w-full ${className}`}
       value={value}
       onChange={(event) => onChange && onChange(event.target.value)}
       type={type}
