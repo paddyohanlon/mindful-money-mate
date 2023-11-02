@@ -25,6 +25,13 @@ import {
   createEmptyPayee,
   createEmptyTransaction,
 } from "./factories";
+import { EUR } from "./constants";
+import {
+  SAMPLE_ACCOUNTS,
+  SAMPLE_BUDGET,
+  SAMPLE_CATEGORIES,
+  SAMPLE_PAYEES,
+} from "./sampleData";
 
 interface AppStore {
   isLoading: boolean;
@@ -56,6 +63,7 @@ interface AppStore {
   deleteTransaction: (id: string) => void;
   load: () => void;
   startFresh: () => void;
+  populateSampleData: () => void;
 }
 
 const useAppStore = create<AppStore>((set, get) => ({
@@ -127,15 +135,15 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   transactions: [],
   getTransaction: (id: string) => {
-    const category = get().transactions.find((p) => p.id === id);
+    const category = get().transactions.find((t) => t.id === id);
     return category || createEmptyTransaction();
   },
-  setTransaction: (payee) => {
-    set((store) => ({ transactions: [...store.transactions, payee] }));
+  setTransaction: (transaction) => {
+    set((store) => ({ transactions: [...store.transactions, transaction] }));
   },
   deleteTransaction: (id: string) => {
     set((store) => ({
-      transactions: store.transactions.filter((p) => p.id !== id),
+      transactions: store.transactions.filter((t) => t.id !== id),
     }));
   },
   load: async () => {
@@ -170,7 +178,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     // console.log("- isLoggedIn", isLoggedIn);
     // console.log("- budgets", budgets);
     // console.log("- accounts", accounts);
-    console.log("- categories", categories);
+    // console.log("- categories", categories);
     // console.log("- assignments", assignments);
     // console.log("- payees", payees);
     // console.log("- transactions", transactions);
@@ -204,6 +212,29 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
 
     rid.logOut();
+  },
+  populateSampleData: async () => {
+    // Budget
+    await budgetsCollection.insertOne(SAMPLE_BUDGET);
+    set(() => ({ budgets: [SAMPLE_BUDGET] }));
+
+    // Accounts
+    for (const account of SAMPLE_ACCOUNTS) {
+      accountsCollection.insertOne(account);
+    }
+    set(() => ({ accounts: SAMPLE_ACCOUNTS }));
+
+    // Categories
+    for (const category of SAMPLE_CATEGORIES) {
+      categoriesCollection.insertOne(category);
+    }
+    set(() => ({ categories: SAMPLE_CATEGORIES }));
+
+    // Payees
+    for (const payees of SAMPLE_PAYEES) {
+      payeesCollection.insertOne(payees);
+    }
+    set(() => ({ payees: SAMPLE_PAYEES }));
   },
 }));
 

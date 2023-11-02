@@ -27,7 +27,7 @@ const CategoryDetail = ({ budgetId, categoryId }: Props) => {
       <p>
         <FormattedCurrency
           budgetId={budgetId}
-          amount={getCategory(categoryId).balance}
+          amountCents={getCategory(categoryId).balanceCents}
         />
       </p>
       <DeleteCategoryButton budgetId={budgetId} categoryId={categoryId}>

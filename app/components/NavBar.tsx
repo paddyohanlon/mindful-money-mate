@@ -7,6 +7,7 @@ import SignOutButton from "./SignOutButton";
 import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
 import dynamic from "next/dynamic";
+import PopulateDataButton from "./PopulateDataButton";
 
 const StartFreshButton = dynamic(
   () => import("@/app/components/StartFreshButton"),
@@ -47,6 +48,9 @@ const NavBar = () => {
                 <ul className="p-2 bg-base-100">
                   <li>
                     <Link href={BUDGETS_PATH}>Budgets</Link>
+                  </li>
+                  <li>
+                    <PopulateDataButton />
                   </li>
                   <li>
                     <StartFreshButton />

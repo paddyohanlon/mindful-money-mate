@@ -6,12 +6,15 @@ export type Budget = {
   // isPrimary: boolean;
 };
 
+export type UnsavedBudget = Omit<Budget, "id">;
+
 export type Account = {
   id: string;
   budgetId: string;
   name: string;
+  /** BANK | CASH */
   type: string; // a constant BANK | CASH, gives 'not string' type error on select input
-  balance: number;
+  balanceCents: number;
 };
 
 export type Category = {
@@ -20,7 +23,7 @@ export type Category = {
   name: string;
   // order: number;
   group: string; // See groups in @/app/constants.ts
-  balance: number;
+  balanceCents: number;
   notes: string;
   // isPartOfDailySpend: boolean;
   // hidden: boolean;
@@ -34,11 +37,9 @@ export type Assignment = {
   id: string;
   categoryId: string;
   budgetId: string;
-  /**
-   * Timestamp
-   */
+  /** Timestamp */
   date: number;
-  amount: number;
+  amountCents: number;
 };
 
 export type UnsavedAssignment = Omit<Assignment, "id">;
@@ -49,17 +50,18 @@ export type Payee = {
   name: string;
 };
 
+export type UnsavedPayee = Omit<Payee, "id">;
+
 export type Transaction = {
   id: string;
   budgetId: string;
   accountId: string;
   categoryId: string;
   payeeId: string;
-  /**
-   * Timestamp
-   */
+  /** Value is a timestamp */
   date: number;
-  amount: number;
+  /** Value is in cents */
+  amountCents: number;
   memo: string;
 };
 

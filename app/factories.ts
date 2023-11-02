@@ -16,7 +16,7 @@ export function createEmptyAccount(): Account {
     budgetId: "",
     name: "",
     type: BANK,
-    balance: 0,
+    balanceCents: 0,
   };
 }
 
@@ -26,7 +26,7 @@ export function createEmptyCategory(): Category {
     budgetId: "",
     name: "",
     group: FLEXIBLE,
-    balance: 0,
+    balanceCents: 0,
     notes: "",
   };
 }
@@ -47,7 +47,7 @@ export function createEmptyTransaction(): Transaction {
     categoryId: "",
     payeeId: "",
     date: Date.now(),
-    amount: 0,
+    amountCents: 0,
     memo: "",
   };
 }

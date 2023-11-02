@@ -2,11 +2,16 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useAppStore from "../store";
 import { EUR, USD } from "../constants";
 import Alert from "./Alert";
+import {
+  centsToCurrency,
+  colorCurrencyClass,
+  currencyToCents,
+} from "../currency";
 
 interface Props {
   budgetId: string;
   inputId: string;
-  initialAmount: number;
+  initialAmountCents: number;
   className?: string;
   isSmall?: boolean;
   onChange: (value: number) => void;
@@ -15,12 +20,14 @@ interface Props {
 const FormInputCurrency = ({
   budgetId,
   inputId,
-  initialAmount,
+  initialAmountCents,
   className = "",
   isSmall = false,
   onChange,
 }: Props) => {
-  const [amountStr, setAmountStr] = useState(initialAmount.toString());
+  const [amountCurrencyStr, setAmountCurrencyStr] = useState(
+    centsToCurrency(initialAmountCents).toString()
+  );
   const [amountError, setAmountError] = useState("");
   const [currencySymbol, setCurrencySymbol] = useState("€");
 
@@ -43,7 +50,7 @@ const FormInputCurrency = ({
 
     // Allow empty value to clear the input
     if (value === "") {
-      setAmountStr(value);
+      setAmountCurrencyStr(value);
       return;
     }
 
@@ -52,7 +59,7 @@ const FormInputCurrency = ({
 
     if (!isValueValid) return;
 
-    setAmountStr(value);
+    setAmountCurrencyStr(value);
 
     // If the value is a valid number, also call the onChange prop
     const amount = parseFloat(value);
@@ -64,7 +71,7 @@ const FormInputCurrency = ({
       return;
     }
 
-    onChange(amount);
+    onChange(currencyToCents(amount));
   }
 
   return (
@@ -82,10 +89,10 @@ const FormInputCurrency = ({
           id={inputId}
           className={`input ${
             isSmall && "input-sm"
-          } input-bordered w-full pl-8 ${className} ${
-            parseFloat(amountStr) < 0 && "text-red-500"
-          }`}
-          value={amountStr}
+          } input-bordered w-full pl-8 ${className} ${colorCurrencyClass(
+            parseFloat(amountCurrencyStr)
+          )}`}
+          value={amountCurrencyStr}
           onChange={onChangeAmount}
           type="number"
           required={true}

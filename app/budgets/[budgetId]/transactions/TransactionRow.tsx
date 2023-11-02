@@ -37,16 +37,19 @@ const TransactionRow = ({ budgetId, transaction, actions }: Props) => {
       <td>{getCategory(transaction.categoryId).name}</td>
       <td>{transaction.memo}</td>
       <td>
-        {transaction.amount < 0 && (
+        {transaction.amountCents < 0 && (
           <FormattedCurrency
             budgetId={budgetId}
-            amount={transaction.amount * -1}
+            amountCents={transaction.amountCents * -1}
           />
         )}
       </td>
       <td>
-        {transaction.amount > 0 && (
-          <FormattedCurrency budgetId={budgetId} amount={transaction.amount} />
+        {transaction.amountCents > 0 && (
+          <FormattedCurrency
+            budgetId={budgetId}
+            amountCents={transaction.amountCents}
+          />
         )}
       </td>
       <td>{actions}</td>

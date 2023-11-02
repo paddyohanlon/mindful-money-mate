@@ -1,3 +1,4 @@
+import { centsToCurrency, currencyToCents } from "@/app/currency";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import FormLabel from "@/app/components/FormLabel";
 import {
@@ -9,35 +10,30 @@ import { Assignment, Category, UnsavedAssignment } from "@/app/types";
 import { FormEvent, useState } from "react";
 
 interface Props {
-  budgetId: string;
   category: Category;
 }
 
-const CategoryBalance = ({ budgetId, category }: Props) => {
+const CategoryBalance = ({ category }: Props) => {
   const balanceInputId = "category-balance";
 
-  const previousBalance = category.balance;
-
-  const [balance, setBalance] = useState(category.balance);
+  const previousBalanceCents = category.balanceCents;
 
   const { updateCategory, setAssignment } = useAppStore();
+
+  const [updatedCategory, setUpdatedCategory] = useState<Category>(category);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const updatedCategory = {
-      ...category,
-      balance,
-    };
     categoriesCollection.updateOne(category.id, updatedCategory);
     updateCategory(updatedCategory);
 
     // Set assignment
     const unsavedAssignment: UnsavedAssignment = {
-      budgetId,
+      budgetId: category.budgetId,
       categoryId: category.id,
       date: Date.now(),
-      amount: Number((updatedCategory.balance - previousBalance).toFixed(2)),
+      amountCents: updatedCategory.balanceCents - previousBalanceCents,
     };
 
     const assignmentId = await assignmentsCollection.insertOne(
@@ -59,10 +55,12 @@ const CategoryBalance = ({ budgetId, category }: Props) => {
           {category.name} Category Balance
         </FormLabel>
         <FormInputCurrency
-          budgetId={budgetId}
+          budgetId={category.budgetId}
           inputId={balanceInputId}
-          initialAmount={balance}
-          onChange={(value) => setBalance(value)}
+          initialAmountCents={category.balanceCents}
+          onChange={(value) =>
+            setUpdatedCategory({ ...updatedCategory, balanceCents: value })
+          }
           isSmall={true}
         />
         <button className="sr-only" type="submit">

@@ -49,7 +49,7 @@ const AssignmentsList = ({ budgetId }: Props) => {
                   <td>
                     <FormattedCurrency
                       budgetId={budgetId}
-                      amount={assignment.amount}
+                      amountCents={assignment.amountCents}
                     />
                   </td>
                 </tr>

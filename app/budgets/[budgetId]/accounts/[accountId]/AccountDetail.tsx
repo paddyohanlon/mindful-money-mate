@@ -84,9 +84,9 @@ const AccountDetail = ({ budgetId, accountId }: Props) => {
           <FormInputCurrency
             budgetId={budgetId}
             inputId={balanceInputId}
-            initialAmount={updatedAccount.balance}
+            initialAmountCents={updatedAccount.balanceCents}
             onChange={(value) =>
-              setUpdatedAccount({ ...updatedAccount, balance: value })
+              setUpdatedAccount({ ...updatedAccount, balanceCents: value })
             }
           />
         </FormControl>

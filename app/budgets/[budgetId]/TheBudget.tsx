@@ -52,7 +52,7 @@ const TheBudget = ({ budgetId }: Props) => {
                 <td>{category.name}</td>
                 <td className="capitalize">{category.group}</td>
                 <td>
-                  <CategoryBalance budgetId={budgetId} category={category} />
+                  <CategoryBalance category={category} />
                 </td>
                 <td>
                   <CategoryAssigned

@@ -50,7 +50,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     budgetId,
     name: "",
     group: FLEXIBLE,
-    balance: 0,
+    balanceCents: 0,
     notes: "",
   });
 
@@ -76,7 +76,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
       budgetId,
       categoryId: newCategory.id,
       date: Date.now(),
-      amount: newCategory.balance,
+      amountCents: newCategory.balanceCents,
     };
 
     const assignmentId = await assignmentsCollection.insertOne(
@@ -120,9 +120,9 @@ const NewCategoryForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={notesInputId}
-          initialAmount={unsavedCategory.balance}
+          initialAmountCents={unsavedCategory.balanceCents}
           onChange={(value) =>
-            setUnsavedCategory({ ...unsavedCategory, balance: value })
+            setUnsavedCategory({ ...unsavedCategory, balanceCents: value })
           }
         />
       </FormControl>

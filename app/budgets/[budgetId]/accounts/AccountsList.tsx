@@ -37,7 +37,7 @@ const AccountsList = ({ budgetId }: Props) => {
                 <span>
                   <FormattedCurrency
                     budgetId={budgetId}
-                    amount={account.balance}
+                    amountCents={account.balanceCents}
                   />
                 </span>
               </Link>

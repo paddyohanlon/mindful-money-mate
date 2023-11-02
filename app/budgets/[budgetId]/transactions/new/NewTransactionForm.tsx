@@ -38,7 +38,7 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     categoryId: "",
     payeeId: "",
     date: Date.now(),
-    amount: 0,
+    amountCents: 0,
     memo: "",
   };
 
@@ -139,7 +139,8 @@ const NewBudgetForm = ({ budgetId }: Props) => {
 
     const multiplier = isInflow ? 1 : -1;
 
-    unsavedTransaction.amount = unsavedTransaction.amount * multiplier;
+    unsavedTransaction.amountCents =
+      unsavedTransaction.amountCents * multiplier;
 
     const id = await transactionsCollection.insertOne(unsavedTransaction);
 
@@ -148,13 +149,12 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     setTransaction(newTransaction);
 
     const category = getCategory(newTransaction.categoryId);
-    console.log(category);
-    category.balance += newTransaction.amount;
+    category.balanceCents += newTransaction.amountCents;
     updateCategory(category);
     categoriesCollection.updateOne(category.id, category);
 
     const account = getAccount(newTransaction.accountId);
-    account.balance += newTransaction.amount;
+    account.balanceCents += newTransaction.amountCents;
     updateAccount(account);
     accountsCollection.updateOne(account.id, account);
 
@@ -182,9 +182,9 @@ const NewBudgetForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={amountInputId}
-          initialAmount={unsavedTransactionDefault.amount}
+          initialAmountCents={unsavedTransactionDefault.amountCents}
           onChange={(value) =>
-            setUnsavedTransaction({ ...unsavedTransaction, amount: value })
+            setUnsavedTransaction({ ...unsavedTransaction, amountCents: value })
           }
         />
       </FormControl>

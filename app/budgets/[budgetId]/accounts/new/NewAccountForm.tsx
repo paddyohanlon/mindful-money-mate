@@ -34,7 +34,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
     budgetId,
     name: "",
     type: BANK,
-    balance: 0,
+    balanceCents: 0,
   });
 
   async function handleSubmit(event: FormEvent) {
@@ -85,9 +85,9 @@ const NewAccountForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={balanceInputId}
-          initialAmount={unsavedAccount.balance}
+          initialAmountCents={unsavedAccount.balanceCents}
           onChange={(value) =>
-            setUnsavedAccount({ ...unsavedAccount, balance: value })
+            setUnsavedAccount({ ...unsavedAccount, balanceCents: value })
           }
         />
       </FormControl>

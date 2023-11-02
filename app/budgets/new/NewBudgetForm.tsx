@@ -5,13 +5,11 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
-import { Budget } from "@/app/types";
+import { Budget, UnsavedBudget } from "@/app/types";
 import { budgetsCollection } from "@/app/services/rethinkid";
 import { useRouter } from "next/navigation";
 import { BUDGETS_PATH, EUR, USD } from "@/app/constants";
 import useAppStore from "@/app/store";
-
-type UnsavedBudget = Omit<Budget, "id">;
 
 const NewBudgetForm = () => {
   const router = useRouter();

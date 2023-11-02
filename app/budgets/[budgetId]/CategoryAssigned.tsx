@@ -26,13 +26,13 @@ const CategoryAssigned = ({ budgetId, categoryId }: Props) => {
 
     setAssigned(
       assignmentsForCategory.reduce(
-        (accumulator, assignment) => accumulator + assignment.amount,
+        (accumulator, assignment) => accumulator + assignment.amountCents,
         0
       )
     );
   }, [categoryId, setAssigned, assignments]);
 
-  return <FormattedCurrency budgetId={budgetId} amount={assigned} />;
+  return <FormattedCurrency budgetId={budgetId} amountCents={assigned} />;
 };
 
 export default CategoryAssigned;

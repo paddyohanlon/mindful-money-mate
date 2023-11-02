@@ -2,7 +2,7 @@ import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import { FormEvent, useState } from "react";
-import { Payee } from "@/app/types";
+import { Payee, UnsavedPayee } from "@/app/types";
 import { payeesCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";
@@ -11,8 +11,6 @@ import { useRouter } from "next/navigation";
 interface Props {
   budgetId: string;
 }
-
-type UnsavedPayee = Omit<Payee, "id">;
 
 const NewPayeeForm = ({ budgetId }: Props) => {
   const router = useRouter();

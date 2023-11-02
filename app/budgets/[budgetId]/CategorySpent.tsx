@@ -26,13 +26,13 @@ const CategorySpent = ({ budgetId, categoryId }: Props) => {
 
     setSpent(
       transactionsForCategory.reduce(
-        (accumulator, transaction) => accumulator + transaction.amount,
+        (accumulator, transaction) => accumulator + transaction.amountCents,
         0
       )
     );
   }, [categoryId, setSpent, transactions]);
 
-  return <FormattedCurrency budgetId={budgetId} amount={spent * -1} />;
+  return <FormattedCurrency budgetId={budgetId} amountCents={spent * -1} />;
 };
 
 export default CategorySpent;
