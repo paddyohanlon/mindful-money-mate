@@ -82,6 +82,7 @@ const BudgetNavBar = ({ budgetId }: Props) => {
               <FormattedCurrency
                 budgetId={budgetId}
                 amountCents={readyToAssignCents}
+                isColored={true}
               />
             }
           </div>

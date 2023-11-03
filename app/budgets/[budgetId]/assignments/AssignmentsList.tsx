@@ -50,6 +50,7 @@ const AssignmentsList = ({ budgetId }: Props) => {
                     <FormattedCurrency
                       budgetId={budgetId}
                       amountCents={assignment.amountCents}
+                      isColored={true}
                     />
                   </td>
                 </tr>

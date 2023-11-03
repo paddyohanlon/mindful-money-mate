@@ -14,6 +14,7 @@ interface Props {
   initialAmountCents: number;
   className?: string;
   isSmall?: boolean;
+  isColored?: boolean;
   onChange: (value: number) => void;
 }
 
@@ -23,6 +24,7 @@ const FormInputCurrency = ({
   initialAmountCents,
   className = "",
   isSmall = false,
+  isColored = false,
   onChange,
 }: Props) => {
   const [amountCurrencyStr, setAmountCurrencyStr] = useState(
@@ -62,16 +64,16 @@ const FormInputCurrency = ({
     setAmountCurrencyStr(value);
 
     // If the value is a valid number, also call the onChange prop
-    const amount = parseFloat(value);
+    const amountCurrency = parseFloat(value);
 
-    if (isNaN(amount)) return;
+    if (isNaN(amountCurrency)) return;
     const max = 100000;
-    if (amount > 100000) {
+    if (amountCurrency > 100000) {
       setAmountError(`Enter a value less than ${max}`);
       return;
     }
 
-    onChange(currencyToCents(amount));
+    onChange(currencyToCents(amountCurrency));
   }
 
   return (
@@ -89,9 +91,9 @@ const FormInputCurrency = ({
           id={inputId}
           className={`input ${
             isSmall && "input-sm"
-          } input-bordered w-full pl-8 ${className} ${colorCurrencyClass(
-            parseFloat(amountCurrencyStr)
-          )}`}
+          } input-bordered w-full pl-8 ${className} ${
+            isColored ? colorCurrencyClass(parseFloat(amountCurrencyStr)) : ""
+          }`}
           value={amountCurrencyStr}
           onChange={onChangeAmount}
           type="number"

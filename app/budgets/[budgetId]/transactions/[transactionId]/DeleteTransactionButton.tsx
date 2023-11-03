@@ -40,7 +40,6 @@ const DeleteTransactionButton = ({
 
     const account = getAccount(transaction.accountId);
     account.balanceCents -= transaction.amountCents;
-
     updateAccount(account);
     accountsCollection.updateOne(account.id, account);
 
@@ -50,7 +49,10 @@ const DeleteTransactionButton = ({
   }
 
   return (
-    <button className="btn btn-xs btn-error" onClick={() => handleClick()}>
+    <button
+      className="btn btn-sm btn-outline btn-error"
+      onClick={() => handleClick()}
+    >
       {children}
     </button>
   );

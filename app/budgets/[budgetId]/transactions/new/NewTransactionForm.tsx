@@ -6,7 +6,7 @@ import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
-import { Transaction, Option } from "@/app/types";
+import { Transaction } from "@/app/types";
 import {
   accountsCollection,
   categoriesCollection,
@@ -15,9 +15,16 @@ import {
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";
+import { useTransactionOptions } from "../useTransactionOptions";
+import Alert from "@/app/components/Alert";
+import { convertToSignedAmount } from "@/app/currency";
 
 interface Props {
   budgetId: string;
+}
+
+interface Selectable {
+  id: string;
 }
 
 type UnsavedTransaction = Omit<Transaction, "id">;
@@ -53,22 +60,16 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     updateAccount,
   } = useAppStore();
 
-  const [accountOptions, setAccountOptions] = useState<Option[]>([
-    { value: "", label: "" },
-  ]);
-  const [categoryOptions, setCategoryOptions] = useState<Option[]>([
-    { value: "", label: "" },
-  ]);
-  const [payeeOptions, setPayeeOptions] = useState<Option[]>([
-    { value: "", label: "" },
-  ]);
+  const { accountOptions, categoryOptions, payeeOptions } =
+    useTransactionOptions(budgetId);
+
   const [unsavedTransaction, setUnsavedTransaction] =
     useState<UnsavedTransaction>(unsavedTransactionDefault);
   const [isInflow, setIsInflow] = useState(false);
-
-  interface Selectable {
-    id: string;
-  }
+  const [amountError, setAmountError] = useState("");
+  const [unsignedAmountCents, setUnsignedAmountCents] = useState(
+    Math.abs(unsavedTransaction.amountCents)
+  );
 
   useEffect(() => {
     function getDefault(id: string, [firstItem]: Selectable[]) {
@@ -82,12 +83,6 @@ const NewBudgetForm = ({ budgetId }: Props) => {
       unsavedTransaction.accountId,
       accountsForBudget
     );
-    setAccountOptions(
-      accountsForBudget.map((a) => ({
-        value: a.id,
-        label: a.name,
-      }))
-    );
 
     const categoriesForBudget = categories.filter(
       (c) => c.budgetId === budgetId
@@ -96,35 +91,18 @@ const NewBudgetForm = ({ budgetId }: Props) => {
       unsavedTransaction.categoryId,
       categoriesForBudget
     );
-    setCategoryOptions(
-      categoriesForBudget.map((a) => ({
-        value: a.id,
-        label: a.name,
-      }))
-    );
 
     const payeesForBudget = payees.filter((p) => p.budgetId === budgetId);
     unsavedTransaction.payeeId = getDefault(
       unsavedTransaction.payeeId,
       payeesForBudget
     );
-    setPayeeOptions(
-      payeesForBudget.map((a) => ({
-        value: a.id,
-        label: a.name,
-      }))
-    );
-  }, [
-    budgetId,
-    accounts,
-    categories,
-    payees,
-    unsavedTransaction,
-    setAccountOptions,
-  ]);
+  }, [budgetId, accounts, categories, payees, unsavedTransaction]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    setAmountError("");
 
     if (
       !(
@@ -137,10 +115,15 @@ const NewBudgetForm = ({ budgetId }: Props) => {
       return;
     }
 
-    const multiplier = isInflow ? 1 : -1;
+    if (unsignedAmountCents < 1) {
+      setAmountError(`Enter an amount of at least 0.01`);
+      return;
+    }
 
-    unsavedTransaction.amountCents =
-      unsavedTransaction.amountCents * multiplier;
+    unsavedTransaction.amountCents = convertToSignedAmount(
+      unsignedAmountCents,
+      isInflow
+    );
 
     const id = await transactionsCollection.insertOne(unsavedTransaction);
 
@@ -182,11 +165,10 @@ const NewBudgetForm = ({ budgetId }: Props) => {
         <FormInputCurrency
           budgetId={budgetId}
           inputId={amountInputId}
-          initialAmountCents={unsavedTransactionDefault.amountCents}
-          onChange={(value) =>
-            setUnsavedTransaction({ ...unsavedTransaction, amountCents: value })
-          }
+          initialAmountCents={unsignedAmountCents}
+          onChange={(value) => setUnsignedAmountCents(value)}
         />
+        {amountError && <Alert className="mt-2">{amountError}</Alert>}
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={accountInputId}>Account</FormLabel>

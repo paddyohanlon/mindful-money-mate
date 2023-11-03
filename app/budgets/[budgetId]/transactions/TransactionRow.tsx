@@ -1,5 +1,6 @@
 import FormattedDate from "@/app/components/FormattedDate";
 import { BUDGETS_PATH } from "@/app/constants";
+import { convertToUnsignedAmount } from "@/app/currency";
 import useAppStore from "@/app/store";
 import { Transaction } from "@/app/types";
 import dynamic from "next/dynamic";
@@ -40,7 +41,7 @@ const TransactionRow = ({ budgetId, transaction, actions }: Props) => {
         {transaction.amountCents < 0 && (
           <FormattedCurrency
             budgetId={budgetId}
-            amountCents={transaction.amountCents * -1}
+            amountCents={convertToUnsignedAmount(transaction.amountCents)}
           />
         )}
       </td>

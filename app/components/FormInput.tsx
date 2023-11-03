@@ -5,6 +5,7 @@ interface Props {
   onChange?: (value: string) => void;
   type?: "text" | "password" | "email";
   required?: boolean;
+  readOnly?: boolean;
 }
 
 const FormInput = ({
@@ -14,15 +15,19 @@ const FormInput = ({
   onChange,
   type = "text",
   required = true,
+  readOnly = false,
 }: Props) => {
   return (
     <input
       id={id}
-      className={`input input-bordered w-full ${className}`}
+      className={`input ${
+        readOnly ? "input-ghost" : "input-bordered"
+      } w-full ${className}`}
       value={value}
       onChange={(event) => onChange && onChange(event.target.value)}
       type={type}
       required={required}
+      readOnly={readOnly}
     />
   );
 };

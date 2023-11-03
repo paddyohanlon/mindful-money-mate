@@ -5,14 +5,19 @@ import useAppStore from "@/app/store";
 interface Props {
   budgetId: string;
   amountCents: number;
+  isColored?: boolean;
 }
 
-const FormattedCurrency = ({ budgetId, amountCents }: Props) => {
+const FormattedCurrency = ({
+  budgetId,
+  amountCents,
+  isColored = false,
+}: Props) => {
   const { getBudget } = useAppStore();
 
   return (
     <>
-      <span className={colorCurrencyClass(amountCents)}>
+      <span className={isColored ? colorCurrencyClass(amountCents) : ""}>
         {!amountCents
           ? "€0.00"
           : centsToCurrency(amountCents).toLocaleString(LOCALE, {

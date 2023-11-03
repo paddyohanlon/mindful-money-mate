@@ -16,8 +16,6 @@ interface Props {
 const CategoryBalance = ({ category }: Props) => {
   const balanceInputId = "category-balance";
 
-  const previousBalanceCents = category.balanceCents;
-
   const { updateCategory, setAssignment } = useAppStore();
 
   const [updatedCategory, setUpdatedCategory] = useState<Category>(category);
@@ -33,7 +31,7 @@ const CategoryBalance = ({ category }: Props) => {
       budgetId: category.budgetId,
       categoryId: category.id,
       date: Date.now(),
-      amountCents: updatedCategory.balanceCents - previousBalanceCents,
+      amountCents: updatedCategory.balanceCents - category.balanceCents,
     };
 
     const assignmentId = await assignmentsCollection.insertOne(
@@ -62,6 +60,7 @@ const CategoryBalance = ({ category }: Props) => {
             setUpdatedCategory({ ...updatedCategory, balanceCents: value })
           }
           isSmall={true}
+          isColored={true}
         />
         <button className="sr-only" type="submit">
           Save

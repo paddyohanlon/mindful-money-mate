@@ -60,6 +60,7 @@ interface AppStore {
   transactions: Transaction[];
   getTransaction: (id: string) => Transaction;
   setTransaction: (transaction: Transaction) => void;
+  updateTransaction: (transaction: Transaction) => void;
   deleteTransaction: (id: string) => void;
   load: () => void;
   startFresh: () => void;
@@ -140,6 +141,13 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   setTransaction: (transaction) => {
     set((store) => ({ transactions: [...store.transactions, transaction] }));
+  },
+  updateTransaction: (transaction: Transaction) => {
+    set((store) => ({
+      transactions: store.transactions.map((t) =>
+        t.id === transaction.id ? transaction : t
+      ),
+    }));
   },
   deleteTransaction: (id: string) => {
     set((store) => ({

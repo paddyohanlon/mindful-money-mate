@@ -1,13 +1,12 @@
 import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { Account } from "@/app/types";
-import { createEmptyAccount } from "@/app/factories";
 import { ACCOUNT_TYPE_OPTIONS, BUDGETS_PATH } from "@/app/constants";
 import { accountsCollection } from "@/app/services/rethinkid";
 import { useRouter } from "next/navigation";
@@ -15,12 +14,6 @@ import { useRouter } from "next/navigation";
 const DeleteAccountButton = dynamic(() => import("./DeleteAccountButton"), {
   ssr: false,
 });
-const FormattedCurrency = dynamic(
-  () => import("@/app/budgets/[budgetId]/FormattedCurrency"),
-  {
-    ssr: false,
-  }
-);
 
 interface Props {
   budgetId: string;
