@@ -177,10 +177,11 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: "asc" } }
     )) as Budget[];
-    mirror<Budget>(budgetsCollection, {
+    // mirror<Budget>(budgetsCollection, {
+    mirror(budgetsCollection, {
       add: (doc) => {
         if (get().getBudget(doc.id)) return;
-        get().setBudget(doc);
+        get().setBudget(doc as Budget);
       },
     });
 
@@ -189,13 +190,14 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: "asc" } }
     )) as Account[];
-    mirror<Account>(accountsCollection, {
+    // mirror<Account>(accountsCollection, {
+    mirror(accountsCollection, {
       add: (doc) => {
         if (get().getAccount(doc.id)) return;
-        get().setAccount(doc);
+        get().setAccount(doc as Account);
       },
       update: (doc) => {
-        get().updateAccount(doc);
+        get().updateAccount(doc as Account);
       },
       remove: (doc) => {
         get().deleteAccount(doc.id);
@@ -209,13 +211,14 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: "asc" } }
     )) as Category[];
-    mirror<Category>(categoriesCollection, {
+    // mirror<Category>(categoriesCollection, {
+    mirror(categoriesCollection, {
       add: (doc) => {
         if (get().getCategory(doc.id)) return;
-        get().setCategory(doc);
+        get().setCategory(doc as Category);
       },
       update: (doc) => {
-        get().updateCategory(doc);
+        get().updateCategory(doc as Category);
       },
       remove: (doc) => {
         get().deleteCategory(doc.id);
@@ -233,10 +236,11 @@ const useAppStore = create<AppStore>((set, get) => ({
         },
       }
     )) as Assignment[];
-    mirror<Assignment>(assignmentsCollection, {
+    // mirror<Assignment>(assignmentsCollection, {
+    mirror(assignmentsCollection, {
       add: (doc) => {
         if (get().getAssignment(doc.id)) return;
-        get().setAssignment(doc);
+        get().setAssignment(doc as Assignment);
       },
     });
 
@@ -247,10 +251,11 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: "asc" } }
     )) as Payee[];
-    mirror<Payee>(payeesCollection, {
+    // mirror<Payee>(payeesCollection, {
+    mirror(payeesCollection, {
       add: (doc) => {
         if (get().getPayee(doc.id)) return;
-        get().setPayee(doc);
+        get().setPayee(doc as Payee);
       },
       remove: (doc) => {
         get().deletePayee(doc.id);
@@ -268,13 +273,14 @@ const useAppStore = create<AppStore>((set, get) => ({
         },
       }
     )) as Transaction[];
-    mirror<Transaction>(transactionsCollection, {
+    // mirror<Transaction>(transactionsCollection, {
+    mirror(transactionsCollection, {
       add: (doc) => {
         if (get().getTransaction(doc.id)) return;
-        get().setTransaction(doc);
+        get().setTransaction(doc as Transaction);
       },
       update: (doc) => {
-        get().updateTransaction(doc);
+        get().updateTransaction(doc as Transaction);
       },
       remove: (doc) => {
         get().deleteTransaction(doc.id);
@@ -349,17 +355,17 @@ interface Doc {
   [key: string]: any;
 }
 
-function mirror<T extends Doc>(
+function mirror(
   collection: CollectionAPI,
   callbacks: {
-    add?: (doc: T) => void;
-    update?: (doc: T) => void;
-    remove?: (doc: T) => void;
+    add?: (doc: Doc) => void;
+    update?: (doc: Doc) => void;
+    remove?: (doc: Doc) => void;
   } = {}
 ) {
   type Changes = {
-    new_val: T | null;
-    old_val: T | null;
+    new_val: Doc | null;
+    old_val: Doc | null;
   };
 
   const { add, update, remove } = callbacks;
@@ -376,5 +382,32 @@ function mirror<T extends Doc>(
     }
   });
 }
+// function mirror<T extends Doc>(
+//   collection: CollectionAPI,
+//   callbacks: {
+//     add?: (doc: T) => void;
+//     update?: (doc: T) => void;
+//     remove?: (doc: T) => void;
+//   } = {}
+// ) {
+//   type Changes = {
+//     new_val: T | null;
+//     old_val: T | null;
+//   };
+
+//   const { add, update, remove } = callbacks;
+
+//   collection.subscribeAll({}, ({ old_val, new_val }: Changes) => {
+//     if (add && old_val === null && new_val) {
+//       add(new_val);
+//     }
+//     if (update && old_val && new_val) {
+//       update(new_val);
+//     }
+//     if (remove && old_val && new_val === null) {
+//       remove(old_val);
+//     }
+//   });
+// }
 
 export default useAppStore;
