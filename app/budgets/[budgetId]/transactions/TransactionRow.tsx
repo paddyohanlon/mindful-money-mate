@@ -5,7 +5,7 @@ import useAppStore from "@/app/store";
 import { Transaction } from "@/app/types";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 const FormattedCurrency = dynamic(
   () => import("@/app/budgets/[budgetId]/FormattedCurrency"),
@@ -21,7 +21,9 @@ interface Props {
 }
 
 const TransactionRow = ({ budgetId, transaction, actions }: Props) => {
-  const { getAccount, getPayee, getCategory } = useAppStore();
+  const getAccount = useAppStore((state) => state.getAccount);
+  const getPayee = useAppStore((state) => state.getPayee);
+  const getCategory = useAppStore((state) => state.getCategory);
 
   return (
     <tr>

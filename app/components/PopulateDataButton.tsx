@@ -1,7 +1,7 @@
 import useAppStore from "../store";
 
 const PopulateDataButton = () => {
-  const { populateSampleData } = useAppStore();
+  const populateSampleData = useAppStore((state) => state.populateSampleData);
 
   function handleClick() {
     if (!window.confirm("Are you sure you want to populate sample data?"))
@@ -10,7 +10,10 @@ const PopulateDataButton = () => {
   }
 
   return (
-    <button className="btn btn-neutral" onClick={handleClick}>
+    <button
+      className="btn btn-sm btn-outline btn-neutral"
+      onClick={handleClick}
+    >
       Populate Data
     </button>
   );

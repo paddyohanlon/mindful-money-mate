@@ -36,6 +36,10 @@ const FormInputCurrency = ({
   const budget = useAppStore((state) => state.getBudget(budgetId));
 
   useEffect(() => {
+    setAmountCurrencyStr(centsToCurrency(initialAmountCents).toString());
+  }, [initialAmountCents]);
+
+  useEffect(() => {
     switch (budget.currency) {
       case EUR:
         setCurrencySymbol("€");

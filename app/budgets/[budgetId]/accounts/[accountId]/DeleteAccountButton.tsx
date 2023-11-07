@@ -13,7 +13,7 @@ interface Props {
 const DeleteAccountButton = ({ children, budgetId, accountId }: Props) => {
   const router = useRouter();
 
-  const { deleteAccount } = useAppStore();
+  const deleteAccount = useAppStore((state) => state.deleteAccount);
 
   async function handleClick() {
     if (!window.confirm("You sure?")) return;

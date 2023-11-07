@@ -44,7 +44,8 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     { value: CREDIT_CARD_PAYMENTS, label: "Credit Card Payments" },
   ];
 
-  const { setCategory, setAssignment } = useAppStore();
+  const setCategory = useAppStore((state) => state.setCategory);
+  const setAssignment = useAppStore((state) => state.setAssignment);
 
   const [unsavedCategory, setUnsavedCategory] = useState<UnsavedCategory>({
     budgetId,

@@ -49,16 +49,14 @@ const NewBudgetForm = ({ budgetId }: Props) => {
     memo: "",
   };
 
-  const {
-    accounts,
-    categories,
-    payees,
-    setTransaction,
-    getCategory,
-    updateCategory,
-    getAccount,
-    updateAccount,
-  } = useAppStore();
+  const accounts = useAppStore((state) => state.accounts);
+  const categories = useAppStore((state) => state.categories);
+  const payees = useAppStore((state) => state.payees);
+  const setTransaction = useAppStore((state) => state.setTransaction);
+  const getCategory = useAppStore((state) => state.getCategory);
+  const updateCategory = useAppStore((state) => state.updateCategory);
+  const getAccount = useAppStore((state) => state.getAccount);
+  const updateAccount = useAppStore((state) => state.updateAccount);
 
   const { accountOptions, categoryOptions, payeeOptions } =
     useTransactionOptions(budgetId);

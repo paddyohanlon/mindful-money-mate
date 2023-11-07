@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CategoryAssigned = ({ budgetId, categoryId }: Props) => {
-  const { assignments } = useAppStore();
+  const assignments = useAppStore((state) => state.assignments);
 
   const [assigned, setAssigned] = useState(0);
 

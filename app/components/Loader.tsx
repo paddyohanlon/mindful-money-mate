@@ -6,7 +6,9 @@ interface Props {
 }
 
 const Loader = ({ children }: Props) => {
-  const { isLoading, isLoggedIn } = useAppStore();
+  const isLoading = useAppStore((state) => state.isLoading);
+  const isLoggedIn = useAppStore((state) => state.isLoggedIn);
+
   return (
     <>
       {isLoading && isLoggedIn ? (

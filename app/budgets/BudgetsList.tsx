@@ -3,7 +3,7 @@ import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
 
 const BudgetsList = () => {
-  const { budgets } = useAppStore();
+  const budgets = useAppStore((state) => state.budgets);
 
   return (
     <>

@@ -17,7 +17,7 @@ const NewPayeeForm = ({ budgetId }: Props) => {
 
   const nameInputId = "name";
 
-  const { setPayee } = useAppStore();
+  const setPayee = useAppStore((state) => state.setPayee);
 
   const [unsavedPayee, setUnsavedPayee] = useState<UnsavedPayee>({
     budgetId,

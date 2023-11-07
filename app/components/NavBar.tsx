@@ -17,7 +17,7 @@ const StartFreshButton = dynamic(
 );
 
 const NavBar = () => {
-  const { isLoggedIn } = useAppStore();
+  const isLoggedIn = useAppStore((state) => state.isLoggedIn);
 
   const handleDetailsClick = (event: React.MouseEvent<HTMLDetailsElement>) => {
     const detailsElement = event.currentTarget;
@@ -45,18 +45,18 @@ const NavBar = () => {
             <li>
               <details id="account-details" onClick={handleDetailsClick}>
                 <summary>Menu</summary>
-                <ul className="p-2 bg-base-100">
+                <ul className="p-2 bg-base-100 right-0 min-w-max [&>li]:mb-2 [&_.btn]:content-center">
                   <li>
                     <Link href={BUDGETS_PATH}>Budgets</Link>
+                  </li>
+                  <li className="pb-4">
+                    <SignOutButton />
                   </li>
                   <li>
                     <PopulateDataButton />
                   </li>
                   <li>
                     <StartFreshButton />
-                  </li>
-                  <li>
-                    <SignOutButton />
                   </li>
                 </ul>
               </details>

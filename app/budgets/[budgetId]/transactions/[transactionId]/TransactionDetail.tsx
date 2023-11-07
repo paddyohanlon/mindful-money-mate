@@ -42,13 +42,11 @@ const TransactionDetail = ({ budgetId, transactionId }: Props) => {
   const transaction = useAppStore((state) =>
     state.getTransaction(transactionId)
   );
-  const {
-    updateTransaction,
-    getCategory,
-    getAccount,
-    updateAccount,
-    updateCategory,
-  } = useAppStore();
+  const updateTransaction = useAppStore((state) => state.updateTransaction);
+  const getCategory = useAppStore((state) => state.getCategory);
+  const getAccount = useAppStore((state) => state.getAccount);
+  const updateAccount = useAppStore((state) => state.updateAccount);
+  const updateCategory = useAppStore((state) => state.updateCategory);
 
   const { payeeOptions } = useTransactionOptions(budgetId);
 

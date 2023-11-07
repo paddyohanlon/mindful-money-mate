@@ -3,7 +3,8 @@ import { rid } from "./services/rethinkid";
 import useAppStore from "./store";
 
 const OnLogin = () => {
-  const { load, setIsLoggedIn } = useAppStore();
+  const load = useAppStore((state) => state.load);
+  const setIsLoggedIn = useAppStore((state) => state.setIsLoggedIn);
 
   useEffect(() => {
     const onLogin = () => {

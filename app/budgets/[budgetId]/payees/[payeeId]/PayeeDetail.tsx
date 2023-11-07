@@ -11,7 +11,7 @@ const DeletePayeeButton = dynamic(() => import("./DeletePayeeButton"), {
 });
 
 const PayeeDetail = ({ budgetId, payeeId }: Props) => {
-  const { getPayee } = useAppStore();
+  const getPayee = useAppStore((state) => state.getPayee);
 
   return (
     <>

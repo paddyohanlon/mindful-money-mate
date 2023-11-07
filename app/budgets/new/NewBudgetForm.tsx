@@ -37,7 +37,7 @@ const NewBudgetForm = () => {
     payDay: parseInt(payDayDefault),
   };
 
-  const { setBudget } = useAppStore();
+  const setBudget = useAppStore((state) => state.setBudget);
 
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);

@@ -13,7 +13,7 @@ interface Props {
 const DeletePayeeButton = ({ children, budgetId, payeeId }: Props) => {
   const router = useRouter();
 
-  const { deletePayee } = useAppStore();
+  const deletePayee = useAppStore((state) => state.deletePayee);
 
   async function handleClick() {
     if (!window.confirm("You sure?")) return;

@@ -1,5 +1,12 @@
 import { BANK, EUR, FLEXIBLE } from "./constants";
-import { Account, Budget, Category, Payee, Transaction } from "./types";
+import {
+  Account,
+  Assignment,
+  Budget,
+  Category,
+  Payee,
+  Transaction,
+} from "./types";
 
 export function createEmptyBudget(): Budget {
   return {
@@ -17,6 +24,16 @@ export function createEmptyAccount(): Account {
     name: "",
     type: BANK,
     balanceCents: 0,
+  };
+}
+
+export function createEmptyAssignment(): Assignment {
+  return {
+    id: "",
+    categoryId: "",
+    budgetId: "",
+    date: Date.now(),
+    amountCents: 0,
   };
 }
 

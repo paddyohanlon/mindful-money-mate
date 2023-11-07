@@ -13,7 +13,7 @@ const FormattedCurrency = ({
   amountCents,
   isColored = false,
 }: Props) => {
-  const { getBudget } = useAppStore();
+  const getBudget = useAppStore((state) => state.getBudget);
 
   return (
     <>

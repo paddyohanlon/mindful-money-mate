@@ -1,4 +1,3 @@
-import { centsToCurrency, currencyToCents } from "@/app/currency";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import FormLabel from "@/app/components/FormLabel";
 import {
@@ -16,7 +15,8 @@ interface Props {
 const CategoryBalance = ({ category }: Props) => {
   const balanceInputId = "category-balance";
 
-  const { updateCategory, setAssignment } = useAppStore();
+  const updateCategory = useAppStore((state) => state.updateCategory);
+  const setAssignment = useAppStore((state) => state.setAssignment);
 
   const [updatedCategory, setUpdatedCategory] = useState<Category>(category);
 

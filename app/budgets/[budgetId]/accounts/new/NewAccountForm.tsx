@@ -28,7 +28,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
   const typeInputId = "type";
   const balanceInputId = "balance";
 
-  const { setAccount } = useAppStore();
+  const setAccount = useAppStore((state) => state.setAccount);
 
   const [unsavedAccount, setUnsavedAccount] = useState<UnsavedAccount>({
     budgetId,

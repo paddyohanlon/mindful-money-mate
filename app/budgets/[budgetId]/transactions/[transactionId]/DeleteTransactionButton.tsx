@@ -22,13 +22,11 @@ const DeleteTransactionButton = ({
 }: Props) => {
   const router = useRouter();
 
-  const {
-    deleteTransaction,
-    getCategory,
-    getAccount,
-    updateCategory,
-    updateAccount,
-  } = useAppStore();
+  const deleteTransaction = useAppStore((state) => state.deleteTransaction);
+  const getCategory = useAppStore((state) => state.getCategory);
+  const getAccount = useAppStore((state) => state.getAccount);
+  const updateCategory = useAppStore((state) => state.updateCategory);
+  const updateAccount = useAppStore((state) => state.updateAccount);
 
   async function handleClick() {
     if (!window.confirm("You sure?")) return;

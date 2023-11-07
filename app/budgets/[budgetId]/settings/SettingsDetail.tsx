@@ -5,7 +5,7 @@ interface Props {
 }
 
 const SettingsDetail = ({ budgetId }: Props) => {
-  const { getBudget } = useAppStore();
+  const getBudget = useAppStore((state) => state.getBudget);
 
   return (
     <>

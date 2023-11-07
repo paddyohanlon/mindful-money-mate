@@ -3,7 +3,7 @@ import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
-const CategoryBalance = dynamic(
+const CategoryBalanceForm = dynamic(
   () => import("@/app/budgets/[budgetId]/CategoryBalanceForm"),
   {
     ssr: false,
@@ -52,7 +52,7 @@ const TheBudget = ({ budgetId }: Props) => {
                 <td>{category.name}</td>
                 <td className="capitalize">{category.group}</td>
                 <td>
-                  <CategoryBalance category={category} />
+                  <CategoryBalanceForm category={category} />
                 </td>
                 <td>
                   <CategoryAssigned

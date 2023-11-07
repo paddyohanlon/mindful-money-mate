@@ -3,7 +3,9 @@ import { Option } from "@/app/types";
 import useAppStore from "@/app/store";
 
 export function useTransactionOptions(budgetId: string) {
-  const { accounts, categories, payees } = useAppStore();
+  const accounts = useAppStore((state) => state.accounts);
+  const categories = useAppStore((state) => state.categories);
+  const payees = useAppStore((state) => state.payees);
 
   const [accountOptions, setAccountOptions] = useState<Option[]>([
     { value: "", label: "" },

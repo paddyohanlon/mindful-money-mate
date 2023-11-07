@@ -4,7 +4,7 @@ import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "./constants";
 
 const PageClientContent = () => {
-  const { isLoggedIn } = useAppStore();
+  const isLoggedIn = useAppStore((state) => state.isLoggedIn);
 
   const router = useRouter();
 

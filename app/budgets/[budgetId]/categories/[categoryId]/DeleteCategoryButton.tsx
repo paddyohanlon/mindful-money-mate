@@ -13,7 +13,7 @@ interface Props {
 const DeleteCategoryButton = ({ children, budgetId, categoryId }: Props) => {
   const router = useRouter();
 
-  const { deleteCategory } = useAppStore();
+  const deleteCategory = useAppStore((state) => state.deleteCategory);
 
   async function handleClick() {
     if (!window.confirm("You sure?")) return;

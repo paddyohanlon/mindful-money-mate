@@ -15,7 +15,7 @@ interface Props {
 const DeleteBudgetButton = ({ children, id }: Props) => {
   const router = useRouter();
 
-  const { deleteBudget } = useAppStore();
+  const deleteBudget = useAppStore((state) => state.deleteBudget);
 
   async function handleClick() {
     if (!window.confirm("You sure?")) return;

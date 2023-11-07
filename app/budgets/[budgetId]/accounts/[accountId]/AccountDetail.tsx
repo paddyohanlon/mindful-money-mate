@@ -27,7 +27,7 @@ const AccountDetail = ({ budgetId, accountId }: Props) => {
 
   const router = useRouter();
 
-  const { updateAccount } = useAppStore();
+  const updateAccount = useAppStore((state) => state.updateAccount);
 
   const account = useAppStore((state) => state.getAccount(accountId));
 

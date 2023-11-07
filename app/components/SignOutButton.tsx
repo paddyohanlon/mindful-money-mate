@@ -2,7 +2,7 @@ import { rid } from "../services/rethinkid";
 import useAppStore from "../store";
 
 const SignOutButton = () => {
-  const { setIsLoggedIn } = useAppStore();
+  const setIsLoggedIn = useAppStore((state) => state.setIsLoggedIn);
 
   function logOut() {
     rid.logOut();

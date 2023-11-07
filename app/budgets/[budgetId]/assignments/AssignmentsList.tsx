@@ -17,7 +17,7 @@ const AssignmentsList = ({ budgetId }: Props) => {
   const getAssignmentsForBudget = useAppStore((state) =>
     state.assignments.filter((a) => a.budgetId === budgetId)
   );
-  const { getCategory } = useAppStore();
+  const getCategory = useAppStore((state) => state.getCategory);
 
   return (
     <>

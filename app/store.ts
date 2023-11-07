@@ -20,18 +20,19 @@ import {
 } from "./services/rethinkid";
 import {
   createEmptyAccount,
+  createEmptyAssignment,
   createEmptyBudget,
   createEmptyCategory,
   createEmptyPayee,
   createEmptyTransaction,
 } from "./factories";
-import { EUR } from "./constants";
 import {
   SAMPLE_ACCOUNTS,
   SAMPLE_BUDGET,
   SAMPLE_CATEGORIES,
   SAMPLE_PAYEES,
 } from "./sampleData";
+import { CollectionAPI } from "@rethinkid/rethinkid-js-sdk";
 
 interface AppStore {
   isLoading: boolean;
@@ -52,6 +53,7 @@ interface AppStore {
   updateCategory: (category: Category) => void;
   deleteCategory: (id: string) => void;
   assignments: Assignment[];
+  getAssignment: (assignmentId: string) => Assignment;
   setAssignment: (assignment: Assignment) => void;
   payees: Payee[];
   getPayee: (id: string) => Payee;
@@ -98,6 +100,10 @@ const useAppStore = create<AppStore>((set, get) => ({
     set((store) => ({ accounts: store.accounts.filter((a) => a.id !== id) }));
   },
   assignments: [],
+  getAssignment: (id: string) => {
+    const assignment = get().assignments.find((a) => a.id === id);
+    return assignment || createEmptyAssignment();
+  },
   setAssignment: (assignment: Assignment) => {
     set((store) => ({ assignments: [...store.assignments, assignment] }));
   },
@@ -159,29 +165,121 @@ const useAppStore = create<AppStore>((set, get) => ({
     const isLoggedIn = rid.isLoggedIn();
     if (!isLoggedIn) return;
 
-    const budgets = await budgetsCollection.getAll();
-    const accounts = await accountsCollection.getAll();
-    const categories = await categoriesCollection.getAll(
+    const user = await rid.social.getUser();
+
+    // Where is name???
+    console.log("user", user);
+
+    /**
+     * Budgets
+     */
+    const budgets = (await budgetsCollection.getAll(
       {},
       { orderBy: { name: "asc" } }
-    );
-    const assignments = await assignmentsCollection.getAll(
+    )) as Budget[];
+    mirror<Budget>(budgetsCollection, {
+      add: (doc) => {
+        if (get().getBudget(doc.id)) return;
+        get().setBudget(doc);
+      },
+    });
+
+    /** Accounts */
+    const accounts = (await accountsCollection.getAll(
+      {},
+      { orderBy: { name: "asc" } }
+    )) as Account[];
+    mirror<Account>(accountsCollection, {
+      add: (doc) => {
+        if (get().getAccount(doc.id)) return;
+        get().setAccount(doc);
+      },
+      update: (doc) => {
+        get().updateAccount(doc);
+      },
+      remove: (doc) => {
+        get().deleteAccount(doc.id);
+      },
+    });
+
+    /**
+     * Categories
+     */
+    const categories = (await categoriesCollection.getAll(
+      {},
+      { orderBy: { name: "asc" } }
+    )) as Category[];
+    mirror<Category>(categoriesCollection, {
+      add: (doc) => {
+        if (get().getCategory(doc.id)) return;
+        get().setCategory(doc);
+      },
+      update: (doc) => {
+        get().updateCategory(doc);
+      },
+      remove: (doc) => {
+        get().deleteCategory(doc.id);
+      },
+    });
+
+    /**
+     * Assignments
+     */
+    const assignments = (await assignmentsCollection.getAll(
       {},
       {
         orderBy: {
           date: "desc",
         },
       }
-    );
-    const payees = await payeesCollection.getAll();
-    const transactions = await transactionsCollection.getAll(
+    )) as Assignment[];
+    mirror<Assignment>(assignmentsCollection, {
+      add: (doc) => {
+        if (get().getAssignment(doc.id)) return;
+        get().setAssignment(doc);
+      },
+    });
+
+    /**
+     * Payees
+     */
+    const payees = (await payeesCollection.getAll(
+      {},
+      { orderBy: { name: "asc" } }
+    )) as Payee[];
+    mirror<Payee>(payeesCollection, {
+      add: (doc) => {
+        if (get().getPayee(doc.id)) return;
+        get().setPayee(doc);
+      },
+      remove: (doc) => {
+        get().deletePayee(doc.id);
+      },
+    });
+
+    /**
+     * Transactions
+     */
+    const transactions = (await transactionsCollection.getAll(
       {},
       {
         orderBy: {
           date: "desc",
         },
       }
-    );
+    )) as Transaction[];
+    mirror<Transaction>(transactionsCollection, {
+      add: (doc) => {
+        if (get().getTransaction(doc.id)) return;
+        get().setTransaction(doc);
+      },
+      update: (doc) => {
+        get().updateTransaction(doc);
+      },
+      remove: (doc) => {
+        get().deleteTransaction(doc.id);
+      },
+    });
 
     // console.log("- isLoggedIn", isLoggedIn);
     // console.log("- budgets", budgets);
@@ -245,5 +343,38 @@ const useAppStore = create<AppStore>((set, get) => ({
     set(() => ({ payees: SAMPLE_PAYEES }));
   },
 }));
+
+interface Doc {
+  id: any;
+  [key: string]: any;
+}
+
+function mirror<T extends Doc>(
+  collection: CollectionAPI,
+  callbacks: {
+    add?: (doc: T) => void;
+    update?: (doc: T) => void;
+    remove?: (doc: T) => void;
+  } = {}
+) {
+  type Changes = {
+    new_val: T | null;
+    old_val: T | null;
+  };
+
+  const { add, update, remove } = callbacks;
+
+  collection.subscribeAll({}, ({ old_val, new_val }: Changes) => {
+    if (add && old_val === null && new_val) {
+      add(new_val);
+    }
+    if (update && old_val && new_val) {
+      update(new_val);
+    }
+    if (remove && old_val && new_val === null) {
+      remove(old_val);
+    }
+  });
+}
 
 export default useAppStore;

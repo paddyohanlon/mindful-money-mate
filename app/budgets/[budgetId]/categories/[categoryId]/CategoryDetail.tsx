@@ -17,7 +17,7 @@ interface Props {
 }
 
 const CategoryDetail = ({ budgetId, categoryId }: Props) => {
-  const { getCategory } = useAppStore();
+  const getCategory = useAppStore((state) => state.getCategory);
 
   return (
     <>

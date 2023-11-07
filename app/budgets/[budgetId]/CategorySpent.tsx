@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CategorySpent = ({ budgetId, categoryId }: Props) => {
-  const { transactions } = useAppStore();
+  const transactions = useAppStore((state) => state.transactions);
 
   const [spent, setSpent] = useState(0);
 

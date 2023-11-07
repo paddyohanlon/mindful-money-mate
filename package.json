@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rethinkid/rethinkid-js-sdk": "^0.14.0",
+    "@rethinkid/rethinkid-js-sdk": "file:../rethinkid-js-sdk",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
