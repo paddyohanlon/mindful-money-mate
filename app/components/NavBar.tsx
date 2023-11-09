@@ -8,6 +8,7 @@ import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
 import dynamic from "next/dynamic";
 import PopulateDataButton from "./PopulateDataButton";
+import { useParams } from "next/navigation";
 
 const StartFreshButton = dynamic(
   () => import("@/app/components/StartFreshButton"),
@@ -18,6 +19,8 @@ const StartFreshButton = dynamic(
 
 const NavBar = () => {
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);
+  const params = useParams();
+  const user = useAppStore((state) => state.user);
 
   const handleDetailsClick = (event: React.MouseEvent<HTMLDetailsElement>) => {
     const detailsElement = event.currentTarget;
@@ -33,21 +36,29 @@ const NavBar = () => {
     <div className="navbar bg-neutral text-neutral-content z-10 relative">
       <div className="flex-1">
         <Link className="btn btn-ghost normal-case text-xl" href="/">
-          Logo
+          MindfulMoneyMate
         </Link>
       </div>
       <div className="flex-none">
         {isLoggedIn ? (
           <ul className="menu menu-horizontal px-1">
             <li>
-              <ActiveBudgetLink />
+              <span>{user.name}</span>
             </li>
+            {params.budgetId && (
+              <li>
+                <ActiveBudgetLink />
+              </li>
+            )}
             <li>
               <details id="account-details" onClick={handleDetailsClick}>
                 <summary>Menu</summary>
                 <ul className="p-2 bg-base-100 right-0 min-w-max [&>li]:mb-2 [&_.btn]:content-center">
                   <li>
                     <Link href={BUDGETS_PATH}>Budgets</Link>
+                  </li>
+                  <li>
+                    <Link href={`/contacts`}>Contacts</Link>
                   </li>
                   <li className="pb-4">
                     <SignOutButton />

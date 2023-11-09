@@ -1,3 +1,4 @@
+import { User } from "@rethinkid/rethinkid-js-sdk";
 import { BANK, EUR, FLEXIBLE } from "./constants";
 import {
   Account,
@@ -7,6 +8,15 @@ import {
   Payee,
   Transaction,
 } from "./types";
+
+export function createEmptyUser(): User {
+  return {
+    id: "",
+    name: "",
+    email: "",
+    status: "self",
+  };
+}
 
 export function createEmptyBudget(): Budget {
   return {

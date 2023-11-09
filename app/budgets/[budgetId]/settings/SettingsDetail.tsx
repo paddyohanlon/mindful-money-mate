@@ -5,14 +5,14 @@ interface Props {
 }
 
 const SettingsDetail = ({ budgetId }: Props) => {
-  const getBudget = useAppStore((state) => state.getBudget);
+  const budget = useAppStore((state) => state.getBudget(budgetId));
 
   return (
     <>
       <ul>
-        <li>Name: {getBudget(budgetId).name}</li>
-        <li>Currency: {getBudget(budgetId).currency}</li>
-        <li>Pay Day: {getBudget(budgetId).payDay}</li>
+        <li>Name: {budget.name}</li>
+        <li>Currency: {budget.currency}</li>
+        <li>Pay Day: {budget.payDay}</li>
       </ul>
     </>
   );

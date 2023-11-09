@@ -319,7 +319,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
     id: uuidv7(),
     budgetId,
     name: "Ready To Invest",
-    group: FIXED,
+    group: FLEXIBLE,
     balanceCents: 69976,
     notes: "",
   },

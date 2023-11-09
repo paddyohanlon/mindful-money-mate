@@ -6,13 +6,11 @@ import { BUDGETS_PATH } from "../constants";
 const ActiveBudgetLink = () => {
   const params = useParams();
 
-  const getBudget = useAppStore((state) => state.getBudget);
-
-  return (
-    <Link href={`${BUDGETS_PATH}/${getBudget(params.budgetId as string).id}`}>
-      {getBudget(params.budgetId as string).name}
-    </Link>
+  const budget = useAppStore((state) =>
+    state.getBudget(params.budgetId as string)
   );
+
+  return <Link href={`${BUDGETS_PATH}/${budget.id}`}>{budget.name}</Link>;
 };
 
 export default ActiveBudgetLink;

@@ -13,7 +13,7 @@ const FormattedCurrency = ({
   amountCents,
   isColored = false,
 }: Props) => {
-  const getBudget = useAppStore((state) => state.getBudget);
+  const budget = useAppStore((state) => state.getBudget(budgetId));
 
   return (
     <>
@@ -22,7 +22,7 @@ const FormattedCurrency = ({
           ? "€0.00"
           : centsToCurrency(amountCents).toLocaleString(LOCALE, {
               style: "currency",
-              currency: getBudget(budgetId).currency,
+              currency: budget.currency,
             })}
       </span>
     </>

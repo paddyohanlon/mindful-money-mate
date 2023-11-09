@@ -5,11 +5,11 @@ interface Props {
 }
 
 const BudgetDetail = ({ id }: Props) => {
-  const getBudget = useAppStore((state) => state.getBudget);
+  const budget = useAppStore((state) => state.getBudget(id));
 
   return (
     <>
-      <h1 className="sr-only">{getBudget(id).name}</h1>
+      <h1 className="sr-only">{budget.name}</h1>
     </>
   );
 };

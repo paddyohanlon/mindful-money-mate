@@ -25,6 +25,7 @@ import {
   createEmptyCategory,
   createEmptyPayee,
   createEmptyTransaction,
+  createEmptyUser,
 } from "./factories";
 import {
   SAMPLE_ACCOUNTS,
@@ -32,12 +33,13 @@ import {
   SAMPLE_CATEGORIES,
   SAMPLE_PAYEES,
 } from "./sampleData";
-import { CollectionAPI } from "@rethinkid/rethinkid-js-sdk";
+import { CollectionAPI, Contact, User } from "@rethinkid/rethinkid-js-sdk";
 
 interface AppStore {
   isLoading: boolean;
   isLoggedIn: boolean;
   setIsLoggedIn: (status: boolean) => void;
+  user: User;
   budgets: Budget[];
   getBudget: (id: string) => Budget;
   setBudget: (budget: Budget) => void;
@@ -64,6 +66,7 @@ interface AppStore {
   setTransaction: (transaction: Transaction) => void;
   updateTransaction: (transaction: Transaction) => void;
   deleteTransaction: (id: string) => void;
+  contacts: Contact[];
   load: () => void;
   startFresh: () => void;
   populateSampleData: () => void;
@@ -75,6 +78,7 @@ const useAppStore = create<AppStore>((set, get) => ({
   setIsLoggedIn: (status: boolean) => {
     set(() => ({ isLoggedIn: status }));
   },
+  user: createEmptyUser(),
   budgets: [],
   getBudget: (id: string) => {
     const budget = get().budgets.find((b) => b.id === id);
@@ -160,6 +164,7 @@ const useAppStore = create<AppStore>((set, get) => ({
       transactions: store.transactions.filter((t) => t.id !== id),
     }));
   },
+  contacts: [],
   load: async () => {
     // console.log("Load data:");
     const isLoggedIn = rid.isLoggedIn();
@@ -167,8 +172,14 @@ const useAppStore = create<AppStore>((set, get) => ({
 
     const user = await rid.social.getUser();
 
-    // Where is name???
-    console.log("user", user);
+    // rid.permissions.create
+    // rid.permissions.delete
+    // rid.permissions.granted
+    // rid.permissions.links
+    // rid.permissions.list
+    // rid.permissions.onGranted
+    // rid.permissions.openModal
+    // rid.permissions.stopOnGranted
 
     /**
      * Budgets
@@ -209,7 +220,7 @@ const useAppStore = create<AppStore>((set, get) => ({
      */
     const categories = (await categoriesCollection.getAll(
       {},
-      { orderBy: { name: "asc" } }
+      { orderBy: { group: "asc" } }
     )) as Category[];
     // mirror<Category>(categoriesCollection, {
     mirror(categoriesCollection, {
@@ -287,7 +298,11 @@ const useAppStore = create<AppStore>((set, get) => ({
       },
     });
 
+    const contacts = await rid.social.listContacts();
+    set((store) => ({ contacts }));
+
     // console.log("- isLoggedIn", isLoggedIn);
+    console.log("- user", user);
     // console.log("- budgets", budgets);
     // console.log("- accounts", accounts);
     // console.log("- categories", categories);
@@ -297,6 +312,7 @@ const useAppStore = create<AppStore>((set, get) => ({
 
     set(() => ({
       isLoggedIn,
+      user,
       budgets,
       accounts,
       categories,
