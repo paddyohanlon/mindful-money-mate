@@ -380,21 +380,21 @@ function mirror(
   } = {}
 ) {
   type Changes = {
-    new_val: Doc | null;
-    old_val: Doc | null;
+    newDoc: Doc | null;
+    oldDoc: Doc | null;
   };
 
   const { add, update, remove } = callbacks;
 
-  collection.subscribeAll({}, ({ old_val, new_val }: Changes) => {
-    if (add && old_val === null && new_val) {
-      add(new_val);
+  collection.subscribeAll({}, ({ oldDoc, newDoc }: Changes) => {
+    if (add && oldDoc === null && newDoc) {
+      add(newDoc);
     }
-    if (update && old_val && new_val) {
-      update(new_val);
+    if (update && oldDoc && newDoc) {
+      update(newDoc);
     }
-    if (remove && old_val && new_val === null) {
-      remove(old_val);
+    if (remove && oldDoc && newDoc === null) {
+      remove(oldDoc);
     }
   });
 }
@@ -407,21 +407,21 @@ function mirror(
 //   } = {}
 // ) {
 //   type Changes = {
-//     new_val: T | null;
-//     old_val: T | null;
+//     newDoc: T | null;
+//     oldDoc: T | null;
 //   };
 
 //   const { add, update, remove } = callbacks;
 
-//   collection.subscribeAll({}, ({ old_val, new_val }: Changes) => {
-//     if (add && old_val === null && new_val) {
-//       add(new_val);
+//   collection.subscribeAll({}, ({ oldDoc, newDoc }: Changes) => {
+//     if (add && oldDoc === null && newDoc) {
+//       add(newDoc);
 //     }
-//     if (update && old_val && new_val) {
-//       update(new_val);
+//     if (update && oldDoc && newDoc) {
+//       update(newDoc);
 //     }
-//     if (remove && old_val && new_val === null) {
-//       remove(old_val);
+//     if (remove && oldDoc && newDoc === null) {
+//       remove(oldDoc);
 //     }
 //   });
 // }
