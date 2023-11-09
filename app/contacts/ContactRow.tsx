@@ -15,8 +15,14 @@ const ContactRow = ({ contact }: Props) => {
     });
   }, [contact.contactUserId]);
 
-  // Do contacts table, then do social
-  return <li key={contact.id}>{user?.email}</li>;
+  return (
+    <tr key={contact.id}>
+      <td>{user?.name}</td>
+      <td>{user?.email}</td>
+      <td>{contact.connected ? "Yes" : "No"}</td>
+      <td>{contact.requested ? "Yes" : "No"}</td>
+    </tr>
+  );
 };
 
 export default ContactRow;
