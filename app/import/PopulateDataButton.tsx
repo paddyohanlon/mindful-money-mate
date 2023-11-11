@@ -14,7 +14,7 @@ const PopulateDataButton = () => {
       className="btn btn-sm btn-outline btn-neutral"
       onClick={handleClick}
     >
-      Populate Data
+      Populate Sample Data
     </button>
   );
 };

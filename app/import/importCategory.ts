@@ -8,7 +8,7 @@ export async function importCategory(
 ): Promise<void> {
   const name = csvRow["Category Name"];
   const userInputGroup = csvRow["Category Group"];
-  const currencyStr = csvRow["Category Amount"];
+  const currencyStr = csvRow["Category Balance"];
   const notes = csvRow["Category Notes"];
 
   if (!name) return;

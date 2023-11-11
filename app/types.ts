@@ -19,10 +19,10 @@ export type Account = {
 export type UnsavedAccount = Omit<Account, "id">;
 
 export enum AccountTypes {
-  CHECKING = "checking",
-  SAVINGS = "savings",
-  CASH = "cash",
-  CREDIT = "credit",
+  CHECKING = "Checking",
+  SAVINGS = "Savings",
+  CASH = "Cash",
+  CREDIT = "Credit",
 }
 
 export type Category = {
@@ -94,6 +94,6 @@ export interface CSVRow {
   "Account Balance": string;
   "Category Name": string;
   "Category Group": string;
-  "Category Amount": string;
+  "Category Balance": string;
   "Category Notes": string;
 }

@@ -23,14 +23,31 @@ const ImportPage = () => {
   return (
     <>
       <ContainerSmall>
-        <div className="flex justify-between items-baseline gap-4 py-2">
-          <h1 className="text-2xl">Import Data</h1>
-          <div>
-            <PopulateDataButton />
-            <StartFreshButton />
-          </div>
+        <div className="prose pb-8">
+          <h1>Import Data</h1>
         </div>
         <ImportCSV />
+        <div className="flex justify-between items-baseline gap-4 py-16">
+          <PopulateDataButton />
+          <StartFreshButton />
+        </div>
+        <div className="prose">
+          <h2>CSV Headings</h2>
+          <ul>
+            <li>
+              <b>Categories:</b> Category Name, Category Group (Values: Fixed
+              Costs Guilt-Free Spending Savings Investments Credit Card
+              Payments), Category Balance, Category Notes.
+            </li>
+            <li>
+              <b>Account:</b> Account Name, Account Type (Values: Checking,
+              Savings, Cash, Credit), Balance (without currency symbol).
+            </li>
+            <li>
+              <b>Payees:</b> Payee Name.
+            </li>
+          </ul>
+        </div>
       </ContainerSmall>
     </>
   );
