@@ -70,7 +70,7 @@ const FormInputCurrency = ({
     // If the value is a valid number, also call the onChange prop
     const amountCurrency = parseFloat(value);
 
-    if (isNaN(amountCurrency)) return;
+    if (Number.isNaN(amountCurrency)) return;
     const max = 100000;
     if (amountCurrency > 100000) {
       setAmountError(`Enter a value less than ${max}`);

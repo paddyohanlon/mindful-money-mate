@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rethinkid/rethinkid-js-sdk": "^0.14.2",
+    "@rethinkid/rethinkid-js-sdk": "file:../rethinkid-js-sdk",
     "next": "13.5.4",
+    "papaparse": "^5.4.1",
     "react": "^18",
     "react-dom": "^18",
     "uuidv7": "^0.6.3",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20",
+    "@types/papaparse": "^5.3.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",

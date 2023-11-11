@@ -17,17 +17,17 @@ interface Props {
 }
 
 const CategoryDetail = ({ budgetId, categoryId }: Props) => {
-  const getCategory = useAppStore((state) => state.getCategory);
+  const category = useAppStore((state) => state.getCategory(budgetId));
 
   return (
     <>
-      <h1>{getCategory(categoryId).name}</h1>
-      <p>{getCategory(categoryId).group}</p>
-      <p>{getCategory(categoryId).notes}</p>
+      <h1>{category.name}</h1>
+      <p>{category.group}</p>
+      <p>{category.notes}</p>
       <p>
         <FormattedCurrency
           budgetId={budgetId}
-          amountCents={getCategory(categoryId).balanceCents}
+          amountCents={category.balanceCents}
         />
       </p>
       <DeleteCategoryButton budgetId={budgetId} categoryId={categoryId}>

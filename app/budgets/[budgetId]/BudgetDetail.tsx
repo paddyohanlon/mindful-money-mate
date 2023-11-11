@@ -1,4 +1,5 @@
 import useAppStore from "@/app/store";
+import dynamic from "next/dynamic";
 
 interface Props {
   id: string;

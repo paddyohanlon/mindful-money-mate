@@ -6,16 +6,7 @@ import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
 import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
-import dynamic from "next/dynamic";
-import PopulateDataButton from "./PopulateDataButton";
 import { useParams } from "next/navigation";
-
-const StartFreshButton = dynamic(
-  () => import("@/app/components/StartFreshButton"),
-  {
-    ssr: false,
-  }
-);
 
 const NavBar = () => {
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);
@@ -58,16 +49,13 @@ const NavBar = () => {
                     <Link href={BUDGETS_PATH}>Budgets</Link>
                   </li>
                   <li>
-                    <Link href={`/contacts`}>Contacts</Link>
+                    <Link href="/contacts">Contacts</Link>
                   </li>
-                  <li className="pb-4">
+                  <li>
+                    <Link href="/import">Import</Link>
+                  </li>
+                  <li>
                     <SignOutButton />
-                  </li>
-                  <li>
-                    <PopulateDataButton />
-                  </li>
-                  <li>
-                    <StartFreshButton />
                   </li>
                 </ul>
               </details>

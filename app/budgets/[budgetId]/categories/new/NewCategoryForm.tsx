@@ -4,28 +4,24 @@ import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
-import { Assignment, Category, UnsavedAssignment } from "@/app/types";
+import {
+  Assignment,
+  Category,
+  CategoryGroups,
+  UnsavedAssignment,
+  UnsavedCategory,
+} from "@/app/types";
 import {
   assignmentsCollection,
   categoriesCollection,
 } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import {
-  BUDGETS_PATH,
-  CREDIT_CARD_PAYMENTS,
-  FIXED,
-  FLEXIBLE,
-  SAVINGS,
-  SINK_FUNDS,
-  THIS_MONTH_ONLY,
-} from "@/app/constants";
+import { BUDGETS_PATH } from "@/app/constants";
 import { useRouter } from "next/navigation";
 
 interface Props {
   budgetId: string;
 }
-
-type UnsavedCategory = Omit<Category, "id">;
 
 const NewCategoryForm = ({ budgetId }: Props) => {
   const router = useRouter();
@@ -35,14 +31,21 @@ const NewCategoryForm = ({ budgetId }: Props) => {
   const balanceInputId = "balance";
   const notesInputId = "notes";
 
-  const groupOptions = [
-    { value: FLEXIBLE, label: "Flexible" },
-    { value: FIXED, label: "Fixed" },
-    { value: THIS_MONTH_ONLY, label: "This Month Only" },
-    { value: SAVINGS, label: "Savings" },
-    { value: SINK_FUNDS, label: "Sink Funds" },
-    { value: CREDIT_CARD_PAYMENTS, label: "Credit Card Payments" },
-  ];
+  // const groupOptions = [
+  //   { value: FLEXIBLE, label: "Flexible" },
+  //   { value: FIXED, label: "Fixed" },
+  //   { value: THIS_MONTH_ONLY, label: "This Month Only" },
+  //   { value: SAVINGS, label: "Savings" },
+  //   { value: SINK_FUNDS, label: "Sink Funds" },
+  //   { value: CREDIT_CARD_PAYMENTS, label: "Credit Card Payments" },
+  // ];
+
+  const groupOptions = [];
+
+  for (let member in CategoryGroups) {
+    const key = member as keyof typeof CategoryGroups;
+    groupOptions.push({ value: member, label: CategoryGroups[key] });
+  }
 
   const setCategory = useAppStore((state) => state.setCategory);
   const setAssignment = useAppStore((state) => state.setAssignment);
@@ -50,7 +53,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
   const [unsavedCategory, setUnsavedCategory] = useState<UnsavedCategory>({
     budgetId,
     name: "",
-    group: FLEXIBLE,
+    group: CategoryGroups.FIXED_COSTS,
     balanceCents: 0,
     notes: "",
   });
@@ -111,9 +114,10 @@ const NewCategoryForm = ({ budgetId }: Props) => {
           id={groupInputId}
           options={groupOptions}
           value={unsavedCategory.group}
-          onChange={(value) =>
-            setUnsavedCategory({ ...unsavedCategory, group: value })
-          }
+          onChange={(value) => {
+            const group = value as CategoryGroups;
+            setUnsavedCategory({ ...unsavedCategory, group });
+          }}
         />
       </FormControl>
       <FormControl>

@@ -4,22 +4,15 @@ import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
-import { Account } from "@/app/types";
+import { Account, AccountTypes, UnsavedAccount } from "@/app/types";
 import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import {
-  ACCOUNT_TYPE_OPTIONS,
-  BANK,
-  BUDGETS_PATH,
-  CASH,
-} from "@/app/constants";
+import { ACCOUNT_TYPE_OPTIONS, BUDGETS_PATH } from "@/app/constants";
 import { useRouter } from "next/navigation";
 
 interface Props {
   budgetId: string;
 }
-
-type UnsavedAccount = Omit<Account, "id">;
 
 const NewAccountForm = ({ budgetId }: Props) => {
   const router = useRouter();
@@ -33,7 +26,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
   const [unsavedAccount, setUnsavedAccount] = useState<UnsavedAccount>({
     budgetId,
     name: "",
-    type: BANK,
+    type: AccountTypes.CHECKING,
     balanceCents: 0,
   });
 
@@ -75,9 +68,10 @@ const NewAccountForm = ({ budgetId }: Props) => {
           id={typeInputId}
           options={ACCOUNT_TYPE_OPTIONS}
           value={unsavedAccount.type}
-          onChange={(value) =>
-            setUnsavedAccount({ ...unsavedAccount, type: value })
-          }
+          onChange={(value) => {
+            const type = value as AccountTypes;
+            setUnsavedAccount({ ...unsavedAccount, type });
+          }}
         />
       </FormControl>
       <FormControl>

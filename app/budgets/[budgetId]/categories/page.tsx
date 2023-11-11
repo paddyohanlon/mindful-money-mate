@@ -15,15 +15,13 @@ interface Props {
 const CategoriesPage = ({ params: { budgetId } }: Props) => {
   return (
     <>
-      <div className="flex justify-between items-baseline gap-4">
-        <h1 className="sr-only">Categories</h1>
-        <Link
-          href={`${BUDGETS_PATH}/${budgetId}/categories/new`}
-          className="btn btn-sm btn-neutral"
-        >
-          New Category
-        </Link>
-      </div>
+      <h1 className="sr-only">Categories</h1>
+      <Link
+        href={`${BUDGETS_PATH}/${budgetId}/categories/new`}
+        className="btn btn-sm btn-neutral"
+      >
+        New Category
+      </Link>
       <TheBudget budgetId={budgetId} />
     </>
   );

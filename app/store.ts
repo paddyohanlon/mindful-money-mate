@@ -302,7 +302,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     set((store) => ({ contacts }));
 
     // console.log("- isLoggedIn", isLoggedIn);
-    console.log("- user", user);
+    // console.log("- user", user);
     // console.log("- budgets", budgets);
     // console.log("- accounts", accounts);
     // console.log("- categories", categories);
@@ -398,32 +398,5 @@ function mirror(
     }
   });
 }
-// function mirror<T extends Doc>(
-//   collection: CollectionAPI,
-//   callbacks: {
-//     add?: (doc: T) => void;
-//     update?: (doc: T) => void;
-//     remove?: (doc: T) => void;
-//   } = {}
-// ) {
-//   type Changes = {
-//     newDoc: T | null;
-//     oldDoc: T | null;
-//   };
-
-//   const { add, update, remove } = callbacks;
-
-//   collection.subscribeAll({}, ({ oldDoc, newDoc }: Changes) => {
-//     if (add && oldDoc === null && newDoc) {
-//       add(newDoc);
-//     }
-//     if (update && oldDoc && newDoc) {
-//       update(newDoc);
-//     }
-//     if (remove && oldDoc && newDoc === null) {
-//       remove(oldDoc);
-//     }
-//   });
-// }
 
 export default useAppStore;

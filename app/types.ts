@@ -12,17 +12,25 @@ export type Account = {
   id: string;
   budgetId: string;
   name: string;
-  /** BANK | CASH */
-  type: string; // a constant BANK | CASH, gives 'not string' type error on select input
+  type: AccountTypes;
   balanceCents: number;
 };
+
+export type UnsavedAccount = Omit<Account, "id">;
+
+export enum AccountTypes {
+  CHECKING = "checking",
+  SAVINGS = "savings",
+  CASH = "cash",
+  CREDIT = "credit",
+}
 
 export type Category = {
   id: string;
   budgetId: string;
   name: string;
   // order: number;
-  group: string; // See groups in @/app/constants.ts
+  group: CategoryGroups;
   balanceCents: number;
   notes: string;
   // isPartOfDailySpend: boolean;
@@ -30,6 +38,16 @@ export type Category = {
   // targetMonthly
   // targetTotal
 };
+
+export type UnsavedCategory = Omit<Category, "id">;
+
+export enum CategoryGroups {
+  FIXED_COSTS = "Fixed Costs",
+  GUILT_FREE_SPENDING = "Guilt-Free Spending",
+  SAVINGS = "Savings",
+  INVESTMENTS = "Investments",
+  CREDIT_CARD_PAYMENTS = "Credit Card Payments",
+}
 
 // when updating category balance, create an assignment newBalance - currentBalance
 // display sum for category based on last to next pay days.
@@ -60,7 +78,6 @@ export type Transaction = {
   payeeId: string;
   /** Value is a timestamp */
   date: number;
-  /** Value is in cents */
   amountCents: number;
   memo: string;
 };
@@ -69,3 +86,14 @@ export type Option = {
   value: string;
   label: string;
 };
+
+export interface CSVRow {
+  "Payee Name": string;
+  "Account Name": string;
+  "Account Type": AccountTypes;
+  "Account Balance": string;
+  "Category Name": string;
+  "Category Group": string;
+  "Category Amount": string;
+  "Category Notes": string;
+}

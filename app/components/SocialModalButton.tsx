@@ -1,11 +1,11 @@
 import { rid } from "../services/rethinkid";
 
 const SocialModalButton = () => {
-  function openSocialModal() {
+  function handleClick() {
     rid.social.openModal();
   }
   return (
-    <button className="btn btn-sm btn-neutral" onClick={openSocialModal}>
+    <button className="btn btn-sm btn-neutral" onClick={handleClick}>
       Manage Contacts
     </button>
   );

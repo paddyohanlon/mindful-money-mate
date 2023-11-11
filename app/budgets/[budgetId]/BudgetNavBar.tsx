@@ -35,6 +35,7 @@ const BudgetNavBar = ({ budgetId }: Props) => {
     { title: "Payees", path: `${parentPath}/payees` },
     { title: "Accounts", path: `${parentPath}/accounts` },
     { title: "Settings", path: `${parentPath}/settings` },
+    { title: "Sharing", path: `${parentPath}/sharing` },
   ];
 
   const pathName = usePathname();

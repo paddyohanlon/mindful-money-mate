@@ -1,10 +1,12 @@
 import { User } from "@rethinkid/rethinkid-js-sdk";
-import { BANK, EUR, FLEXIBLE } from "./constants";
+import { EUR } from "./constants";
 import {
   Account,
+  AccountTypes,
   Assignment,
   Budget,
   Category,
+  CategoryGroups,
   Payee,
   Transaction,
 } from "./types";
@@ -32,7 +34,7 @@ export function createEmptyAccount(): Account {
     id: "",
     budgetId: "",
     name: "",
-    type: BANK,
+    type: AccountTypes.CHECKING,
     balanceCents: 0,
   };
 }
@@ -52,7 +54,7 @@ export function createEmptyCategory(): Category {
     id: "",
     budgetId: "",
     name: "",
-    group: FLEXIBLE,
+    group: CategoryGroups.FIXED_COSTS,
     balanceCents: 0,
     notes: "",
   };
