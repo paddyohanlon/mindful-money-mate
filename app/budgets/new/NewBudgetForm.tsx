@@ -14,6 +14,8 @@ import useAppStore from "@/app/store";
 const NewBudgetForm = () => {
   const router = useRouter();
 
+  const userId = useAppStore((state) => state.user.id);
+
   const nameInputId = "name";
   const currencyInputId = "currency";
   const payDayInputId = "pay-day";
@@ -35,6 +37,7 @@ const NewBudgetForm = () => {
     name: "",
     currency: currencyDefault,
     payDay: parseInt(payDayDefault),
+    ownerId: userId,
   };
 
   const setBudget = useAppStore((state) => state.setBudget);

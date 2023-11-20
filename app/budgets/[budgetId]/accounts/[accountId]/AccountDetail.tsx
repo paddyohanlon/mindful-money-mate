@@ -7,7 +7,7 @@ import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { Account, AccountTypes } from "@/app/types";
-import { ACCOUNT_TYPE_OPTIONS, BUDGETS_PATH } from "@/app/constants";
+import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
 import { accountsCollection } from "@/app/services/rethinkid";
 import { useRouter } from "next/navigation";
 
@@ -65,7 +65,7 @@ const AccountDetail = ({ budgetId, accountId }: Props) => {
           <FormLabel htmlFor={typeInputId}>Type</FormLabel>
           <FormSelect
             id={typeInputId}
-            options={ACCOUNT_TYPE_OPTIONS}
+            options={createOptionsFromStrEnum(AccountTypes)}
             value={updatedAccount.type}
             onChange={(value) => {
               const type = value as AccountTypes;

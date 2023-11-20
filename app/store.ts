@@ -17,6 +17,7 @@ import {
   payeesCollection,
   transactionsCollection,
   assignmentsCollection,
+  BUDGETS_COLLECTION_NAME,
 } from "./services/rethinkid";
 import {
   createEmptyAccount,
@@ -33,7 +34,20 @@ import {
   SAMPLE_CATEGORIES,
   SAMPLE_PAYEES,
 } from "./sampleData";
-import { CollectionAPI, Contact, User } from "@rethinkid/rethinkid-js-sdk";
+import {
+  CollectionAPI,
+  Contact,
+  GrantedPermission,
+  Link,
+  OrderByType,
+  Permission,
+  User,
+} from "@rethinkid/rethinkid-js-sdk";
+
+type Changes = {
+  newDoc: Doc | null;
+  oldDoc: Doc | null;
+};
 
 interface AppStore {
   isLoading: boolean;
@@ -67,6 +81,17 @@ interface AppStore {
   updateTransaction: (transaction: Transaction) => void;
   deleteTransaction: (id: string) => void;
   contacts: Contact[];
+  setContact: (contact: Contact) => void;
+  updateContact: (contact: Contact) => void;
+  deleteContact: (id: string) => void;
+  permissions: Permission[];
+  setPermission: (permission: Permission) => void;
+  deletePermission: (id: string) => void;
+  grantedPermissions: GrantedPermission[];
+  deleteGrantedPermission: (id: string) => void;
+  links: Link[];
+  setLink: (link: Link) => void;
+  deleteLink: (id: string) => void;
   load: () => void;
   startFresh: () => void;
   populateSampleData: () => void;
@@ -165,6 +190,39 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
   },
   contacts: [],
+  setContact: (contact: Contact) => {
+    set((store) => ({ contacts: [...store.contacts, contact] }));
+  },
+  updateContact: (contact: Contact) => {
+    set((store) => ({
+      contacts: store.contacts.map((c) => (c.id === contact.id ? contact : c)),
+    }));
+  },
+  deleteContact: (id: string) => {
+    set((store) => ({ contacts: store.contacts.filter((c) => c.id !== id) }));
+  },
+  permissions: [],
+  setPermission: (permission) => {
+    set((store) => ({ permissions: [...store.permissions, permission] }));
+  },
+  deletePermission: (id: string) => {
+    set((store) => ({
+      permissions: store.permissions.filter((t) => t.id !== id),
+    }));
+  },
+  grantedPermissions: [],
+  deleteGrantedPermission: (id: string) => {
+    set((store) => ({
+      grantedPermissions: store.grantedPermissions.filter((g) => g.id !== id),
+    }));
+  },
+  links: [],
+  setLink: (link: Link) => {
+    set((store) => ({ links: [...store.links, link] }));
+  },
+  deleteLink: (id: string) => {
+    set((store) => ({ links: store.links.filter((l) => l.id !== id) }));
+  },
   load: async () => {
     // console.log("Load data:");
     const isLoggedIn = rid.isLoggedIn();
@@ -172,23 +230,13 @@ const useAppStore = create<AppStore>((set, get) => ({
 
     const user = await rid.social.getUser();
 
-    // rid.permissions.create
-    // rid.permissions.delete
-    // rid.permissions.granted
-    // rid.permissions.links
-    // rid.permissions.list
-    // rid.permissions.onGranted
-    // rid.permissions.openModal
-    // rid.permissions.stopOnGranted
-
     /**
      * Budgets
      */
     const budgets = (await budgetsCollection.getAll(
       {},
-      { orderBy: { name: "asc" } }
+      { orderBy: { name: OrderByType.ASC } }
     )) as Budget[];
-    // mirror<Budget>(budgetsCollection, {
     mirror(budgetsCollection, {
       add: (doc) => {
         if (get().getBudget(doc.id)) return;
@@ -196,12 +244,13 @@ const useAppStore = create<AppStore>((set, get) => ({
       },
     });
 
-    /** Accounts */
+    /**
+     * Accounts
+     */
     const accounts = (await accountsCollection.getAll(
       {},
-      { orderBy: { name: "asc" } }
+      { orderBy: { name: OrderByType.ASC } }
     )) as Account[];
-    // mirror<Account>(accountsCollection, {
     mirror(accountsCollection, {
       add: (doc) => {
         if (get().getAccount(doc.id)) return;
@@ -220,9 +269,8 @@ const useAppStore = create<AppStore>((set, get) => ({
      */
     const categories = (await categoriesCollection.getAll(
       {},
-      { orderBy: { group: "asc" } }
+      { orderBy: { group: OrderByType.ASC } }
     )) as Category[];
-    // mirror<Category>(categoriesCollection, {
     mirror(categoriesCollection, {
       add: (doc) => {
         if (get().getCategory(doc.id)) return;
@@ -243,11 +291,10 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       {
         orderBy: {
-          date: "desc",
+          date: OrderByType.DESC,
         },
       }
     )) as Assignment[];
-    // mirror<Assignment>(assignmentsCollection, {
     mirror(assignmentsCollection, {
       add: (doc) => {
         if (get().getAssignment(doc.id)) return;
@@ -260,9 +307,8 @@ const useAppStore = create<AppStore>((set, get) => ({
      */
     const payees = (await payeesCollection.getAll(
       {},
-      { orderBy: { name: "asc" } }
+      { orderBy: { name: OrderByType.ASC } }
     )) as Payee[];
-    // mirror<Payee>(payeesCollection, {
     mirror(payeesCollection, {
       add: (doc) => {
         if (get().getPayee(doc.id)) return;
@@ -280,11 +326,10 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       {
         orderBy: {
-          date: "desc",
+          date: OrderByType.DESC,
         },
       }
     )) as Transaction[];
-    // mirror<Transaction>(transactionsCollection, {
     mirror(transactionsCollection, {
       add: (doc) => {
         if (get().getTransaction(doc.id)) return;
@@ -298,8 +343,154 @@ const useAppStore = create<AppStore>((set, get) => ({
       },
     });
 
-    const contacts = await rid.social.listContacts();
-    set((store) => ({ contacts }));
+    /**
+     * Contacts
+     */
+    const contacts = await rid.social.contacts.list();
+    set(() => ({ contacts }));
+    rid.social.contacts.subscribe((changes: Changes) => {
+      const { newDoc, oldDoc } = changes;
+      if (newDoc && !oldDoc) {
+        const contact = newDoc as Contact;
+        const existingContact = get().contacts.find((c) => c.id === contact.id);
+        if (existingContact) return;
+        get().setContact(contact);
+      }
+      if (newDoc && oldDoc) {
+        const contact = newDoc as Contact;
+        get().updateContact(contact);
+      }
+      if (!newDoc && oldDoc) {
+        const contact = oldDoc as Contact;
+        get().deleteContact(contact.id);
+      }
+    });
+
+    /**
+     * Permissions
+     */
+    const permissions = await rid.permissions.list({
+      collectionName: BUDGETS_COLLECTION_NAME,
+    });
+    set(() => ({ permissions }));
+
+    /**
+     * Granted Permissions
+     */
+    const grantedPermissions = await rid.permissions.granted.list({
+      collectionName: BUDGETS_COLLECTION_NAME,
+    });
+    set(() => ({ grantedPermissions }));
+
+    // rid.permissions.onGranted({ collectionName: BUDGETS_COLLECTION_NAME }, )
+
+    // Subscribe
+    rid.permissions.granted.subscribe(
+      { collectionName: BUDGETS_COLLECTION_NAME },
+      async ({ oldDoc, newDoc }: Changes) => {
+        // Add
+        if (oldDoc === null && newDoc) {
+          const grantedPermission = newDoc as GrantedPermission;
+
+          const existingGrantedPermission = get().grantedPermissions.find(
+            (g) => g.id === grantedPermission.id
+          );
+
+          if (existingGrantedPermission) return;
+
+          set((store) => ({
+            grantedPermissions: [
+              ...store.grantedPermissions,
+              grantedPermission,
+            ],
+          }));
+
+          const budget = await getBudgetFromGrantedPermission(
+            grantedPermission
+          );
+          if (!budget) return;
+
+          const existingBudget = get().budgets.find((b) => b.id === budget.id);
+          if (existingBudget) return;
+          set((store) => ({ budgets: [...store.budgets, budget] }));
+        }
+        // Remove
+        if (oldDoc && newDoc === null) {
+          const grantedPermission = oldDoc as GrantedPermission;
+          get().deleteGrantedPermission(grantedPermission.id);
+
+          const budgetId = grantedPermission.permission.filter?.id as string;
+          if (!budgetId) return;
+          get().deleteBudget(budgetId);
+        }
+      }
+    );
+
+    async function getBudgetFromGrantedPermission({
+      ownerId,
+      permission,
+    }: GrantedPermission): Promise<Budget | undefined> {
+      const budgetId = permission.filter?.id as string;
+      if (!budgetId) return;
+
+      const budget = (await rid
+        .collection(BUDGETS_COLLECTION_NAME, { userId: ownerId })
+        .getOne(budgetId)) as Budget;
+
+      const existingBudget = get().budgets.find((b) => b.id === budgetId);
+
+      if (existingBudget) return;
+
+      return budget;
+    }
+
+    /**
+     * Budgets shared with me
+     */
+    for (const g of grantedPermissions) {
+      const budget = await getBudgetFromGrantedPermission(g);
+      if (!budget) continue;
+      console.log("-- budgetSharedWithMe", budget);
+
+      const existingLoadBudget = budgets.find((b) => b.id === budget.id);
+      if (existingLoadBudget) continue;
+      budgets.push(budget);
+    }
+
+    /**
+     * Links
+     */
+    const links = await rid.permissions.links.list({
+      collectionName: BUDGETS_COLLECTION_NAME,
+    });
+    set(() => ({ links }));
+    // subscribe
+    rid.permissions.links.subscribe(
+      { collectionName: BUDGETS_COLLECTION_NAME },
+      ({ oldDoc, newDoc }) => {
+        // add
+        if (!oldDoc && newDoc) {
+          const link = newDoc as Link;
+          console.log("added link", link);
+          const existingLink = get().links.find((l) => l.id === link.id);
+          if (existingLink) return;
+          get().setLink(link);
+        }
+        if (oldDoc && newDoc) {
+          const link = newDoc as Link;
+          console.log("updated link", link);
+          set((store) => ({
+            links: store.links.map((l) => (l.id === link.id ? link : l)),
+          }));
+        }
+        if (oldDoc && !newDoc) {
+          const link = oldDoc as Link;
+          console.log("deleted link", link);
+          get().deleteLink(link.id);
+        }
+        // delete
+      }
+    );
 
     // console.log("- isLoggedIn", isLoggedIn);
     // console.log("- user", user);
@@ -309,6 +500,10 @@ const useAppStore = create<AppStore>((set, get) => ({
     // console.log("- assignments", assignments);
     // console.log("- payees", payees);
     // console.log("- transactions", transactions);
+    // console.log("- contacts", contacts);
+    // console.log("- permissions", permissions);
+    // console.log("- grantedPermissions", grantedPermissions);
+    // console.log("- links", links);
 
     set(() => ({
       isLoggedIn,
@@ -343,8 +538,12 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   populateSampleData: async () => {
     // Budget
-    await budgetsCollection.insertOne(SAMPLE_BUDGET);
-    set(() => ({ budgets: [SAMPLE_BUDGET] }));
+    const sampleBudget = {
+      ...SAMPLE_BUDGET,
+      ownerId: (await rid.social.getUser()).id,
+    };
+    await budgetsCollection.insertOne(sampleBudget);
+    set(() => ({ budgets: [sampleBudget] }));
 
     // Accounts
     for (const account of SAMPLE_ACCOUNTS) {
@@ -379,11 +578,6 @@ function mirror(
     remove?: (doc: Doc) => void;
   } = {}
 ) {
-  type Changes = {
-    newDoc: Doc | null;
-    oldDoc: Doc | null;
-  };
-
   const { add, update, remove } = callbacks;
 
   collection.subscribeAll({}, ({ oldDoc, newDoc }: Changes) => {

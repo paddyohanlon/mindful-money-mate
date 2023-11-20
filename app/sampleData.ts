@@ -16,6 +16,7 @@ export const SAMPLE_BUDGET: Budget = {
   name: "My Budget",
   currency: EUR,
   payDay: 21,
+  ownerId: "",
 };
 
 export const SAMPLE_PAYEES: Payee[] = [

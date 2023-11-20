@@ -13,10 +13,8 @@ const OnLogin = () => {
     };
 
     if (rid.isLoggedIn()) {
-      console.log("already logged in");
       onLogin();
     } else {
-      console.log("set onLogin callback");
       rid.onLogin(async () => {
         onLogin();
       });

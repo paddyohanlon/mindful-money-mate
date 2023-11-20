@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rethinkid/rethinkid-js-sdk": "^0.14.2",
+    "@rethinkid/rethinkid-js-sdk": "^0.14.3",
     "next": "13.5.4",
     "papaparse": "^5.4.1",
     "react": "^18",

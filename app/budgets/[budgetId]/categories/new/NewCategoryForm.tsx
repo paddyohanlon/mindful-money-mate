@@ -16,7 +16,7 @@ import {
   categoriesCollection,
 } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import { BUDGETS_PATH } from "@/app/constants";
+import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -30,22 +30,6 @@ const NewCategoryForm = ({ budgetId }: Props) => {
   const groupInputId = "group";
   const balanceInputId = "balance";
   const notesInputId = "notes";
-
-  // const groupOptions = [
-  //   { value: FLEXIBLE, label: "Flexible" },
-  //   { value: FIXED, label: "Fixed" },
-  //   { value: THIS_MONTH_ONLY, label: "This Month Only" },
-  //   { value: SAVINGS, label: "Savings" },
-  //   { value: SINK_FUNDS, label: "Sink Funds" },
-  //   { value: CREDIT_CARD_PAYMENTS, label: "Credit Card Payments" },
-  // ];
-
-  const groupOptions = [];
-
-  for (let member in CategoryGroups) {
-    const key = member as keyof typeof CategoryGroups;
-    groupOptions.push({ value: member, label: CategoryGroups[key] });
-  }
 
   const setCategory = useAppStore((state) => state.setCategory);
   const setAssignment = useAppStore((state) => state.setAssignment);
@@ -109,10 +93,10 @@ const NewCategoryForm = ({ budgetId }: Props) => {
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={groupInputId}>Type</FormLabel>
+        <FormLabel htmlFor={groupInputId}>Group</FormLabel>
         <FormSelect
           id={groupInputId}
-          options={groupOptions}
+          options={createOptionsFromStrEnum(CategoryGroups)}
           value={unsavedCategory.group}
           onChange={(value) => {
             const group = value as CategoryGroups;

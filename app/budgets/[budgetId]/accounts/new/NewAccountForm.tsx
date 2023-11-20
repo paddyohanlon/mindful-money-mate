@@ -7,7 +7,7 @@ import { FormEvent, useState } from "react";
 import { Account, AccountTypes, UnsavedAccount } from "@/app/types";
 import { accountsCollection } from "@/app/services/rethinkid";
 import useAppStore from "@/app/store";
-import { ACCOUNT_TYPE_OPTIONS, BUDGETS_PATH } from "@/app/constants";
+import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -66,7 +66,7 @@ const NewAccountForm = ({ budgetId }: Props) => {
         <FormLabel htmlFor={typeInputId}>Type</FormLabel>
         <FormSelect
           id={typeInputId}
-          options={ACCOUNT_TYPE_OPTIONS}
+          options={createOptionsFromStrEnum(AccountTypes)}
           value={unsavedAccount.type}
           onChange={(value) => {
             const type = value as AccountTypes;

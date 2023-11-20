@@ -1,8 +1,6 @@
-import {
-  PermissionTemplate,
-  PermissionType,
-} from "@rethinkid/rethinkid-js-sdk/dist/types/types";
-import { rid } from "../services/rethinkid";
+import { PermissionType } from "@rethinkid/rethinkid-js-sdk";
+import type { PermissionTemplate } from "@rethinkid/rethinkid-js-sdk";
+import { BUDGETS_COLLECTION_NAME, rid } from "../../../services/rethinkid";
 
 interface Props {
   budgetId: string;
@@ -11,14 +9,17 @@ interface Props {
 const PermissionsModalButton = ({ budgetId }: Props) => {
   function handleClick() {
     const permissionTemplate: PermissionTemplate = {
-      collectionName: "budgets",
+      collectionName: BUDGETS_COLLECTION_NAME,
       types: [PermissionType.READ],
+      filter: {
+        id: budgetId,
+      },
     };
     rid.permissions.openModal(permissionTemplate);
   }
   return (
     <button className="btn btn-sm btn-neutral" onClick={handleClick}>
-      Manage Sharing
+      Share via Modal
     </button>
   );
 };

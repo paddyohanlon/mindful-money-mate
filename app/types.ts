@@ -1,8 +1,13 @@
 export type Budget = {
   id: string;
   name: string;
-  currency: string;
+  currency: string; // TODO enum
   payDay: number;
+  /**
+   * My user ID, if mine
+   * User ID of sharer, if shared
+   */
+  ownerId: string;
   // isPrimary: boolean;
 };
 
@@ -96,4 +101,9 @@ export interface CSVRow {
   "Category Group": string;
   "Category Balance": string;
   "Category Notes": string;
+}
+
+export enum Roles {
+  VIEWER = "Viewer",
+  EDITOR = "Editor",
 }

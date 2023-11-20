@@ -34,6 +34,9 @@ const NavBar = () => {
         {isLoggedIn ? (
           <ul className="menu menu-horizontal px-1">
             <li>
+              <span>{user.id}</span>
+            </li>
+            <li>
               <span>{user.name}</span>
             </li>
             {params.budgetId && (
