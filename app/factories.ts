@@ -16,7 +16,6 @@ export function createEmptyUser(): User {
     id: "",
     name: "",
     email: "",
-    status: "self",
   };
 }
 
@@ -26,6 +25,7 @@ export function createEmptyBudget(): Budget {
     name: "",
     currency: EUR,
     payDay: 1,
+    ownerId: "",
   };
 }
 

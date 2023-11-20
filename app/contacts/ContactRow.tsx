@@ -11,7 +11,6 @@ const ContactRow = ({ contact }: Props) => {
       <td>{contact.user?.name}</td>
       <td>{contact.user?.email}</td>
       <td>{contact.connected ? "Yes" : "No"}</td>
-      <td>{contact.requested ? "Yes" : "No"}</td>
     </tr>
   );
 };

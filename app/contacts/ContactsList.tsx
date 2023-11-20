@@ -30,7 +30,6 @@ const ContactsList = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Connected</th>
-              <th>Requested</th>
             </tr>
           </thead>
           <tbody>
