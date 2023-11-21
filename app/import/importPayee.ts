@@ -6,6 +6,7 @@ export async function importPayee(
   csvRow: CSVRow
 ): Promise<void> {
   const name = csvRow["Payee Name"];
+  console.log("in Payee Name", name);
   if (!name) return;
 
   // Create unsaved doc

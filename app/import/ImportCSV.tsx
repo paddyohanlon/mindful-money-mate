@@ -24,6 +24,9 @@ const ImportCSV = () => {
   const [budgetOptions, setBudgetOptions] = useState<Option[]>([]);
 
   useEffect(() => {
+    if (budgets.length > 0) {
+      setBudgetId(budgets[0].id);
+    }
     setBudgetOptions(
       budgets.map((budget) => ({ value: budget.id, label: budget.name }))
     );
@@ -49,7 +52,7 @@ const ImportCSV = () => {
     }
 
     function handleParsedCSV(results: any) {
-      // console.log(results.data);
+      console.log(results.data);
 
       if (!results.data) return;
 
@@ -61,7 +64,8 @@ const ImportCSV = () => {
 
         // do other imports
 
-        location.reload();
+        console.log("don't reload for now");
+        // location.reload();
       }
     }
   }
