@@ -75,6 +75,16 @@ const ImportCSV = () => {
       ) : (
         <form method="post" onSubmit={handleSubmit}>
           <FormControl>
+            <FormLabel htmlFor={csvInputId}>Upload CSV</FormLabel>
+            <input
+              name={csvInputId}
+              id={csvInputId}
+              type="file"
+              className="file-input file-input-bordered file-input-neutral w-full max-w-xs"
+              accept=".csv"
+            />
+          </FormControl>
+          <FormControl>
             <FormLabel htmlFor={budgetInputId}>Budget</FormLabel>
             <FormSelect
               id={budgetInputId}
@@ -83,19 +93,11 @@ const ImportCSV = () => {
               onChange={(value) => setBudgetId(value)}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor={csvInputId}>Upload CSV</FormLabel>
-            <input
-              name={csvInputId}
-              id={csvInputId}
-              type="file"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs"
-              accept=".csv"
-            />
-          </FormControl>
-          <button className="btn btn-primary btn-outline" type="submit">
-            Upload CSV and Import Data
-          </button>
+          <div className="pt-4">
+            <button className="btn btn-primary" type="submit">
+              Upload CSV and Import Data
+            </button>
+          </div>
         </form>
       )}
     </>

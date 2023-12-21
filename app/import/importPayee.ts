@@ -18,6 +18,8 @@ export async function importPayee(
   // Check doesn't exist
   let existingPayees = null;
 
+  console.log("existingPayees", existingPayees);
+
   try {
     existingPayees = await payeesCollection.getAll({ name, budgetId });
   } catch (error) {
