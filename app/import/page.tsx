@@ -38,7 +38,7 @@ const ImportPage = () => {
             accounts, and categories.
           </p>
           <ul>
-            {/* See the CSVRow type */}
+            {/* See the CSVRow type for row names */}
             <li>Payee Name</li>
             <li>Account Name</li>
             <li>Account Type</li>
