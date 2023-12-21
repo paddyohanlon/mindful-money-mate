@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@rethinkid/rethinkid-js-sdk": "^0.15.1",
+    "@rethinkid/rethinkid-js-sdk": "^0.15.2",
     "next": "13.5.4",
     "papaparse": "^5.4.1",
     "react": "^18",
