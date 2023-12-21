@@ -51,14 +51,14 @@ const ImportCSV = () => {
       });
     }
 
-    function handleParsedCSV(results: any) {
+    async function handleParsedCSV(results: any) {
       if (!results.data) return;
 
       for (const row of results.data) {
         const csvRow = row as CSVRow;
-        importPayee(budgetId, csvRow);
-        importAccount(budgetId, csvRow);
-        importCategory(budgetId, csvRow);
+        await importPayee(budgetId, csvRow);
+        await importAccount(budgetId, csvRow);
+        await importCategory(budgetId, csvRow);
 
         location.reload();
       }
