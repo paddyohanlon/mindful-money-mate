@@ -59,9 +59,9 @@ const ImportCSV = () => {
         await importPayee(budgetId, csvRow);
         await importAccount(budgetId, csvRow);
         await importCategory(budgetId, csvRow);
-
-        location.reload();
       }
+
+      location.reload();
     }
   }
 
