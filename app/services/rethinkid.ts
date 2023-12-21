@@ -33,7 +33,11 @@ export const budgetsCollection = rid.collection(BUDGETS_COLLECTION_NAME);
 export const accountsCollection = rid.collection("accounts");
 export const categoriesCollection = rid.collection("categories");
 export const assignmentsCollection = rid.collection("assignments");
-export const payeesCollection = rid.collection("payees");
+export const payeesCollection = rid.collection("payees", {
+  onCreate: async () => {
+    console.log("Payees collection created");
+  },
+});
 export const transactionsCollection = rid.collection("transactions");
 
 // rid.isLoggedIn()

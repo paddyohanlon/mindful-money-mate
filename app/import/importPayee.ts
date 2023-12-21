@@ -16,7 +16,13 @@ export async function importPayee(
   console.log("unsavedPayee", unsavedPayee);
 
   // Check doesn't exist
-  const existingPayees = await payeesCollection.getAll({ name, budgetId });
+  let existingPayees = null;
+
+  try {
+    existingPayees = await payeesCollection.getAll({ name, budgetId });
+  } catch (error) {
+    console.log("error existingPayees getAll", error);
+  }
 
   console.log("existingPayees", existingPayees);
 
