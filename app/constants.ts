@@ -3,6 +3,8 @@ import { Option } from "./types";
 
 export const BUDGETS_PATH = "/budgets";
 
+export const LAST_USED_BUDGET_ID = "lastUsedBudgetId";
+
 export const LOCALE = "en-US";
 
 export const EUR = "EUR";

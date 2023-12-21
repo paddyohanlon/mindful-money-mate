@@ -1,10 +1,23 @@
-import Link from "next/link";
 import useAppStore from "../store";
-import { BUDGETS_PATH } from "../constants";
+import { BUDGETS_PATH, LAST_USED_BUDGET_ID } from "../constants";
+import { useRouter } from "next/navigation";
+import { settingsCollection } from "../services/rethinkid";
 
 const BudgetsList = () => {
+  const router = useRouter();
+
   const budgets = useAppStore((state) => state.budgets);
   const myUserId = useAppStore((state) => state.user.id);
+  const setLastUsedBudgetId = useAppStore((state) => state.setLastUsedBudgetId);
+
+  async function handleClick(budgetId: string) {
+    setLastUsedBudgetId(budgetId);
+    settingsCollection.updateOne(LAST_USED_BUDGET_ID, {
+      id: LAST_USED_BUDGET_ID,
+      budgetId,
+    });
+    router.push(`${BUDGETS_PATH}/${budgetId}`);
+  }
 
   return (
     <>
@@ -16,10 +29,13 @@ const BudgetsList = () => {
         <ul className="not-prose menu menu-lg bg-base-200 rounded-box w-full">
           {budgets.map((budget) => (
             <li key={budget.id}>
-              <Link href={`${BUDGETS_PATH}/${budget.id}`}>
+              <button
+                className="btn btn-ghost justify-start"
+                onClick={() => handleClick(budget.id)}
+              >
                 {budget.name}{" "}
                 {budget.ownerId && budget.ownerId !== myUserId && " (shared)"}
-              </Link>
+              </button>
             </li>
           ))}
         </ul>

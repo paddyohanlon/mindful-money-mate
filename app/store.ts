@@ -18,6 +18,7 @@ import {
   transactionsCollection,
   assignmentsCollection,
   BUDGETS_COLLECTION_NAME,
+  settingsCollection,
 } from "./services/rethinkid";
 import {
   createEmptyAccount,
@@ -43,6 +44,7 @@ import {
   Permission,
   User,
 } from "@rethinkid/rethinkid-js-sdk";
+import { LAST_USED_BUDGET_ID } from "./constants";
 
 type Changes = {
   newDoc: Doc | null;
@@ -54,6 +56,8 @@ interface AppStore {
   isLoggedIn: boolean;
   setIsLoggedIn: (status: boolean) => void;
   user: User;
+  lastUsedBudgetId: string;
+  setLastUsedBudgetId: (id: string) => void;
   budgets: Budget[];
   getBudget: (id: string) => Budget;
   setBudget: (budget: Budget) => void;
@@ -104,6 +108,10 @@ const useAppStore = create<AppStore>((set, get) => ({
     set(() => ({ isLoggedIn: status }));
   },
   user: createEmptyUser(),
+  lastUsedBudgetId: "",
+  setLastUsedBudgetId: (id: string) => {
+    set(() => ({ lastUsedBudgetId: id }));
+  },
   budgets: [],
   getBudget: (id: string) => {
     const budget = get().budgets.find((b) => b.id === id);
@@ -229,6 +237,17 @@ const useAppStore = create<AppStore>((set, get) => ({
     if (!isLoggedIn) return;
 
     const user = await rid.social.getUser();
+
+    /**
+     * Settings
+     */
+    const lastUsedBudgetIdDoc = await settingsCollection.getOne(
+      LAST_USED_BUDGET_ID
+    );
+
+    const lastUsedBudgetId = lastUsedBudgetIdDoc
+      ? lastUsedBudgetIdDoc.budgetId
+      : "";
 
     /**
      * Budgets
@@ -506,6 +525,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     // console.log("- links", links);
 
     set(() => ({
+      lastUsedBudgetId,
       isLoggedIn,
       user,
       budgets,

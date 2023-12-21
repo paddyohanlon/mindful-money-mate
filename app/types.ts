@@ -1,3 +1,8 @@
+export type SettingsDoc = {
+  id: string;
+  budgetId: string;
+};
+
 export type Budget = {
   id: string;
   name: string;

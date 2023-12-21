@@ -1,5 +1,7 @@
 import { RethinkID } from "@rethinkid/rethinkid-js-sdk";
 import type { Options } from "@rethinkid/rethinkid-js-sdk";
+import { LAST_USED_BUDGET_ID } from "../constants";
+import { SettingsDoc } from "../types";
 
 // console.log("App ID", process.env.NEXT_PUBLIC_RETHINKID_APP_ID);
 // console.log("Redirect URI", process.env.NEXT_PUBLIC_RETHINKID_REDIRECT_URI);
@@ -29,15 +31,16 @@ export const rid = new RethinkID(options);
 
 export const BUDGETS_COLLECTION_NAME = "budgets";
 
+export const settingsCollection = rid.collection<SettingsDoc>("settings", {
+  onCreate: async () => {
+    settingsCollection.insertOne({ id: LAST_USED_BUDGET_ID, budgetId: "" });
+  },
+});
 export const budgetsCollection = rid.collection(BUDGETS_COLLECTION_NAME);
 export const accountsCollection = rid.collection("accounts");
 export const categoriesCollection = rid.collection("categories");
 export const assignmentsCollection = rid.collection("assignments");
-export const payeesCollection = rid.collection("payees", {
-  onCreate: async () => {
-    console.log("Payees collection created");
-  },
-});
+export const payeesCollection = rid.collection("payees");
 export const transactionsCollection = rid.collection("transactions");
 
 // rid.isLoggedIn()

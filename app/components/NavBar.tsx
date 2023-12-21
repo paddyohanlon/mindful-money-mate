@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import ActiveBudgetLink from "./ActiveBudgetLink";
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
 import useAppStore from "../store";
 import { BUDGETS_PATH } from "../constants";
-import { useParams } from "next/navigation";
 
 const NavBar = () => {
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);
-  const params = useParams();
-  const user = useAppStore((state) => state.user);
 
   const handleDetailsClick = (event: React.MouseEvent<HTMLDetailsElement>) => {
     const detailsElement = event.currentTarget;
@@ -34,17 +30,6 @@ const NavBar = () => {
         {isLoggedIn ? (
           <ul className="menu menu-horizontal px-1">
             <li>
-              <span>{user.id}</span>
-            </li>
-            <li>
-              <span>{user.name}</span>
-            </li>
-            {params.budgetId && (
-              <li>
-                <ActiveBudgetLink />
-              </li>
-            )}
-            <li>
               <details id="account-details" onClick={handleDetailsClick}>
                 <summary>Menu</summary>
                 <ul className="p-2 bg-base-100 right-0 min-w-max [&>li]:mb-2 [&_.btn]:content-center">
@@ -56,6 +41,9 @@ const NavBar = () => {
                   </li>
                   <li>
                     <Link href="/import">Import</Link>
+                  </li>
+                  <li>
+                    <Link href="/account">Account</Link>
                   </li>
                   <li>
                     <SignOutButton />
