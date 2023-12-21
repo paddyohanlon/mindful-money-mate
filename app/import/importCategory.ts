@@ -40,15 +40,10 @@ export async function importCategory(
 
   let targetCents = 0;
   if (targetCurrencyStr) {
-    console.log("targetCurrencyStr", targetCurrencyStr);
     const targetCurrencyStrNoSymbol = removeCurrencySign(targetCurrencyStr);
-    console.log("targetCurrencyStrNoSymbol", targetCurrencyStrNoSymbol);
     const targetCurrency: number = parseFloat(targetCurrencyStrNoSymbol);
-    console.log("targetCurrency", targetCurrency);
     if (!Number.isNaN(targetCurrency)) {
-      console.log("!NaN");
       targetCents = currencyToCents(targetCurrency);
-      console.log("targetCents", targetCents);
     }
   }
 

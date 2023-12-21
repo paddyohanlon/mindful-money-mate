@@ -52,8 +52,6 @@ const ImportCSV = () => {
     }
 
     function handleParsedCSV(results: any) {
-      console.log(results.data);
-
       if (!results.data) return;
 
       for (const row of results.data) {
@@ -62,10 +60,7 @@ const ImportCSV = () => {
         importAccount(budgetId, csvRow);
         importCategory(budgetId, csvRow);
 
-        // do other imports
-
-        console.log("don't reload for now");
-        // location.reload();
+        location.reload();
       }
     }
   }

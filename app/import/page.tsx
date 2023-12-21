@@ -31,21 +31,25 @@ const ImportPage = () => {
           <PopulateDataButton />
           <StartFreshButton />
         </div>
-        <div className="prose">
+        <div className="prose pb-20">
           <h2>CSV Headings</h2>
+          <p>
+            The idea is to upload up to three separate CSV files for payees,
+            accounts, and categories.
+          </p>
           <ul>
-            <li>
-              <b>Categories:</b> Category Name, Category Group (Values: Fixed
-              Costs Guilt-Free Spending Savings Investments Credit Card
-              Payments), Category Balance, Category Notes.
-            </li>
-            <li>
-              <b>Account:</b> Account Name, Account Type (Values: Checking,
-              Savings, Cash, Credit), Balance (without currency symbol).
-            </li>
-            <li>
-              <b>Payees:</b> Payee Name.
-            </li>
+            {/* See the CSVRow type */}
+            <li>Payee Name</li>
+            <li>Account Name</li>
+            <li>Account Type</li>
+            <li>Account Balance</li>
+            <li>Category Name</li>
+            <li>Category Group</li>
+            <li>Category Balance</li>
+            <li>Category Notes</li>
+            <li>Category Target</li>
+            <li>Category Target First Due Date</li>
+            <li>Category Target Monthly Frequency</li>
           </ul>
         </div>
       </ContainerSmall>
