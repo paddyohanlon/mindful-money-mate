@@ -60,8 +60,7 @@ const ImportCSV = () => {
         importAccount(budgetId, csvRow);
         importCategory(budgetId, csvRow);
 
-        console.log("no reload for now");
-        // location.reload();
+        location.reload();
       }
     }
   }
