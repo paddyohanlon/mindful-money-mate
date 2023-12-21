@@ -4,6 +4,8 @@ import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Assignment,
   Category,
@@ -29,10 +31,15 @@ const NewCategoryForm = ({ budgetId }: Props) => {
   const nameInputId = "name";
   const groupInputId = "group";
   const balanceInputId = "balance";
+  const targetInputId = "target";
+  const targetMonthInputId = "targetMonthIndex";
+  const targetMonthlyFrequencyInputId = "targetMonthlyFrequency";
   const notesInputId = "notes";
 
   const setCategory = useAppStore((state) => state.setCategory);
   const setAssignment = useAppStore((state) => state.setAssignment);
+
+  const [startDate, setStartDate] = useState(new Date());
 
   const [unsavedCategory, setUnsavedCategory] = useState<UnsavedCategory>({
     budgetId,
@@ -40,6 +47,19 @@ const NewCategoryForm = ({ budgetId }: Props) => {
     group: CategoryGroups.FIXED_COSTS,
     balanceCents: 0,
     notes: "",
+    targetCents: 0,
+    targetFirstDueDate: 0,
+    targetMonthlyFrequency: 1,
+  });
+
+  const targetMonthlyFrequencyOptions = Array.from(
+    { length: 60 },
+    (_, i) => `${i + 1}`
+  ).map((value) => {
+    return {
+      value,
+      label: value,
+    };
   });
 
   async function handleSubmit(event: FormEvent) {
@@ -90,6 +110,7 @@ const NewCategoryForm = ({ budgetId }: Props) => {
           onChange={(value) =>
             setUnsavedCategory({ ...unsavedCategory, name: value })
           }
+          placeholder="e.g. Food"
         />
       </FormControl>
       <FormControl>
@@ -108,11 +129,52 @@ const NewCategoryForm = ({ budgetId }: Props) => {
         <FormLabel htmlFor={balanceInputId}>Balance</FormLabel>
         <FormInputCurrency
           budgetId={budgetId}
-          inputId={notesInputId}
+          inputId={balanceInputId}
           initialAmountCents={unsavedCategory.balanceCents}
           onChange={(value) =>
             setUnsavedCategory({ ...unsavedCategory, balanceCents: value })
           }
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor={targetInputId}>Target Amount</FormLabel>
+        <FormInputCurrency
+          budgetId={budgetId}
+          inputId={targetInputId}
+          initialAmountCents={unsavedCategory.targetCents}
+          onChange={(value) =>
+            setUnsavedCategory({ ...unsavedCategory, targetCents: value })
+          }
+        />
+      </FormControl>
+      <FormControl>
+        {/* TODO ID */}
+        <FormLabel htmlFor={targetMonthInputId}>
+          Target (First) Due Date
+        </FormLabel>
+        <DatePicker
+          selected={startDate}
+          onChange={(date: Date) => {
+            setStartDate(date);
+            setUnsavedCategory({
+              ...unsavedCategory,
+              targetFirstDueDate: date.getTime(),
+            });
+          }}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor={targetMonthlyFrequencyInputId}>
+          Target Monthly Frequency
+        </FormLabel>
+        <FormSelect
+          id={targetMonthlyFrequencyInputId}
+          options={targetMonthlyFrequencyOptions}
+          value={unsavedCategory.targetMonthlyFrequency.toString()}
+          onChange={(value) => {
+            const targetMonthlyFrequency = parseInt(value);
+            setUnsavedCategory({ ...unsavedCategory, targetMonthlyFrequency });
+          }}
         />
       </FormControl>
       <FormControl>

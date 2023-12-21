@@ -6,6 +6,7 @@ interface Props {
   type?: "text" | "password" | "email";
   required?: boolean;
   readOnly?: boolean;
+  placeholder?: string;
 }
 
 const FormInput = ({
@@ -16,6 +17,7 @@ const FormInput = ({
   type = "text",
   required = true,
   readOnly = false,
+  placeholder = "",
 }: Props) => {
   return (
     <input
@@ -28,6 +30,7 @@ const FormInput = ({
       type={type}
       required={required}
       readOnly={readOnly}
+      placeholder={placeholder}
     />
   );
 };

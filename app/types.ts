@@ -40,8 +40,16 @@ export type Category = {
   notes: string;
   // isPartOfDailySpend: boolean;
   // hidden: boolean;
-  // targetMonthly
-  // targetTotal
+  /**
+   * Total target for category
+   */
+  targetCents: number;
+  targetFirstDueDate: number;
+  /**
+   * Monthly frequency a payment is due. e.g. 3 (trimester), 6 (semester), 12 (annual)
+   * Default is 1 (monthly)
+   */
+  targetMonthlyFrequency: number;
 };
 
 export type UnsavedCategory = Omit<Category, "id">;
@@ -101,6 +109,9 @@ export interface CSVRow {
   "Category Group": string;
   "Category Balance": string;
   "Category Notes": string;
+  "Category Target": string;
+  "Category Target First Due Date": string;
+  "Category Target Monthly Frequency": string;
 }
 
 export enum Roles {

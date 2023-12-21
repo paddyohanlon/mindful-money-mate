@@ -45,7 +45,7 @@ const NewBudgetForm = () => {
   const [unsavedBudget, setUnsavedBudget] =
     useState<UnsavedBudget>(unsavedBudgetDefault);
 
-  const [payDayStr, setPayDayStr] = useState("");
+  const [payDayStr, setPayDayStr] = useState("1");
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -80,6 +80,7 @@ const NewBudgetForm = () => {
           onChange={(value) =>
             setUnsavedBudget({ ...unsavedBudget, name: value })
           }
+          placeholder="e.g. Family Budget"
         />
       </FormControl>
       <FormControl>

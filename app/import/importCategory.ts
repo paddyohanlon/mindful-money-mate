@@ -8,10 +8,17 @@ export async function importCategory(
 ): Promise<void> {
   const name = csvRow["Category Name"];
   const userInputGroup = csvRow["Category Group"];
-  const currencyStr = csvRow["Category Balance"];
+  const balanceCurrencyStr = csvRow["Category Balance"];
   const notes = csvRow["Category Notes"];
+  const targetCurrencyStr = csvRow["Category Target"];
+  const targetFirstDueDateStr = csvRow["Category Target First Due Date"];
+  const targetMonthlyFrequencyStr = csvRow["Category Target Monthly Frequency"];
 
   if (!name) return;
+
+  function removeCurrencySign(str: string): string {
+    return str.replace(/^[\€\$]/, "");
+  }
 
   function isValidCategoryGroup(type: string): type is CategoryGroups {
     return Object.values(CategoryGroups).includes(type as CategoryGroups);
@@ -23,10 +30,41 @@ export async function importCategory(
   }
 
   let balanceCents = 0;
-  if (currencyStr) {
-    const currency: number = parseFloat(currencyStr);
-    if (!Number.isNaN(currency)) {
-      balanceCents = currencyToCents(currency);
+  if (balanceCurrencyStr) {
+    const balanceCurrencyNoSymbol = removeCurrencySign(balanceCurrencyStr);
+    const balanceCurrency: number = parseFloat(balanceCurrencyNoSymbol);
+    if (!Number.isNaN(balanceCurrency)) {
+      balanceCents = currencyToCents(balanceCurrency);
+    }
+  }
+
+  let targetCents = 0;
+  if (targetCurrencyStr) {
+    console.log("targetCurrencyStr", targetCurrencyStr);
+    const targetCurrencyStrNoSymbol = removeCurrencySign(targetCurrencyStr);
+    console.log("targetCurrencyStrNoSymbol", targetCurrencyStrNoSymbol);
+    const targetCurrency: number = parseFloat(targetCurrencyStrNoSymbol);
+    console.log("targetCurrency", targetCurrency);
+    if (!Number.isNaN(targetCurrency)) {
+      console.log("!NaN");
+      targetCents = currencyToCents(targetCurrency);
+      console.log("targetCents", targetCents);
+    }
+  }
+
+  let targetFirstDueDate = new Date().getTime();
+  if (targetFirstDueDateStr) {
+    const strToDate = new Date(targetFirstDueDateStr);
+    if (!Number.isNaN(strToDate)) {
+      targetFirstDueDate = strToDate.getTime();
+    }
+  }
+
+  let targetMonthlyFrequency = 1;
+  if (targetMonthlyFrequencyStr) {
+    const parsedTargetFrequency: number = parseFloat(targetMonthlyFrequencyStr);
+    if (!Number.isNaN(parsedTargetFrequency)) {
+      targetMonthlyFrequency = parsedTargetFrequency;
     }
   }
 
@@ -37,6 +75,9 @@ export async function importCategory(
     group,
     balanceCents,
     notes,
+    targetCents,
+    targetFirstDueDate,
+    targetMonthlyFrequency,
   };
 
   // Check doesn't exist

@@ -1,3 +1,4 @@
+import { MONTH_NAMES } from "@/app/constants";
 import useAppStore from "@/app/store";
 import { useEffect, useState } from "react";
 
@@ -14,8 +15,8 @@ const MonthStartEnd = ({ budgetId }: Props) => {
   useEffect(() => {
     // Month
     const now = new Date();
-    const currentDate = now.getDate(); // 0-based Sunday
-    const currentMonthIndex = now.getMonth(); // 0-based January
+    const currentDate = now.getDate(); // 0-based
+    const currentMonthIndex = now.getMonth(); // 0-based
 
     let startMonthIndex = currentMonthIndex;
     // Use previous month
@@ -25,28 +26,9 @@ const MonthStartEnd = ({ budgetId }: Props) => {
 
     const endMonthIndex = startMonthIndex === 11 ? 0 : startMonthIndex + 1;
 
-    setStartMonth(getMonthStr(startMonthIndex));
-    setEndMonth(getMonthStr(endMonthIndex));
+    setStartMonth(MONTH_NAMES[startMonthIndex]);
+    setEndMonth(MONTH_NAMES[endMonthIndex]);
   }, [budget.payDay]);
-
-  function getMonthStr(zeroBasedMonthIndex: number) {
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    return monthNames[zeroBasedMonthIndex];
-  }
 
   return (
     <>

@@ -2,6 +2,7 @@ import { BUDGETS_PATH } from "@/app/constants";
 import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import CategoryDueDate from "./CategoryDueDate";
 
 const CategoryBalanceForm = dynamic(
   () => import("@/app/budgets/[budgetId]/CategoryBalanceForm"),
@@ -17,6 +18,12 @@ const CategoryAssigned = dynamic(
 );
 const CategorySpent = dynamic(
   () => import("@/app/budgets/[budgetId]/CategorySpent"),
+  {
+    ssr: false,
+  }
+);
+const FormattedCurrency = dynamic(
+  () => import("@/app/budgets/[budgetId]/FormattedCurrency"),
   {
     ssr: false,
   }
@@ -40,6 +47,8 @@ const TheBudget = ({ budgetId }: Props) => {
               <th>Name</th>
               <th>Group</th>
               <th>Balance</th>
+              <th>Target</th>
+              <th>Next Due Date</th>
               <th>Assigned</th>
               <th>Spent</th>
               <th>Notes</th>
@@ -53,6 +62,15 @@ const TheBudget = ({ budgetId }: Props) => {
                 <td className="capitalize">{category.group}</td>
                 <td>
                   <CategoryBalanceForm category={category} />
+                </td>
+                <td>
+                  <FormattedCurrency
+                    budgetId={budgetId}
+                    amountCents={category.targetCents}
+                  />
+                </td>
+                <td>
+                  <CategoryDueDate category={category} />
                 </td>
                 <td>
                   <CategoryAssigned

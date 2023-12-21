@@ -57,6 +57,9 @@ export function createEmptyCategory(): Category {
     group: CategoryGroups.FIXED_COSTS,
     balanceCents: 0,
     notes: "",
+    targetCents: 0,
+    targetFirstDueDate: 0,
+    targetMonthlyFrequency: 0,
   };
 }
 
