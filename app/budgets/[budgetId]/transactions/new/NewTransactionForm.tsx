@@ -129,10 +129,18 @@ const NewBudgetForm = ({ budgetId }: Props) => {
 
     setTransaction(newTransaction);
 
-    const category = getCategory(newTransaction.categoryId);
-    category.balanceCents += newTransaction.amountCents;
-    updateCategory(category);
-    categoriesCollection.updateOne(category.id, category);
+    console.log("newTransaction.categoryId", newTransaction.categoryId);
+    console.log(
+      "newTransaction.categoryId type",
+      typeof newTransaction.categoryId
+    );
+
+    if (newTransaction.categoryId !== "ready-to-assign") {
+      const category = getCategory(newTransaction.categoryId);
+      category.balanceCents += newTransaction.amountCents;
+      updateCategory(category);
+      categoriesCollection.updateOne(category.id, category);
+    }
 
     const account = getAccount(newTransaction.accountId);
     account.balanceCents += newTransaction.amountCents;

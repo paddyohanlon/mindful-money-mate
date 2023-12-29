@@ -1,4 +1,3 @@
-import { LoginType } from "@rethinkid/rethinkid-js-sdk";
 import { rid } from "../services/rethinkid";
 
 const SignInButton = () => {

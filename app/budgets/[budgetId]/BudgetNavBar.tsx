@@ -56,7 +56,8 @@ const BudgetNavBar = ({ budgetId }: Props) => {
     );
 
     const categoriesBalanceCents = categories.reduce(
-      (accumulator, account) => accumulator + account.balanceCents,
+      (accumulator, account) =>
+        accumulator + (account.balanceCents > 0 ? account.balanceCents : 0),
       0
     );
 

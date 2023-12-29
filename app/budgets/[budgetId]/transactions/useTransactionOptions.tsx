@@ -29,12 +29,13 @@ export function useTransactionOptions(budgetId: string) {
     const categoriesForBudget = categories.filter(
       (c) => c.budgetId === budgetId
     );
-    setCategoryOptions(
-      categoriesForBudget.map((a) => ({
+    setCategoryOptions([
+      { value: "ready-to-assign", label: "Ready to Assign" },
+      ...categoriesForBudget.map((a) => ({
         value: a.id,
         label: a.name,
-      }))
-    );
+      })),
+    ]);
 
     const payeesForBudget = payees.filter((p) => p.budgetId === budgetId);
     setPayeeOptions(

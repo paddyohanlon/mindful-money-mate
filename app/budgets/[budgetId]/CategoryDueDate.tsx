@@ -16,10 +16,9 @@ const CategoryDueDate = ({
     targetCents,
   },
 }: Props) => {
-  const nextDueDate = getNextDueDate(
-    targetFirstDueDate,
-    targetMonthlyFrequency
-  );
+  const nextDueDate = targetFirstDueDate
+    ? getNextDueDate(targetFirstDueDate, targetMonthlyFrequency)
+    : null;
 
   function monthlyTargetAmountRemainder(): number {
     if (!nextDueDate) return 0;
@@ -84,12 +83,14 @@ const CategoryDueDate = ({
 
   return (
     <>
-      <div>
-        Due:&nbsp;
-        {nextDueDate && targetMonthlyFrequency > 1
-          ? nextDueDateFull()
-          : nextDueDateOrdinal()}
-      </div>
+      {nextDueDate && (
+        <div>
+          Due:&nbsp;
+          {targetMonthlyFrequency > 1
+            ? nextDueDateFull()
+            : nextDueDateOrdinal()}
+        </div>
+      )}
       <div>
         Target:{" "}
         <FormattedCurrency budgetId={budgetId} amountCents={targetCents} />

@@ -61,7 +61,10 @@ const FormInputCurrency = ({
     }
 
     // Check if the value matches the allowed pattern (number with up to two decimal places)
-    const isValueValid = /^(\d+\.?\d{0,2}|\.\d{1,2})$/.test(value);
+    // const isValueValid = /^(\d+\.?\d{0,2}|\.\d{1,2})$/.test(value);
+    const isValueValid = /^-?(\d+\.?\d{0,2}|\.\d{1,2})$/.test(value);
+
+    console.log("isValueValid", isValueValid);
 
     if (!isValueValid) return;
 
@@ -103,6 +106,7 @@ const FormInputCurrency = ({
           type="number"
           required={true}
           max="100000"
+          min="-100000"
           step="0.01"
         />
       </div>
