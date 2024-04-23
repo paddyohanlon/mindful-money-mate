@@ -1,4 +1,4 @@
-import { User } from "@rethinkid/rethinkid-js-sdk";
+import { User } from "@bzr/bazaar";
 import { EUR } from "./constants";
 import {
   Account,

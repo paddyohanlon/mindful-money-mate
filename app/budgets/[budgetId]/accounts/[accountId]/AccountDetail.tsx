@@ -8,7 +8,7 @@ import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { Account, AccountTypes } from "@/app/types";
 import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
-import { accountsCollection } from "@/app/services/rethinkid";
+import { accountsCollection } from "@/app/services/bzr";
 import { useRouter } from "next/navigation";
 
 const DeleteAccountButton = dynamic(() => import("./DeleteAccountButton"), {

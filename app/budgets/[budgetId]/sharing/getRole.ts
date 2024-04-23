@@ -1,6 +1,6 @@
 import { EDITOR_ROLE_PERMISSION_TYPES } from "@/app/constants";
 import { Roles } from "@/app/types";
-import { PermissionType } from "@rethinkid/rethinkid-js-sdk";
+import { PermissionType } from "@bzr/bazaar";
 
 export function getRole(types: PermissionType[]): string {
   function isRole(

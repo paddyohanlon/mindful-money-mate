@@ -1,5 +1,5 @@
 import { SAMPLE_BUDGET } from "../sampleData";
-import { budgetsCollection } from "../services/rethinkid";
+import { budgetsCollection } from "../services/bzr";
 import useAppStore from "../store";
 
 const AddSampleBudgetButton = () => {

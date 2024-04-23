@@ -6,10 +6,10 @@ import {
   VIEWER_ROLE_PERMISSION_TYPES,
   createOptionsFromStrEnum,
 } from "@/app/constants";
-import { BUDGETS_COLLECTION_NAME, rid } from "@/app/services/rethinkid";
+import { BUDGETS_COLLECTION_NAME, bzr } from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import { Option, Roles } from "@/app/types";
-import { PermissionTemplate } from "@rethinkid/rethinkid-js-sdk";
+import { PermissionTemplate } from "@bzr/bazaar";
 import { FormEvent, useState } from "react";
 
 interface Props {
@@ -52,7 +52,11 @@ const CreateShareLinkForm = ({ budgetId }: Props) => {
     let limit: number = parseInt(limitStr);
     if (Number.isNaN(limit)) limit = 0;
 
-    const link = await rid.permissions.links.create(permission, limit);
+    const link = await bzr.permissions.links.create(
+      permission,
+      "Link description",
+      limit
+    );
     // setLink(link); no need because handled by subscribe
   }
   return (

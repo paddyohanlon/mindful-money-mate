@@ -1,7 +1,7 @@
 import useAppStore from "../store";
 import { BUDGETS_PATH, LAST_USED_BUDGET_ID } from "../constants";
 import { useRouter } from "next/navigation";
-import { settingsCollection } from "../services/rethinkid";
+import { settingsCollection } from "../services/bzr";
 
 const BudgetsList = () => {
   const router = useRouter();

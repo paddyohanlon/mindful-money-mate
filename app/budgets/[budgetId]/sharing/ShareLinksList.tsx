@@ -1,6 +1,6 @@
 import useAppStore from "@/app/store";
 import { getRole } from "./getRole";
-import { rid } from "@/app/services/rethinkid";
+import { bzr } from "@/app/services/bzr";
 import dynamic from "next/dynamic";
 
 const BudgetNameFromFilter = dynamic(
@@ -19,7 +19,7 @@ const ShareLinksList = () => {
 
   function handleDeleteClick(linkId: string): void {
     if (!window.confirm("Are you sure?")) return;
-    rid.permissions.links.delete(linkId);
+    bzr.permissions.links.delete(linkId);
     deleteLink(linkId);
   }
 

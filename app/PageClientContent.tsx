@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH, LAST_USED_BUDGET_ID } from "./constants";
-import { settingsCollection } from "./services/rethinkid";
+import { settingsCollection } from "./services/bzr";
 
 const PageClientContent = () => {
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { rid } from "../services/rethinkid";
+import { bzr } from "../services/bzr";
 
 interface Props {
   userId: string;
@@ -9,7 +9,7 @@ const Username = ({ userId }: Props) => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    rid.social.getUser(userId).then((user) => setUsername(user.name));
+    bzr.social.getUser(userId).then((user) => setUsername(user.name));
   }, [userId]);
 
   return <>{username}</>;

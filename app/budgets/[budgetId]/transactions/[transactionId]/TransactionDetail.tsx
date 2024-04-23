@@ -12,7 +12,7 @@ import {
   accountsCollection,
   categoriesCollection,
   transactionsCollection,
-} from "@/app/services/rethinkid";
+} from "@/app/services/bzr";
 import { BUDGETS_PATH } from "@/app/constants";
 import { useRouter } from "next/navigation";
 import { convertToSignedAmount } from "@/app/currency";

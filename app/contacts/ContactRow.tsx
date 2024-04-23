@@ -1,4 +1,4 @@
-import { Contact } from "@rethinkid/rethinkid-js-sdk";
+import { Contact } from "@bzr/bazaar";
 
 interface Props {
   contact: Contact;

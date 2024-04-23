@@ -1,5 +1,5 @@
 import { currencyToCents } from "../currency";
-import { categoriesCollection } from "../services/rethinkid";
+import { categoriesCollection } from "../services/bzr";
 import { CSVRow, CategoryGroups, UnsavedCategory } from "../types";
 
 export async function importCategory(

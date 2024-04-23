@@ -10,7 +10,7 @@ import {
   Transaction,
 } from "./types";
 import {
-  rid,
+  bzr,
   budgetsCollection,
   accountsCollection,
   categoriesCollection,
@@ -19,7 +19,7 @@ import {
   assignmentsCollection,
   BUDGETS_COLLECTION_NAME,
   settingsCollection,
-} from "./services/rethinkid";
+} from "./services/bzr";
 import {
   createEmptyAccount,
   createEmptyAssignment,
@@ -43,7 +43,7 @@ import {
   OrderByType,
   Permission,
   User,
-} from "@rethinkid/rethinkid-js-sdk";
+} from "@bzr/bazaar";
 import { LAST_USED_BUDGET_ID } from "./constants";
 
 type Changes = {
@@ -233,10 +233,10 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   load: async () => {
     // console.log("Load data:");
-    const isLoggedIn = rid.isLoggedIn();
+    const isLoggedIn = bzr.isLoggedIn();
     if (!isLoggedIn) return;
 
-    const user = await rid.social.getUser();
+    const user = await bzr.social.getUser();
 
     /**
      * Settings
@@ -365,9 +365,9 @@ const useAppStore = create<AppStore>((set, get) => ({
     /**
      * Contacts
      */
-    const contacts = await rid.social.contacts.list();
+    const contacts = await bzr.social.contacts.list();
     set(() => ({ contacts }));
-    rid.social.contacts.subscribe((changes: Changes) => {
+    bzr.social.contacts.subscribe((changes: Changes) => {
       const { newDoc, oldDoc } = changes;
       if (newDoc && !oldDoc) {
         const contact = newDoc as Contact;
@@ -388,7 +388,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     /**
      * Permissions
      */
-    const permissions = await rid.permissions.list({
+    const permissions = await bzr.permissions.list({
       collectionName: BUDGETS_COLLECTION_NAME,
     });
     set(() => ({ permissions }));
@@ -396,15 +396,15 @@ const useAppStore = create<AppStore>((set, get) => ({
     /**
      * Granted Permissions
      */
-    const grantedPermissions = await rid.permissions.granted.list({
+    const grantedPermissions = await bzr.permissions.granted.list({
       collectionName: BUDGETS_COLLECTION_NAME,
     });
     set(() => ({ grantedPermissions }));
 
-    // rid.permissions.onGranted({ collectionName: BUDGETS_COLLECTION_NAME }, )
+    // bzr.permissions.onGranted({ collectionName: BUDGETS_COLLECTION_NAME }, )
 
     // Subscribe
-    rid.permissions.granted.subscribe(
+    bzr.permissions.granted.subscribe(
       { collectionName: BUDGETS_COLLECTION_NAME },
       async ({ oldDoc, newDoc }: Changes) => {
         // Add
@@ -452,7 +452,7 @@ const useAppStore = create<AppStore>((set, get) => ({
       const budgetId = permission.filter?.id as string;
       if (!budgetId) return;
 
-      const budget = (await rid
+      const budget = (await bzr
         .collection(BUDGETS_COLLECTION_NAME, { userId: ownerId })
         .getOne(budgetId)) as Budget;
 
@@ -479,12 +479,12 @@ const useAppStore = create<AppStore>((set, get) => ({
     /**
      * Links
      */
-    const links = await rid.permissions.links.list({
+    const links = await bzr.permissions.links.list({
       collectionName: BUDGETS_COLLECTION_NAME,
     });
     set(() => ({ links }));
     // subscribe
-    rid.permissions.links.subscribe(
+    bzr.permissions.links.subscribe(
       { collectionName: BUDGETS_COLLECTION_NAME },
       ({ oldDoc, newDoc }) => {
         // add
@@ -554,13 +554,13 @@ const useAppStore = create<AppStore>((set, get) => ({
       transactions: [],
     }));
 
-    rid.logOut();
+    bzr.logOut();
   },
   populateSampleData: async () => {
     // Budget
     const sampleBudget = {
       ...SAMPLE_BUDGET,
-      ownerId: (await rid.social.getUser()).id,
+      ownerId: (await bzr.social.getUser()).id,
     };
     await budgetsCollection.insertOne(sampleBudget);
     set(() => ({ budgets: [sampleBudget] }));

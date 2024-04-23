@@ -11,7 +11,7 @@ import {
   accountsCollection,
   categoriesCollection,
   transactionsCollection,
-} from "@/app/services/rethinkid";
+} from "@/app/services/bzr";
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";

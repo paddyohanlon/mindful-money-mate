@@ -3,7 +3,7 @@ import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import { FormEvent, useState } from "react";
 import { Payee, UnsavedPayee } from "@/app/types";
-import { payeesCollection } from "@/app/services/rethinkid";
+import { payeesCollection } from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH } from "@/app/constants";
 import { useRouter } from "next/navigation";

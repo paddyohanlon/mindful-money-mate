@@ -1,4 +1,4 @@
-import { PermissionType } from "@rethinkid/rethinkid-js-sdk";
+import { PermissionType } from "@bzr/bazaar";
 import { Option } from "./types";
 
 export const BUDGETS_PATH = "/budgets";

@@ -1,11 +1,11 @@
-import { BUDGETS_COLLECTION_NAME, rid } from "@/app/services/rethinkid";
+import { BUDGETS_COLLECTION_NAME, bzr } from "@/app/services/bzr";
 import { FormEvent, useEffect, useState } from "react";
 import FormControl from "@/app/components/FormControl";
 import FormLabel from "@/app/components/FormLabel";
 import FormSelect from "@/app/components/FormSelect";
 import { Option, Roles } from "@/app/types";
 import useAppStore from "@/app/store";
-import { NewPermission, Permission } from "@rethinkid/rethinkid-js-sdk";
+import { NewPermission, Permission } from "@bzr/bazaar";
 import dynamic from "next/dynamic";
 import {
   EDITOR_ROLE_PERMISSION_TYPES,
@@ -68,7 +68,7 @@ const ShareBudgetForm = ({ budgetId }: Props) => {
         id: budgetId,
       },
     };
-    const { id } = await rid.permissions.create(newPermission);
+    const { id } = await bzr.permissions.create(newPermission);
 
     const permission: Permission = {
       id,

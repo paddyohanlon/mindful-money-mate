@@ -1,7 +1,7 @@
-import { rid } from "../services/rethinkid";
+import { bzr } from "../services/bzr";
 
 const SignInButton = () => {
-  return <button onClick={() => rid.login()}>Sign in</button>;
+  return <button onClick={() => bzr.login()}>Sign in</button>;
 };
 
 export default SignInButton;

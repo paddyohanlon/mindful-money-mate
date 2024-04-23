@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { rid } from "./services/rethinkid";
+import { bzr } from "./services/bzr";
 import useAppStore from "./store";
 
 const OnLogin = () => {
@@ -12,10 +12,10 @@ const OnLogin = () => {
       load();
     };
 
-    if (rid.isLoggedIn()) {
+    if (bzr.isLoggedIn()) {
       onLogin();
     } else {
-      rid.onLogin(async () => {
+      bzr.onLogin(async () => {
         onLogin();
       });
     }

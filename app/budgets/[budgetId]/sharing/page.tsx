@@ -16,38 +16,29 @@ const CreateShareLinkForm = dynamic(() => import("./CreateShareLinkForm"), {
 const ShareLinksList = dynamic(() => import("./ShareLinksList"), {
   ssr: false,
 });
-const PermissionsModalButton = dynamic(
-  () => import("./PermissionsModalButton"),
-  {
-    ssr: false,
-  }
-);
 
 const SharingPage = () => {
   const params = useParams();
 
   return (
     <>
-      {/* rid.contacts.subscribe */}
+      {/* bzr.contacts.subscribe */}
       {/* openModal, social, withId??? */}
       {/* openModal, social, get ID from select User in callback */}
 
-      {/* DONE: rid.permissions.openModal */}
+      {/* DONE: bzr.permissions.create */}
+      {/* DONE: bzr.permissions.list */}
+      {/* DONE: bzr.permissions.delete */}
 
-      {/* DONE: rid.permissions.create */}
-      {/* DONE: rid.permissions.list */}
-      {/* DONE: rid.permissions.delete */}
+      {/* DONE: bzr.permissions.links.create */}
+      {/* DONE: bzr.permissions.links.list */}
+      {/* DONE: bzr.permissions.links.delete */}
 
-      {/* DONE: rid.permissions.links.create */}
-      {/* DONE: rid.permissions.links.list */}
-      {/* DONE: rid.permissions.links.delete */}
-
-      {/* rid.permissions.granted */}
-      {/* rid.permissions.onGranted */}
-      {/* rid.permissions.stopOnGranted */}
+      {/* bzr.permissions.granted */}
+      {/* bzr.permissions.onGranted */}
+      {/* bzr.permissions.stopOnGranted */}
 
       <h1 className="sr-only">Budget Sharing</h1>
-      <PermissionsModalButton budgetId={params.budgetId as string} />
       <div className="grid grid-cols-2 gap-4 pt-8">
         <div>
           <ShareBudgetForm budgetId={params.budgetId as string} />

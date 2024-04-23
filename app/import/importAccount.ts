@@ -1,5 +1,5 @@
 import { currencyToCents } from "../currency";
-import { accountsCollection } from "../services/rethinkid";
+import { accountsCollection } from "../services/bzr";
 import { AccountTypes, CSVRow, UnsavedAccount } from "../types";
 
 export async function importAccount(budgetId: string, csvRow: CSVRow) {

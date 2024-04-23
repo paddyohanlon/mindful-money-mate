@@ -1,4 +1,4 @@
-import { payeesCollection } from "../services/rethinkid";
+import { payeesCollection } from "../services/bzr";
 import { CSVRow, UnsavedPayee } from "../types";
 
 export async function importPayee(

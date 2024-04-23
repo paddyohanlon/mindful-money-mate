@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@rethinkid/rethinkid-js-sdk": "^0.15.3",
+    "@bzr/bazaar": "file:../bazaar-js",
     "next": "13.5.4",
     "papaparse": "^5.4.1",
     "react": "^18",

@@ -1,4 +1,4 @@
-import { rid } from "@/app/services/rethinkid";
+import { bzr } from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import dynamic from "next/dynamic";
 import { getRole } from "./getRole";
@@ -21,7 +21,7 @@ const SharedList = () => {
   function handleDeleteClick(permissionId: string): void {
     if (!window.confirm("Are you sure?")) return;
 
-    rid.permissions.delete(permissionId);
+    bzr.permissions.delete(permissionId);
     deletePermission(permissionId);
   }
 

@@ -6,7 +6,7 @@ import FormLabel from "@/app/components/FormLabel";
 import FormInput from "@/app/components/FormInput";
 import FormSelect from "@/app/components/FormSelect";
 import { Budget, UnsavedBudget } from "@/app/types";
-import { budgetsCollection } from "@/app/services/rethinkid";
+import { budgetsCollection } from "@/app/services/bzr";
 import { useRouter } from "next/navigation";
 import { BUDGETS_PATH, EUR, USD } from "@/app/constants";
 import useAppStore from "@/app/store";

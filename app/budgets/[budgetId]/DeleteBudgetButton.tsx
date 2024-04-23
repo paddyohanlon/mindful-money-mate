@@ -1,9 +1,6 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import {
-  accountsCollection,
-  budgetsCollection,
-} from "@/app/services/rethinkid";
+import { accountsCollection, budgetsCollection } from "@/app/services/bzr";
 import useAppStore from "../../store";
 import { BUDGETS_PATH } from "../../constants";
 

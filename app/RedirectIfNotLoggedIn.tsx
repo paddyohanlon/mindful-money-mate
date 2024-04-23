@@ -1,12 +1,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { rid } from "./services/rethinkid";
+import { bzr } from "./services/bzr";
 
 const RedirectIfNotLoggedIn = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!rid.isLoggedIn()) {
+    if (!bzr.isLoggedIn()) {
       console.log("not logged in, redirect to /");
       router.push("/");
     }

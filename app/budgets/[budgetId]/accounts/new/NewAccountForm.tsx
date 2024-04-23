@@ -5,7 +5,7 @@ import FormSelect from "@/app/components/FormSelect";
 import FormInputCurrency from "@/app/components/FormInputCurrency";
 import { FormEvent, useState } from "react";
 import { Account, AccountTypes, UnsavedAccount } from "@/app/types";
-import { accountsCollection } from "@/app/services/rethinkid";
+import { accountsCollection } from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
 import { useRouter } from "next/navigation";

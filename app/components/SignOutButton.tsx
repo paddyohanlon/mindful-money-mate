@@ -1,11 +1,11 @@
-import { rid } from "../services/rethinkid";
+import { bzr } from "../services/bzr";
 import useAppStore from "../store";
 
 const SignOutButton = () => {
   const setIsLoggedIn = useAppStore((state) => state.setIsLoggedIn);
 
   function logOut() {
-    rid.logOut();
+    bzr.logOut();
     setIsLoggedIn(false);
   }
 

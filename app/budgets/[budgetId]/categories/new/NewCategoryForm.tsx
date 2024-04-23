@@ -16,7 +16,7 @@ import {
 import {
   assignmentsCollection,
   categoriesCollection,
-} from "@/app/services/rethinkid";
+} from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import { BUDGETS_PATH, createOptionsFromStrEnum } from "@/app/constants";
 import { useRouter } from "next/navigation";

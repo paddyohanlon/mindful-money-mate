@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import useAppStore from "@/app/store";
-import { payeesCollection } from "@/app/services/rethinkid";
+import { payeesCollection } from "@/app/services/bzr";
 import { BUDGETS_PATH } from "@/app/constants";
 
 interface Props {

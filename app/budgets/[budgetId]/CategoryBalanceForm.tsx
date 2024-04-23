@@ -3,7 +3,7 @@ import FormLabel from "@/app/components/FormLabel";
 import {
   assignmentsCollection,
   categoriesCollection,
-} from "@/app/services/rethinkid";
+} from "@/app/services/bzr";
 import useAppStore from "@/app/store";
 import { Assignment, Category, UnsavedAssignment } from "@/app/types";
 import { FormEvent, useState } from "react";

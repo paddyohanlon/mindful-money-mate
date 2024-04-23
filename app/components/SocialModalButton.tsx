@@ -1,8 +1,8 @@
-import { rid } from "../services/rethinkid";
+import { bzr } from "../services/bzr";
 
 const SocialModalButton = () => {
   function handleClick() {
-    rid.social.openModal((userId: string) => {
+    bzr.social.openModal((userId: string) => {
       console.log("User ID from modal!", userId);
     });
   }

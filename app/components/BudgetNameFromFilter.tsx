@@ -1,5 +1,5 @@
 import useAppStore from "@/app/store";
-import { FilterObject } from "@rethinkid/rethinkid-js-sdk";
+import { FilterObject } from "@bzr/bazaar";
 
 interface Props {
   filter: FilterObject | undefined;

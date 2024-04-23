@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import useAppStore from "../store";
 import { getRole } from "./[budgetId]/sharing/getRole";
-import { rid } from "../services/rethinkid";
+import { bzr } from "../services/bzr";
 
 const BudgetNameFromFilter = dynamic(
   () => import("@/app/components/BudgetNameFromFilter"),
@@ -22,7 +22,7 @@ const BudgetsSharedWithMeList = () => {
   function handleDeleteClick(grantedPermissionId: string): void {
     if (!window.confirm("Are you sure?")) return;
 
-    rid.permissions.granted.delete(grantedPermissionId);
+    bzr.permissions.granted.delete(grantedPermissionId);
     deleteGrantedPermission(grantedPermissionId);
   }
 
