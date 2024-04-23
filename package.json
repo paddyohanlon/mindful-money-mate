@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@bzr/bazaar": "file:../bazaar-js",
+    "@bzr/bazaar": "^1.1.0",
     "next": "13.5.4",
     "papaparse": "^5.4.1",
     "react": "^18",
