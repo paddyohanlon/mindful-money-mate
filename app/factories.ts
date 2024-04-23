@@ -15,6 +15,7 @@ export function createEmptyUser(): User {
   return {
     id: "",
     name: "",
+    handle: "",
     email: "",
   };
 }

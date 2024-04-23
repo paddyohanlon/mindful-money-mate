@@ -9,7 +9,7 @@ const Username = ({ userId }: Props) => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    bzr.social.getUser(userId).then((user) => setUsername(user.name));
+    bzr.social.getUser({ userId }).then((user) => setUsername(user.name));
   }, [userId]);
 
   return <>{username}</>;
