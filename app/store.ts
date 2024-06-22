@@ -36,7 +36,6 @@ import {
   SAMPLE_PAYEES,
 } from "./sampleData";
 import {
-  CollectionAPI,
   Contact,
   GrantedPermission,
   Link,
@@ -166,8 +165,8 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   payees: [],
   getPayee: (id: string) => {
-    const category = get().payees.find((p) => p.id === id);
-    return category || createEmptyPayee();
+    const payee = get().payees.find((p) => p.id === id);
+    return payee || createEmptyPayee();
   },
   setPayee: (payee) => {
     set((store) => ({ payees: [...store.payees, payee] }));
@@ -179,8 +178,8 @@ const useAppStore = create<AppStore>((set, get) => ({
   },
   transactions: [],
   getTransaction: (id: string) => {
-    const category = get().transactions.find((t) => t.id === id);
-    return category || createEmptyTransaction();
+    const transaction = get().transactions.find((t) => t.id === id);
+    return transaction || createEmptyTransaction();
   },
   setTransaction: (transaction) => {
     set((store) => ({ transactions: [...store.transactions, transaction] }));
@@ -256,12 +255,16 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: OrderByType.ASC } }
     )) as Budget[];
-    mirror(budgetsCollection, {
-      add: (doc) => {
-        if (get().getBudget(doc.id)) return;
-        get().setBudget(doc as Budget);
-      },
-    });
+    budgetsCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          const budgetExists = get().budgets.find((b) => b.id === doc.id);
+          if (budgetExists) return;
+          get().setBudget(doc as Budget);
+        },
+      }
+    );
 
     /**
      * Accounts
@@ -270,18 +273,22 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: OrderByType.ASC } }
     )) as Account[];
-    mirror(accountsCollection, {
-      add: (doc) => {
-        if (get().getAccount(doc.id)) return;
-        get().setAccount(doc as Account);
-      },
-      update: (doc) => {
-        get().updateAccount(doc as Account);
-      },
-      remove: (doc) => {
-        get().deleteAccount(doc.id);
-      },
-    });
+    accountsCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          const accountExists = get().accounts.find((a) => a.id === doc.id);
+          if (accountExists) return;
+          get().setAccount(doc as Account);
+        },
+        onChange: (oldDoc, newDoc) => {
+          get().updateAccount(newDoc as Account);
+        },
+        onDelete: (doc) => {
+          get().deleteAccount(doc.id);
+        },
+      }
+    );
 
     /**
      * Categories
@@ -290,18 +297,21 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { group: OrderByType.ASC } }
     )) as Category[];
-    mirror(categoriesCollection, {
-      add: (doc) => {
-        if (get().getCategory(doc.id)) return;
-        get().setCategory(doc as Category);
-      },
-      update: (doc) => {
-        get().updateCategory(doc as Category);
-      },
-      remove: (doc) => {
-        get().deleteCategory(doc.id);
-      },
-    });
+    categoriesCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          if (get().getCategory(doc.id)) return;
+          get().setCategory(doc as Category);
+        },
+        onChange: (oldDoc, newDoc) => {
+          get().updateCategory(newDoc as Category);
+        },
+        onDelete: (doc) => {
+          get().deleteCategory(doc.id);
+        },
+      }
+    );
 
     /**
      * Assignments
@@ -314,12 +324,18 @@ const useAppStore = create<AppStore>((set, get) => ({
         },
       }
     )) as Assignment[];
-    mirror(assignmentsCollection, {
-      add: (doc) => {
-        if (get().getAssignment(doc.id)) return;
-        get().setAssignment(doc as Assignment);
-      },
-    });
+    assignmentsCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          const assignmentExists = get().assignments.find(
+            (a) => a.id === doc.id
+          );
+          if (assignmentExists) return;
+          get().setAssignment(doc as Assignment);
+        },
+      }
+    );
 
     /**
      * Payees
@@ -328,15 +344,19 @@ const useAppStore = create<AppStore>((set, get) => ({
       {},
       { orderBy: { name: OrderByType.ASC } }
     )) as Payee[];
-    mirror(payeesCollection, {
-      add: (doc) => {
-        if (get().getPayee(doc.id)) return;
-        get().setPayee(doc as Payee);
-      },
-      remove: (doc) => {
-        get().deletePayee(doc.id);
-      },
-    });
+    payeesCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          const payeeExists = get().payees.find((p) => p.id === doc.id);
+          if (payeeExists) return;
+          get().setPayee(doc as Payee);
+        },
+        onDelete: (doc) => {
+          get().deletePayee(doc.id);
+        },
+      }
+    );
 
     /**
      * Transactions
@@ -349,40 +369,45 @@ const useAppStore = create<AppStore>((set, get) => ({
         },
       }
     )) as Transaction[];
-    mirror(transactionsCollection, {
-      add: (doc) => {
-        if (get().getTransaction(doc.id)) return;
-        get().setTransaction(doc as Transaction);
-      },
-      update: (doc) => {
-        get().updateTransaction(doc as Transaction);
-      },
-      remove: (doc) => {
-        get().deleteTransaction(doc.id);
-      },
-    });
+    transactionsCollection.subscribeAll(
+      {},
+      {
+        onAdd: (doc) => {
+          const transactionExists = get().transactions.find(
+            (t) => t.id === doc.id
+          );
+          if (transactionExists) return;
+          get().setTransaction(doc as Transaction);
+        },
+        onChange: (oldDoc, newDoc) => {
+          get().updateTransaction(newDoc as Transaction);
+        },
+        onDelete: (doc) => {
+          get().deleteTransaction(doc.id);
+        },
+      }
+    );
 
     /**
      * Contacts
      */
     const contacts = await bzr.social.contacts.list();
     set(() => ({ contacts }));
-    bzr.social.contacts.subscribe((changes: Changes) => {
-      const { newDoc, oldDoc } = changes;
-      if (newDoc && !oldDoc) {
-        const contact = newDoc as Contact;
+    bzr.social.contacts.subscribe({
+      onAdd: (doc) => {
+        const contact = doc as Contact;
         const existingContact = get().contacts.find((c) => c.id === contact.id);
         if (existingContact) return;
         get().setContact(contact);
-      }
-      if (newDoc && oldDoc) {
+      },
+      onChange: (oldDoc, newDoc) => {
         const contact = newDoc as Contact;
         get().updateContact(contact);
-      }
-      if (!newDoc && oldDoc) {
-        const contact = oldDoc as Contact;
+      },
+      onDelete: (doc) => {
+        const contact = doc as Contact;
         get().deleteContact(contact.id);
-      }
+      },
     });
 
     /**
@@ -406,10 +431,9 @@ const useAppStore = create<AppStore>((set, get) => ({
     // Subscribe
     bzr.permissions.granted.subscribe(
       { collectionName: BUDGETS_COLLECTION_NAME },
-      async ({ oldDoc, newDoc }: Changes) => {
-        // Add
-        if (oldDoc === null && newDoc) {
-          const grantedPermission = newDoc as GrantedPermission;
+      {
+        onAdd: async (doc) => {
+          const grantedPermission = doc as GrantedPermission;
 
           const existingGrantedPermission = get().grantedPermissions.find(
             (g) => g.id === grantedPermission.id
@@ -432,16 +456,15 @@ const useAppStore = create<AppStore>((set, get) => ({
           const existingBudget = get().budgets.find((b) => b.id === budget.id);
           if (existingBudget) return;
           set((store) => ({ budgets: [...store.budgets, budget] }));
-        }
-        // Remove
-        if (oldDoc && newDoc === null) {
-          const grantedPermission = oldDoc as GrantedPermission;
+        },
+        onDelete: (doc) => {
+          const grantedPermission = doc as GrantedPermission;
           get().deleteGrantedPermission(grantedPermission.id);
 
           const budgetId = grantedPermission.permission.filter?.id as string;
           if (!budgetId) return;
           get().deleteBudget(budgetId);
-        }
+        },
       }
     );
 
@@ -486,28 +509,26 @@ const useAppStore = create<AppStore>((set, get) => ({
     // subscribe
     bzr.permissions.links.subscribe(
       { collectionName: BUDGETS_COLLECTION_NAME },
-      ({ oldDoc, newDoc }) => {
-        // add
-        if (!oldDoc && newDoc) {
-          const link = newDoc as Link;
+      {
+        onAdd: (doc) => {
+          const link = doc as Link;
           console.log("added link", link);
           const existingLink = get().links.find((l) => l.id === link.id);
           if (existingLink) return;
           get().setLink(link);
-        }
-        if (oldDoc && newDoc) {
+        },
+        onChange: (oldDoc, newDoc) => {
           const link = newDoc as Link;
           console.log("updated link", link);
           set((store) => ({
             links: store.links.map((l) => (l.id === link.id ? link : l)),
           }));
-        }
-        if (oldDoc && !newDoc) {
-          const link = oldDoc as Link;
+        },
+        onDelete: (doc) => {
+          const link = doc as Link;
           console.log("deleted link", link);
           get().deleteLink(link.id);
-        }
-        // delete
+        },
       }
     );
 
@@ -588,29 +609,6 @@ const useAppStore = create<AppStore>((set, get) => ({
 interface Doc {
   id: any;
   [key: string]: any;
-}
-
-function mirror(
-  collection: CollectionAPI,
-  callbacks: {
-    add?: (doc: Doc) => void;
-    update?: (doc: Doc) => void;
-    remove?: (doc: Doc) => void;
-  } = {}
-) {
-  const { add, update, remove } = callbacks;
-
-  collection.subscribeAll({}, ({ oldDoc, newDoc }: Changes) => {
-    if (add && oldDoc === null && newDoc) {
-      add(newDoc);
-    }
-    if (update && oldDoc && newDoc) {
-      update(newDoc);
-    }
-    if (remove && oldDoc && newDoc === null) {
-      remove(oldDoc);
-    }
-  });
 }
 
 export default useAppStore;
