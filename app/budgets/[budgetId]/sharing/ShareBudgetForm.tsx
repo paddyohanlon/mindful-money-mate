@@ -5,7 +5,7 @@ import FormLabel from "@/app/components/FormLabel";
 import FormSelect from "@/app/components/FormSelect";
 import { Option, Roles } from "@/app/types";
 import useAppStore from "@/app/store";
-import { NewPermission, Permission } from "@bzr/bazaar";
+import { GranteeType, NewPermission, Permission } from "@bzr/bazaar";
 import dynamic from "next/dynamic";
 import {
   EDITOR_ROLE_PERMISSION_TYPES,
@@ -62,7 +62,8 @@ const ShareBudgetForm = ({ budgetId }: Props) => {
 
     const newPermission: NewPermission = {
       collectionName: BUDGETS_COLLECTION_NAME,
-      userId: selectedContactId,
+      granteeId: selectedContactId,
+      granteeType: GranteeType.USER,
       types,
       filter: {
         id: budgetId,

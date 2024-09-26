@@ -43,7 +43,7 @@ const SharedList = () => {
               {permissions.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <Username userId={p.userId} />
+                    <Username userId={p.granteeId} />
                   </td>
                   <td>
                     <BudgetNameFromFilter filter={p.filter} />
